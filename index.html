@@ -1790,27 +1790,24 @@ function renderWeightGraph(){
     vals.push((all[str]||{}).weight||null);
   }
   const nonNull=vals.filter(v=>v!=null);
-  if(nonNull.length<2){svg.innerHTML='<text x="50%" y="50%" text-anchor="middle" font-size="9" fill="var(--border2)">데이터 없음</text>';return;}
+  // 데이터 없으면 그냥 빈 상태로 (텍스트 없이)
+  if(nonNull.length<2){svg.innerHTML='';return;}
   const mn=Math.min(...nonNull)-0.5,mx=Math.max(...nonNull)+0.5;
   const W=120,H=44;
   const pts=vals.map((v,i)=>v!=null?`${(i/(vals.length-1)*W).toFixed(1)},${(H-(v-mn)/(mx-mn)*H).toFixed(1)}`:null);
-  // build polyline segments (skip nulls)
   let path='',inSeg=false;
-  pts.forEach((p,i)=>{
+  pts.forEach(p=>{
     if(p){if(!inSeg){path+=`M${p} `;inSeg=true;}else{path+=`L${p} `;}}
     else{inSeg=false;}
   });
-  // area fill
   const firstPt=pts.find(p=>p);
   const lastPt=[...pts].reverse().find(p=>p);
   const areaPath=path+`L${lastPt.split(',')[0]},${H} L${firstPt.split(',')[0]},${H} Z`;
   svg.innerHTML=`
-    <defs>
-      <linearGradient id="wg2" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.25"/>
-        <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
-      </linearGradient>
-    </defs>
+    <defs><linearGradient id="wg2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
+    </linearGradient></defs>
     <path d="${areaPath}" fill="url(#wg2)"/>
     <path d="${path}" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`;
 }
@@ -1874,9 +1871,12 @@ function renderExercise(ex){
     return;
   }
   if(badge)badge.textContent=(ex.dur?ex.dur+'분':'기록됨');
-  el.innerHTML=`<div class="ex-type">${ex.type}</div>
-    ${ex.note?`<div class="ex-sub">${ex.note}</div>`:''}
-    ${ex.dur?`<div class="ex-dur">${ex.dur}<div class="ex-dur-lbl">분</div></div>`:''}`;
+  el.innerHTML=`
+    <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;">
+      <div class="ex-type">${ex.type}</div>
+      ${ex.dur?`<div style="font-size:20px;font-weight:600;color:var(--accent);">${ex.dur}<span style="font-size:13px;font-weight:400;color:var(--text3);margin-left:2px;">분</span></div>`:''}
+    </div>
+    ${ex.note?`<div class="ex-sub" style="margin-top:6px;white-space:pre-wrap;word-break:break-word;">${ex.note}</div>`:''}`;
 }
 function saveExercise(){
   const type=document.getElementById('me-type')?.value?.trim();
@@ -2113,13 +2113,15 @@ function loadProfile(){
   const img=localStorage.getItem('do_pf_img')||'';
   const nd=document.getElementById('pf-name-disp');if(nd)nd.textContent=name||'이름을 입력하세요';
   const bd=document.getElementById('pf-bio-disp');if(bd)bd.textContent=bio||'한 줄 소개를 입력하세요';
+  const mav=document.getElementById('mob-profile-av');
   if(img){
     const pi=document.getElementById('pf-img');const ph=document.getElementById('pf-placeholder');
     if(pi){pi.src=img;pi.style.display='block';}
     if(ph)ph.style.display='none';
-    // 모바일 프로필 이미지 동기화
-    const mav=document.getElementById('mob-profile-av');
-    if(mav)mav.innerHTML=`<img src="${img}" alt="">`;
+    if(mav)mav.innerHTML=`<img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+  }else{
+    // 이름 이니셜 표시
+    if(mav)mav.textContent=name?name.charAt(0):'🙂';
   }
 }
 function editProfile(f){
@@ -2319,11 +2321,16 @@ async function syncToDrive(){
   if(mobBtn)mobBtn.classList.add('syncing');
   gapi.client.setToken({access_token:gAccessToken});
   try{
-    const data=JSON.stringify({habits:getHabits(),records:getAllData(),profile:{
-      name:localStorage.getItem('do_pf_name')||'',
-      bio:localStorage.getItem('do_pf_bio')||''
-    }});
-    // 기존 파일 찾기
+    const data=JSON.stringify({
+      habits:getHabits(),
+      records:getAllData(),
+      profile:{
+        name:localStorage.getItem('do_pf_name')||'',
+        bio:localStorage.getItem('do_pf_bio')||'',
+        img:localStorage.getItem('do_pf_img')||''
+      },
+      dark:localStorage.getItem('do_dark')||'0'
+    });
     const list=await gapi.client.drive.files.list({
       spaces:'appDataFolder',
       q:`name='${G_FILE_NAME}'`,
@@ -2331,14 +2338,12 @@ async function syncToDrive(){
     });
     const files=list.result.files;
     if(files&&files.length>0){
-      // 업데이트
       await fetch(`https://www.googleapis.com/upload/drive/v3/files/${files[0].id}?uploadType=media`,{
         method:'PATCH',
         headers:{'Authorization':'Bearer '+gAccessToken,'Content-Type':'application/json'},
         body:data
       });
     }else{
-      // 새로 생성
       const meta={name:G_FILE_NAME,parents:['appDataFolder']};
       const form=new FormData();
       form.append('metadata',new Blob([JSON.stringify(meta)],{type:'application/json'}));
@@ -2351,6 +2356,7 @@ async function syncToDrive(){
     }
     toast('Drive에 저장됐습니다 ✓');
   }catch(e){
+    console.error('syncToDrive',e);
     toast('저장 실패. 다시 시도하세요.');
     gAccessToken=null;localStorage.removeItem('g_token');
     updateSyncUI(false);
@@ -2371,32 +2377,33 @@ async function syncFromDrive(){
       fields:'files(id,name)'
     });
     const files=list.result.files;
-    if(!files||!files.length){
-      // 파일 없으면 현재 데이터를 Drive에 저장
-      await syncToDrive();return;
-    }
+    if(!files||!files.length){await syncToDrive();return;}
     const res=await fetch(`https://www.googleapis.com/drive/v3/files/${files[0].id}?alt=media`,{
       headers:{'Authorization':'Bearer '+gAccessToken}
     });
     const remote=await res.json();
-    // 로컬과 병합: 레코드는 합치고 habits는 Drive 우선
     if(remote.habits)saveHabits(remote.habits);
     if(remote.records){
+      // Drive 데이터 우선, 로컬에만 있는 날짜 유지
       const local=getAllData();
-      const merged=Object.assign({},remote.records,local);
+      const merged=Object.assign({},remote.records);
+      Object.keys(local).forEach(k=>{if(!merged[k])merged[k]=local[k];});
       saveAllData(merged);
     }
     if(remote.profile){
       if(remote.profile.name)localStorage.setItem('do_pf_name',remote.profile.name);
       if(remote.profile.bio)localStorage.setItem('do_pf_bio',remote.profile.bio);
+      if(remote.profile.img)localStorage.setItem('do_pf_img',remote.profile.img);
     }
+    if(remote.dark)localStorage.setItem('do_dark',remote.dark);
     loadProfile();
     loadDay(curDateStr);
     renderTodayWidget();
     renderMiniCal();
+    renderWeightGraph();
     toast('Drive에서 불러왔습니다 ✓');
   }catch(e){
-    // 토큰 만료 등
+    console.error('syncFromDrive',e);
     gAccessToken=null;localStorage.removeItem('g_token');
     updateSyncUI(false);
   }
