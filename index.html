@@ -1393,8 +1393,10 @@ function updateDateLabel(){
   const sd=document.getElementById('sidebar-date');if(sd)sd.textContent=formatDate(todayStr());
 }
 function moveDate(dir){
-  const d=new Date(curDateStr+'T00:00:00');d.setDate(d.getDate()+dir);
-  curDateStr=d.toISOString().slice(0,10);
+  const parts=curDateStr.split('-');
+  const d=new Date(parseInt(parts[0]),parseInt(parts[1])-1,parseInt(parts[2]));
+  d.setDate(d.getDate()+dir);
+  curDateStr=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
   updateDateLabel();loadDay(curDateStr);
 }
 function goToday(){curDateStr=todayStr();updateDateLabel();loadDay(curDateStr);}
