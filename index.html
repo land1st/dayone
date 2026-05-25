@@ -150,7 +150,7 @@ body.dark .toggle-thumb{transform:translateX(13px);}
 .mob-profile{cursor:pointer;}
 .mob-profile-av{width:30px;height:30px;border-radius:50%;background:var(--accent-light);border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:15px;overflow:hidden;}
 .mob-profile-av img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
-.mob-sync-btn{width:30px;height:30px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);transition:all .12s;flex-shrink:0;}
+.mob-sync-btn{height:28px;padding:0 10px;border-radius:7px;border:1px solid var(--border);background:var(--surface2);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);font-size:11px;font-weight:700;letter-spacing:.05em;transition:all .12s;flex-shrink:0;font-family:inherit;}
 .mob-sync-btn:hover{border-color:var(--accent);color:var(--accent);}
 .mob-sync-btn.connected{border-color:var(--green);color:var(--green);background:var(--green-bg);}
 .mob-sync-btn.syncing svg{animation:spin 1s linear infinite;}
@@ -540,7 +540,81 @@ body.dark .hero-card{box-shadow:0 8px 24px rgba(0,0,0,.4);}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px;}
 
-/* ────── RESPONSIVE ────── */
+/* ────── ONBOARDING ────── */
+.ob-overlay{position:fixed;inset:0;z-index:9000;background:var(--bg);display:flex;flex-direction:column;overflow:hidden;transition:opacity .4s ease;}
+.ob-overlay.hide{opacity:0;pointer-events:none;}
+.ob-inner{flex:1;overflow:hidden;position:relative;}
+.ob-slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:0;opacity:0;transform:translateX(60px);transition:opacity .35s ease,transform .35s ease;pointer-events:none;overflow-y:auto;}
+.ob-slide::-webkit-scrollbar{display:none;}
+.ob-slide.active{opacity:1;transform:translateX(0);pointer-events:all;}
+.ob-slide.exit{opacity:0;transform:translateX(-60px);}
+
+/* hero area */
+.ob-hero{background:var(--accent);flex-shrink:0;padding:60px 28px 36px;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;}
+.ob-hero::before{content:'';position:absolute;right:-40px;top:-40px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,0.08);}
+.ob-hero::after{content:'';position:absolute;left:-30px;bottom:-40px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.06);}
+.ob-hero-icon{width:80px;height:80px;margin-bottom:20px;position:relative;z-index:1;border-radius:20px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,0.2);}
+.ob-hero-icon img{width:100%;height:100%;object-fit:cover;}
+.ob-hero-tag{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,0.65);margin-bottom:10px;position:relative;z-index:1;}
+.ob-hero-title{font-size:26px;font-weight:800;color:#fff;letter-spacing:-.025em;line-height:1.2;text-align:center;margin-bottom:10px;position:relative;z-index:1;}
+.ob-hero-sub{font-size:14px;color:rgba(255,255,255,0.75);line-height:1.65;text-align:center;position:relative;z-index:1;}
+
+/* body */
+.ob-body{padding:20px 20px 100px;flex:1;}
+.ob-features{display:flex;flex-direction:column;gap:10px;margin-bottom:4px;}
+.ob-feature{display:flex;align-items:center;gap:14px;background:var(--card);border-radius:16px;padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,0.05);}
+.ob-feature-icon{width:40px;height:40px;border-radius:12px;background:var(--accent-light);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.ob-feature-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.ob-feature-sub{font-size:12px;color:var(--text3);}
+
+/* record grid */
+.ob-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.ob-card{background:var(--card);border-radius:16px;padding:16px 12px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.05);}
+.ob-card-em{font-size:28px;margin-bottom:6px;}
+.ob-card-lbl{font-size:13px;font-weight:600;color:var(--text);}
+.ob-card-sub{font-size:11px;color:var(--text3);margin-top:2px;}
+
+/* sample diary */
+.ob-diary{background:var(--card);border-radius:16px;padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,0.05);margin-bottom:4px;}
+.ob-diary-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.ob-diary-av{width:38px;height:38px;border-radius:11px;background:var(--accent-light);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.ob-diary-title{font-size:14px;font-weight:600;color:var(--text);}
+.ob-diary-date{font-size:11px;color:var(--text3);margin-top:1px;}
+.ob-diary-text{font-size:13px;color:var(--text2);line-height:1.65;}
+
+/* sync */
+.ob-sync{background:var(--card);border-radius:16px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.05);display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+.ob-sync-icon{width:44px;height:44px;border-radius:13px;background:var(--accent-light);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.ob-sync-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:3px;}
+.ob-sync-sub{font-size:12px;color:var(--text3);line-height:1.5;}
+
+/* mood */
+.ob-mood-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;}
+.ob-mood-row{display:flex;justify-content:space-between;margin-bottom:20px;}
+.ob-mood-item{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1;cursor:pointer;transition:transform .15s;}
+.ob-mood-item:hover{transform:scale(1.1);}
+.ob-mood-item.sel .ob-mood-em{transform:scale(1.18);}
+.ob-mood-item.sel .ob-mood-lbl{color:var(--accent);font-weight:700;}
+.ob-mood-em{font-size:26px;transition:transform .15s;}
+.ob-mood-lbl{font-size:9px;font-weight:600;color:var(--text3);}
+
+/* footer */
+.ob-footer{position:fixed;bottom:0;left:0;right:0;padding:16px 20px 36px;background:linear-gradient(to top,var(--bg) 70%,transparent);z-index:9001;}
+.ob-dots-row{display:flex;justify-content:center;gap:6px;margin-bottom:14px;}
+.ob-dot{width:6px;height:6px;border-radius:50%;background:var(--border2);transition:all .25s;}
+.ob-dot.on{width:22px;border-radius:3px;background:var(--accent);}
+.ob-cta{width:100%;padding:16px;border-radius:16px;background:var(--accent);color:#fff;border:none;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:-.01em;transition:opacity .15s;}
+.ob-cta:active{opacity:.85;}
+.ob-skip{display:block;width:100%;padding:10px;text-align:center;font-size:13px;font-weight:600;color:var(--text3);background:none;border:none;cursor:pointer;font-family:inherit;margin-top:6px;}
+
+@media(min-width:681px){
+  .ob-inner{display:flex;justify-content:center;}
+  .ob-slide{max-width:420px;left:50%;transform:translateX(calc(-50% + 30px));}
+  .ob-slide.active{transform:translateX(-50%);}
+  .ob-slide.exit{transform:translateX(calc(-50% - 30px));}
+  .ob-footer{display:flex;justify-content:center;}
+  .ob-footer-inner{width:420px;}
+}
 @media(max-width:680px){
   .sidebar{display:none;}
   .mobile-topbar{display:flex;}
@@ -585,6 +659,114 @@ body.dark .hero-card{box-shadow:0 8px 24px rgba(0,0,0,.4);}
 </style>
 </head>
 <body>
+
+<!-- ══════ ONBOARDING ══════ -->
+<div class="ob-overlay" id="ob-overlay">
+  <div class="ob-inner">
+
+    <!-- 슬라이드 1: 웰컴 -->
+    <div class="ob-slide active" id="ob-slide-0">
+      <div class="ob-hero">
+        <div class="ob-hero-tag">DAY ONE</div>
+        <div class="ob-hero-icon">
+          <img src="https://land1st.github.io/dayone/2_mark.png" alt="Day One" onerror="this.parentElement.innerHTML='✅'">
+        </div>
+        <div class="ob-hero-title">오늘의 작은 흔적이<br>내일의 나를 만듭니다</div>
+        <div class="ob-hero-sub">하루를 기록하고, 습관을 쌓고,<br>나를 더 잘 알아가세요.</div>
+      </div>
+      <div class="ob-body">
+        <div class="ob-features">
+          <div class="ob-feature">
+            <div class="ob-feature-icon">✅</div>
+            <div><div class="ob-feature-title">습관 트래커</div><div class="ob-feature-sub">매일 체크하고 연속 기록을 이어가세요</div></div>
+          </div>
+          <div class="ob-feature">
+            <div class="ob-feature-icon">📊</div>
+            <div><div class="ob-feature-title">통계 & 인사이트</div><div class="ob-feature-sub">나의 패턴을 한눈에 확인하세요</div></div>
+          </div>
+          <div class="ob-feature">
+            <div class="ob-feature-icon">☁️</div>
+            <div><div class="ob-feature-title">Google Drive 동기화</div><div class="ob-feature-sub">어떤 기기에서도 데이터를 이어가세요</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 슬라이드 2: 기록 -->
+    <div class="ob-slide" id="ob-slide-1">
+      <div class="ob-hero">
+        <div class="ob-hero-tag">RECORD</div>
+        <div class="ob-hero-title">무엇이든 기록하세요</div>
+        <div class="ob-hero-sub">일기, 운동, 식사, 공부, 체중까지<br>하루의 모든 것을 한 곳에</div>
+      </div>
+      <div class="ob-body">
+        <div class="ob-grid">
+          <div class="ob-card"><div class="ob-card-em">📓</div><div class="ob-card-lbl">일기</div><div class="ob-card-sub">기분 & 하루 기록</div></div>
+          <div class="ob-card"><div class="ob-card-em">💪</div><div class="ob-card-lbl">운동</div><div class="ob-card-sub">세션 & 시간</div></div>
+          <div class="ob-card"><div class="ob-card-em">🍽️</div><div class="ob-card-lbl">식사</div><div class="ob-card-sub">아침 점심 저녁</div></div>
+          <div class="ob-card"><div class="ob-card-em">📚</div><div class="ob-card-lbl">공부</div><div class="ob-card-sub">과목 & 집중 시간</div></div>
+        </div>
+        <div class="ob-diary">
+          <div class="ob-diary-head">
+            <div class="ob-diary-av">😊</div>
+            <div>
+              <div class="ob-diary-title">차분한 일요일</div>
+              <div class="ob-diary-date">2026년 5월 25일</div>
+            </div>
+          </div>
+          <div class="ob-diary-text">오랜만에 아침 일찍 일어나서 강변을 걸었다. 바람이 선선하고 햇살은 부드러웠다...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 슬라이드 3: 동기화 & 시작 -->
+    <div class="ob-slide" id="ob-slide-2">
+      <div class="ob-hero">
+        <div class="ob-hero-tag">SYNC</div>
+        <div class="ob-hero-title">어디서든 이어가세요</div>
+        <div class="ob-hero-sub">Google Drive로 PC와 모바일의<br>데이터를 자동으로 동기화합니다</div>
+      </div>
+      <div class="ob-body">
+        <div class="ob-sync">
+          <div class="ob-sync-icon">☁️</div>
+          <div>
+            <div class="ob-sync-title">Google Drive 연동</div>
+            <div class="ob-sync-sub">로그인 한 번으로 모든 기기에서<br>동일한 데이터를 사용하세요</div>
+          </div>
+        </div>
+        <div class="ob-mood-label">오늘의 기분은?</div>
+        <div class="ob-mood-row" id="ob-mood-row">
+          <div class="ob-mood-item" onclick="obSelectMood(this,1)"><div class="ob-mood-em">😔</div><div class="ob-mood-lbl">울적함</div></div>
+          <div class="ob-mood-item" onclick="obSelectMood(this,2)"><div class="ob-mood-em">😐</div><div class="ob-mood-lbl">보통</div></div>
+          <div class="ob-mood-item" onclick="obSelectMood(this,3)"><div class="ob-mood-em">🙂</div><div class="ob-mood-lbl">차분함</div></div>
+          <div class="ob-mood-item" onclick="obSelectMood(this,4)"><div class="ob-mood-em">😊</div><div class="ob-mood-lbl">아주 좋음</div></div>
+          <div class="ob-mood-item" onclick="obSelectMood(this,5)"><div class="ob-mood-em">😄</div><div class="ob-mood-lbl">활기참</div></div>
+        </div>
+        <div class="ob-feature" style="margin-bottom:4px;">
+          <div class="ob-feature-icon">👤</div>
+          <div style="flex:1;">
+            <div class="ob-feature-title">이름을 알려주세요</div>
+            <input id="ob-name-inp" type="text" placeholder="이름 입력..." style="width:100%;border:none;background:none;font-family:inherit;font-size:14px;color:var(--text);outline:none;margin-top:4px;" maxlength="20">
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 하단 고정 footer -->
+  <div class="ob-footer">
+    <div class="ob-footer-inner" style="width:100%;">
+      <div class="ob-dots-row">
+        <div class="ob-dot on" id="od0"></div>
+        <div class="ob-dot" id="od1"></div>
+        <div class="ob-dot" id="od2"></div>
+      </div>
+      <button class="ob-cta" id="ob-cta-btn" onclick="obNext()">다음 →</button>
+      <button class="ob-skip" onclick="obFinish()">건너뛰기</button>
+    </div>
+  </div>
+</div>
 
 <!-- ══════ SIDEBAR ══════ -->
 <div class="sidebar" id="sidebar">
@@ -699,9 +881,7 @@ body.dark .hero-card{box-shadow:0 8px 24px rgba(0,0,0,.4);}
   <button class="mob-hamburger" onclick="openDrawer()"><span></span><span></span><span></span></button>
   <div class="mob-logo" onclick="goPage('dashboard')">DAY ONE</div>
   <div style="display:flex;align-items:center;gap:8px;">
-    <button class="mob-sync-btn" id="mob-sync-btn" onclick="handleMobGoogleClick()" title="Google 연동">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
-    </button>
+    <button class="mob-sync-btn" id="mob-sync-btn" onclick="handleMobGoogleClick()">LOGIN</button>
     <div class="mob-profile" onclick="openDrawer()">
       <div class="mob-profile-av" id="mob-profile-av">🙂</div>
     </div>
@@ -2212,6 +2392,69 @@ function toast(msg){
   toastTimer=setTimeout(()=>el.classList.remove('show'),2200);
 }
 
+// ── ONBOARDING ──
+let obStep=0;
+let obMood=0;
+
+function obCheckDone(){
+  return localStorage.getItem('do_onboarded')==='1';
+}
+
+function obStart(){
+  if(obCheckDone()){
+    document.getElementById('ob-overlay').style.display='none';
+    return;
+  }
+  // 첫 방문: 온보딩 표시
+}
+
+function obNext(){
+  if(obStep<2){
+    const cur=document.getElementById('ob-slide-'+obStep);
+    const next=document.getElementById('ob-slide-'+(obStep+1));
+    cur.classList.add('exit');
+    cur.classList.remove('active');
+    setTimeout(()=>cur.classList.remove('exit'),400);
+    next.classList.add('active');
+    obStep++;
+    // 도트 업데이트
+    for(let i=0;i<3;i++){
+      const d=document.getElementById('od'+i);
+      if(d)d.classList.toggle('on',i===obStep);
+    }
+    // 마지막 슬라이드
+    const btn=document.getElementById('ob-cta-btn');
+    if(btn)btn.textContent=obStep===2?'Day One 시작하기 🎉':'다음 →';
+  }else{
+    obFinish();
+  }
+}
+
+function obFinish(){
+  // 이름 저장
+  const nameInp=document.getElementById('ob-name-inp');
+  if(nameInp&&nameInp.value.trim()){
+    localStorage.setItem('do_pf_name',nameInp.value.trim());
+  }
+  // 기분 저장
+  if(obMood>0){
+    const d=getDayData(curDateStr);
+    d.mood=obMood;d.diaryMood=obMood;
+    saveDayData(curDateStr,d);
+  }
+  localStorage.setItem('do_onboarded','1');
+  const ov=document.getElementById('ob-overlay');
+  if(ov){ov.classList.add('hide');setTimeout(()=>ov.style.display='none',400);}
+  loadProfile();
+  renderSidebarMood(obMood);
+}
+
+function obSelectMood(el,m){
+  obMood=m;
+  document.querySelectorAll('.ob-mood-item').forEach(e=>e.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
 // ── INIT ──
 document.addEventListener('DOMContentLoaded',()=>{
   const now=new Date();
@@ -2231,6 +2474,9 @@ document.addEventListener('DOMContentLoaded',()=>{
   setInterval(updateClock,1000);
   fetchWeather();
   setInterval(fetchWeather,10*60*1000);
+
+  // 온보딩 체크
+  obStart();
 
   // Google API 초기화
   loadGoogleAPI();
@@ -2301,13 +2547,8 @@ function updateSyncUI(connected){
     else{btn.classList.remove('connected');lbl.textContent='Google 연동';}
   }
   if(mobBtn){
-    if(connected){
-      mobBtn.classList.add('connected');
-      mobBtn.title='Google 연동됨 (탭하면 로그아웃)';
-    }else{
-      mobBtn.classList.remove('connected');
-      mobBtn.title='Google 로그인';
-    }
+    if(connected){mobBtn.classList.add('connected');mobBtn.textContent='LOGOUT';}
+    else{mobBtn.classList.remove('connected');mobBtn.textContent='LOGIN';}
   }
 }
 
