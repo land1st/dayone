@@ -37,6 +37,18 @@ html,body{height:100%;}
 body{font-family:'Pretendard Variable',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;background:var(--bg);color:var(--text);display:flex;overflow:hidden;font-size:14px;transition:background .25s,color .2s;}
 input,textarea,button,select{font-family:inherit;}
 
+/* PC 전체 가운데 정렬 */
+@media(min-width:681px){
+  body{justify-content:center;}
+  body > .sidebar{flex-shrink:0;}
+  .main{max-width:1600px;}
+}
+
+.pc-wrap{display:contents;}
+@media(min-width:681px){
+  .pc-wrap{display:flex;height:100vh;max-width:1840px;width:100%;overflow:hidden;}
+}
+
 /* ────── SIDEBAR ────── */
 .sidebar{width:240px;min-width:240px;background:var(--sidebar-bg);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;overflow-y:auto;flex-shrink:0;}
 .sidebar::-webkit-scrollbar{width:3px;}
@@ -541,7 +553,7 @@ body.dark .hero-card{box-shadow:0 8px 24px rgba(0,0,0,.4);}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px;}
 
 /* ────── ONBOARDING ────── */
-.ob-overlay{position:fixed;inset:0;z-index:9000;background:var(--bg);display:flex;flex-direction:column;overflow:hidden;transition:opacity .4s ease;}
+.ob-overlay{position:fixed;inset:0;z-index:9000;background:var(--bg);display:flex;flex-direction:column;overflow:hidden;transition:opacity .4s ease;font-family:'Pretendard Variable',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;}
 .ob-overlay.hide{opacity:0;pointer-events:none;}
 .ob-inner{flex:1;overflow:hidden;position:relative;}
 .ob-slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:0;opacity:0;transform:translateX(60px);transition:opacity .35s ease,transform .35s ease;pointer-events:none;overflow-y:auto;}
@@ -603,9 +615,9 @@ body.dark .hero-card{box-shadow:0 8px 24px rgba(0,0,0,.4);}
 .ob-dots-row{display:flex;justify-content:center;gap:6px;margin-bottom:14px;}
 .ob-dot{width:6px;height:6px;border-radius:50%;background:var(--border2);transition:all .25s;}
 .ob-dot.on{width:22px;border-radius:3px;background:var(--accent);}
-.ob-cta{width:100%;padding:16px;border-radius:16px;background:var(--accent);color:#fff;border:none;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:-.01em;transition:opacity .15s;}
+.ob-cta{width:100%;padding:16px;border-radius:16px;background:var(--accent);color:#fff;border:none;font-size:16px;font-weight:700;cursor:pointer;font-family:'Pretendard Variable',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;letter-spacing:-.01em;transition:opacity .15s;}
 .ob-cta:active{opacity:.85;}
-.ob-skip{display:block;width:100%;padding:10px;text-align:center;font-size:13px;font-weight:600;color:var(--text3);background:none;border:none;cursor:pointer;font-family:inherit;margin-top:6px;}
+.ob-skip{display:block;width:100%;padding:10px;text-align:center;font-size:13px;font-weight:600;color:var(--text3);background:none;border:none;cursor:pointer;font-family:'Pretendard Variable',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;margin-top:6px;}
 
 @media(min-width:681px){
   .ob-inner{display:flex;justify-content:center;}
@@ -769,6 +781,7 @@ body.dark .hero-card{box-shadow:0 8px 24px rgba(0,0,0,.4);}
 </div>
 
 <!-- ══════ SIDEBAR ══════ -->
+<div class="pc-wrap">
 <div class="sidebar" id="sidebar">
   <div class="logo-wrap" onclick="goPage('dashboard')">
     <div class="logo">DAY ONE</div>
@@ -1199,6 +1212,7 @@ body.dark .hero-card{box-shadow:0 8px 24px rgba(0,0,0,.4);}
     </div>
   </div>
 </div><!-- /main -->
+</div><!-- /pc-wrap -->
 
 <!-- MODALS -->
 <div class="modal-bg" id="modal-study">
@@ -1594,8 +1608,9 @@ function updateHero(d,habits){
   const hp=document.getElementById('hero-pct');if(hp)hp.textContent=pct+'%';
   const hr=document.getElementById('hero-ring');
   if(hr){hr.setAttribute('stroke-dasharray',circ.toFixed(1));hr.setAttribute('stroke-dashoffset',offset.toFixed(1));}
-  const ex=d.exercise;
-  const ht1=document.getElementById('ht-ex');if(ht1)ht1.textContent=(ex&&ex.dur)?ex.dur+'분':'0분';
+  const exSessions=d.exercises||(d.exercise?[d.exercise]:[]);
+  const exTotal=exSessions.reduce((s,x)=>s+(x.dur||0),0);
+  const ht1=document.getElementById('ht-ex');if(ht1)ht1.textContent=exTotal?exTotal+'분':'0분';
   const ht2=document.getElementById('ht-wt');if(ht2)ht2.textContent=d.weight?d.weight:'--';
   const ht3=document.getElementById('ht-sl');if(ht3)ht3.textContent=(d.sleep!=null)?d.sleep:'--';
 }
@@ -1609,7 +1624,9 @@ function loadDay(str){
   renderHabits(d,habits);
   renderStudyList(d.study||[]);
   renderMealList(d.meals||[]);
-  renderExercise(d.exercise||null);
+  // 구버전 단일 exercise 호환
+  const exSessions=d.exercises||(d.exercise?[d.exercise]:[]);
+  renderExercise(exSessions);
 
   // weight
   const wdsp=document.getElementById('weight-disp');
@@ -2047,34 +2064,65 @@ function delMeal(i){
 }
 
 // ── EXERCISE ──
-function renderExercise(ex){
+function renderExercise(sessions){
   const el=document.getElementById('exercise-body');if(!el)return;
   const badge=document.getElementById('exercise-badge');
-  if(!ex||!ex.type){
+  // 구버전 단일 객체 호환
+  if(sessions&&!Array.isArray(sessions))sessions=[sessions];
+  if(!sessions||!sessions.length){
     el.innerHTML='<div class="empty">기록이 없습니다</div>';
     if(badge)badge.textContent='0분';
     return;
   }
-  if(badge)badge.textContent=(ex.dur?ex.dur+'분':'기록됨');
-  el.innerHTML=`
-    <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;">
-      <div class="ex-type">${ex.type}</div>
-      ${ex.dur?`<div style="font-size:20px;font-weight:600;color:var(--accent);">${ex.dur}<span style="font-size:13px;font-weight:400;color:var(--text3);margin-left:2px;">분</span></div>`:''}
-    </div>
-    ${ex.note?`<div class="ex-sub" style="margin-top:6px;white-space:pre-wrap;word-break:break-word;">${ex.note}</div>`:''}`;
+  const total=sessions.reduce((s,x)=>s+(x.dur||0),0);
+  if(badge)badge.textContent=total?total+'분':'기록됨';
+  el.innerHTML=sessions.map((ex,i)=>`
+    <div style="padding:8px 0;border-bottom:1px solid var(--border);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+        <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;">
+          <div class="ex-type">${ex.type}</div>
+          ${ex.dur?`<span style="font-size:18px;font-weight:600;color:var(--accent);">${ex.dur}<span style="font-size:12px;font-weight:400;color:var(--text3);margin-left:2px;">분</span></span>`:''}
+        </div>
+        <button style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:14px;padding:0 2px;" onclick="delExercise(${i})">×</button>
+      </div>
+      ${ex.note?`<div class="ex-sub" style="white-space:pre-wrap;word-break:break-word;">${ex.note}</div>`:''}
+    </div>`).join('').replace(/border-bottom[^;]+;([^"]*)<\/div>\s*$/, (m)=>m.replace('border-bottom:1px solid var(--border);','border-bottom:none;'));
+  // 마지막 항목 border 제거
+  const items=el.querySelectorAll('[style*="border-bottom"]');
+  if(items.length)items[items.length-1].style.borderBottom='none';
 }
+
 function saveExercise(){
   const type=document.getElementById('me-type')?.value?.trim();
   const dur=parseInt(document.getElementById('me-dur')?.value)||0;
   const note=document.getElementById('me-note')?.value?.trim();
   if(!type){toast('운동 종류를 입력하세요');return;}
   const d=getDayData(curDateStr);
-  d.exercise={type,dur:dur||undefined,note:note||undefined};
+  // 배열로 전환 (구버전 호환)
+  if(!d.exercises)d.exercises=[];
+  if(d.exercise&&!Array.isArray(d.exercise)){
+    d.exercises.push(d.exercise);
+    delete d.exercise;
+  }
+  d.exercises.push({type,dur:dur||undefined,note:note||undefined});
   saveDayData(curDateStr,d);
-  renderExercise(d.exercise);
+  renderExercise(d.exercises);
   updateHero(d,getHabits());
   closeModal('modal-exercise');
+  // 입력 초기화
+  document.getElementById('me-type').value='';
+  document.getElementById('me-dur').value='';
+  document.getElementById('me-note').value='';
   toast('운동 기록 저장');
+}
+
+function delExercise(i){
+  const d=getDayData(curDateStr);
+  if(!d.exercises)d.exercises=[];
+  d.exercises.splice(i,1);
+  saveDayData(curDateStr,d);
+  renderExercise(d.exercises);
+  updateHero(d,getHabits());
 }
 
 // ── WEIGHT ──
@@ -2191,7 +2239,8 @@ function renderCalendar(){
     const dh=habits.filter(hb=>dd.habits&&dd.habits[hb]).length;
     if(dh>0)dots+=`<div class="cal-dot" style="background:var(--green)"></div>`;
     if(dd.diary||dd.diaryTitle)dots+=`<div class="cal-dot" style="background:var(--accent)"></div>`;
-    if(dd.exercise)dots+=`<div class="cal-dot" style="background:var(--amber)"></div>`;
+    if(dd.exercises&&dd.exercises.length)dots+=`<div class="cal-dot" style="background:var(--amber)"></div>`;
+    else if(dd.exercise)dots+=`<div class="cal-dot" style="background:var(--amber)"></div>`;
     h+=`<div class="cal-cell ${isT?'is-today':''}" onclick="calSelectDay('${ds}')">${numHtml}<div class="cal-dots">${dots}</div></div>`;
   }
   document.getElementById('cal-cells').innerHTML=h;
@@ -2401,11 +2450,12 @@ function obCheckDone(){
 }
 
 function obStart(){
-  if(obCheckDone()){
-    document.getElementById('ob-overlay').style.display='none';
-    return;
+  const ov=document.getElementById('ob-overlay');
+  if(!ov)return;
+  if(localStorage.getItem('do_onboarded')==='1'){
+    ov.style.display='none';
   }
-  // 첫 방문: 온보딩 표시
+  // 처음 방문이면 그대로 표시 (기본 display:flex)
 }
 
 function obNext(){
