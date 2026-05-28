@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Day One</title>
+<!-- PWA 홈화면 아이콘 -->
+<link rel="apple-touch-icon" href="https://land1st.github.io/dayone/2_mark.png">
+<link rel="icon" type="image/png" href="https://land1st.github.io/dayone/2_mark.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Day One">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#6667AB">
 <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -431,6 +439,7 @@ body.dark .hero-card{box-shadow:0 8px 24px rgba(0,0,0,.4);}
 .settings-btn.danger:hover{background:#fdf0f0;border-color:var(--red);color:var(--red);}
 .settings-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
 .settings-btn.primary:hover{background:var(--accent-hover);}
+.weather-city-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
 .btn-row{display:flex;gap:8px;flex-wrap:wrap;}
 .habit-edit-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);}
 .habit-edit-row:last-child{border-bottom:none;}
@@ -862,7 +871,7 @@ body.dark .hero-card{box-shadow:0 8px 24px rgba(0,0,0,.4);}
         <span class="tw-title">오늘 할 일</span>
         <span class="tw-count" id="tw-count"></span>
       </div>
-      <div id="tw-list"><div class="tw-empty">어제 기록이 없어요</div></div>
+      <div id="tw-list"></div>
       <div style="display:flex;gap:6px;margin-top:8px;align-items:center;">
         <button class="add-btn" style="font-size:13px;padding:5px 10px;flex-shrink:0;border-radius:7px;" onclick="addTodayTodo()">+</button>
         <input class="todo-inp" id="tw-add-inp" type="text" placeholder="오늘 할 일 추가..." style="font-size:12px;padding:5px 8px;flex:1;min-width:0;" onkeydown="if(event.key==='Enter')addTodayTodo()">
@@ -921,7 +930,7 @@ body.dark .hero-card{box-shadow:0 8px 24px rgba(0,0,0,.4);}
           <span class="tw-title">오늘 할 일</span>
           <span class="tw-count" id="dtw-count"></span>
         </div>
-        <div id="dtw-list"><div class="tw-empty">어제 기록이 없어요</div></div>
+        <div id="dtw-list"></div>
         <div style="display:flex;gap:6px;margin-top:8px;align-items:center;">
           <button class="add-btn" style="font-size:13px;padding:5px 10px;flex-shrink:0;border-radius:7px;" onclick="addTodayTodo()">+</button>
           <input class="todo-inp" type="text" placeholder="오늘 할 일 추가..." style="font-size:12px;padding:5px 8px;flex:1;min-width:0;" onkeydown="if(event.key==='Enter')addTodayTodo()">
@@ -1159,6 +1168,27 @@ body.dark .hero-card{box-shadow:0 8px 24px rgba(0,0,0,.4);}
 
     <!-- SETTINGS -->
     <div class="page" id="page-settings">
+      <div class="settings-section">
+        <div class="settings-head">날씨 지역 설정</div>
+        <div class="settings-body">
+          <div style="margin-bottom:10px;font-size:13px;color:var(--text2);">현재 지역: <strong id="weather-city-label">광명시</strong></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;" id="weather-city-btns">
+            <button class="settings-btn weather-city-btn active" data-lat="37.4786" data-lon="126.8644" data-name="광명시" onclick="setWeatherCity(this)">광명시</button>
+            <button class="settings-btn weather-city-btn" data-lat="37.5665" data-lon="126.9780" data-name="서울" onclick="setWeatherCity(this)">서울</button>
+            <button class="settings-btn weather-city-btn" data-lat="35.1796" data-lon="129.0756" data-name="부산" onclick="setWeatherCity(this)">부산</button>
+            <button class="settings-btn weather-city-btn" data-lat="37.4563" data-lon="126.7052" data-name="인천" onclick="setWeatherCity(this)">인천</button>
+            <button class="settings-btn weather-city-btn" data-lat="35.8714" data-lon="128.6014" data-name="대구" onclick="setWeatherCity(this)">대구</button>
+            <button class="settings-btn weather-city-btn" data-lat="35.5384" data-lon="129.3114" data-name="울산" onclick="setWeatherCity(this)">울산</button>
+            <button class="settings-btn weather-city-btn" data-lat="36.3504" data-lon="127.3845" data-name="대전" onclick="setWeatherCity(this)">대전</button>
+            <button class="settings-btn weather-city-btn" data-lat="35.1595" data-lon="126.8526" data-name="광주" onclick="setWeatherCity(this)">광주</button>
+            <button class="settings-btn weather-city-btn" data-lat="37.2636" data-lon="127.0286" data-name="수원" onclick="setWeatherCity(this)">수원</button>
+            <button class="settings-btn weather-city-btn" data-lat="37.6541" data-lon="127.0499" data-name="의정부" onclick="setWeatherCity(this)">의정부</button>
+            <button class="settings-btn weather-city-btn" data-lat="33.4996" data-lon="126.5312" data-name="제주" onclick="setWeatherCity(this)">제주</button>
+          </div>
+          <div class="settings-note">선택한 지역의 실시간 날씨를 표시합니다.</div>
+        </div>
+      </div>
+
       <div class="settings-section">
         <div class="settings-head">습관 관리</div>
         <div class="settings-body">
@@ -1452,8 +1482,10 @@ const WC={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51
 const WD={0:'맑음',1:'대체로 맑음',2:'약간 흐림',3:'흐림',45:'안개',48:'안개',51:'이슬비',53:'이슬비',55:'이슬비',61:'비',63:'비',65:'강한 비',71:'눈',73:'눈',75:'강한 눈',80:'소나기',81:'소나기',82:'강한 소나기',95:'뇌우',96:'뇌우',99:'뇌우'};
 
 async function fetchWeather(){
+  const lat=localStorage.getItem('do_weather_lat')||'37.4786';
+  const lon=localStorage.getItem('do_weather_lon')||'126.8644';
   try{
-    const res=await fetch('https://api.open-meteo.com/v1/forecast?latitude=37.4786&longitude=126.8644&current=temperature_2m,apparent_temperature,weathercode,relative_humidity_2m,wind_speed_10m&timezone=Asia/Seoul');
+    const res=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,weathercode,relative_humidity_2m,wind_speed_10m&timezone=Asia/Seoul`);
     if(!res.ok)throw new Error();
     const data=await res.json();
     const c=data.current;
@@ -1477,12 +1509,39 @@ function setW(p,icon,temp,desc,feel,hum,wind){
   const sf=document.getElementById(p+'w-feel');
   const sh=document.getElementById(p+'w-hum');
   const sw=document.getElementById(p+'w-wind');
+  const city=localStorage.getItem('do_weather_city')||'광명시';
   if(si)si.textContent=icon;
   if(st)st.innerHTML=temp+'<span class="w-unit">°C</span>';
   if(sd)sd.textContent=desc;
   if(sf)sf.textContent=feel;
   if(sh)sh.textContent=hum;
   if(sw)sw.textContent=wind;
+  // 지역명 업데이트
+  document.querySelectorAll('.w-loc').forEach(el=>el.textContent=city);
+}
+
+function setWeatherCity(btn){
+  const lat=btn.dataset.lat;
+  const lon=btn.dataset.lon;
+  const name=btn.dataset.name;
+  localStorage.setItem('do_weather_lat',lat);
+  localStorage.setItem('do_weather_lon',lon);
+  localStorage.setItem('do_weather_city',name);
+  document.querySelectorAll('.weather-city-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const lbl=document.getElementById('weather-city-label');
+  if(lbl)lbl.textContent=name;
+  fetchWeather();
+  toast(name+' 날씨로 변경됨 ✓');
+}
+
+function initWeatherCityUI(){
+  const saved=localStorage.getItem('do_weather_city')||'광명시';
+  const lbl=document.getElementById('weather-city-label');
+  if(lbl)lbl.textContent=saved;
+  document.querySelectorAll('.weather-city-btn').forEach(b=>{
+    b.classList.toggle('active',b.dataset.name===saved);
+  });
 }
 
 // ── MINI CALENDAR ──
@@ -1526,7 +1585,7 @@ function renderTodayWidget(){
     const el=document.getElementById(lid);
     const cel=document.getElementById(cid);
     if(!el)return;
-    if(!todos.length){el.innerHTML='<div class="tw-empty">어제 기록이 없어요</div>';if(cel)cel.textContent='';return;}
+    if(!todos.length){el.innerHTML='';if(cel)cel.textContent='';return;}
     const done=todos.filter(t=>t.done).length;
     if(cel)cel.textContent=done+'/'+todos.length;
     el.innerHTML=todos.map((t,i)=>`
@@ -1576,7 +1635,7 @@ function goPage(page){
 
   if(page==='calendar')renderCalendar();
   if(page==='stats')renderStats();
-  if(page==='settings')renderHabitSettings();
+  if(page==='settings'){renderHabitSettings();initWeatherCityUI();}
 }
 
 // ── DATE NAV ──
@@ -2524,6 +2583,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   setInterval(updateClock,1000);
   fetchWeather();
   setInterval(fetchWeather,10*60*1000);
+  initWeatherCityUI();
 
   // 온보딩 체크
   obStart();
