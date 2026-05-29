@@ -2192,7 +2192,7 @@ function renderWeightDelta(str,cur){
   const el=document.getElementById('weight-delta');if(!el)return;
   if(!cur){el.innerHTML='';return;}
   const pd=new Date(str+'T00:00:00');pd.setDate(pd.getDate()-1);
-  const prev=getDayData(plocalDateStr(d)).weight;
+  const prev=getDayData(localDateStr(pd)).weight;
   if(!prev){el.innerHTML='';return;}
   const diff=(cur-prev).toFixed(1);
   el.innerHTML=`<span class="delta ${diff>0?'up':'dn'}">${diff>0?'▲':'▼'} ${Math.abs(diff)}kg</span> 전일 대비`;
