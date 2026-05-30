@@ -1175,9 +1175,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
               <input class="inline-input" type="number" step="0.1" id="weight-inp" placeholder="kg 입력">
               <button class="add-btn" onclick="saveWeight()">저장</button>
             </div>
-            <div class="weight-graph-wrap" style="margin-top:10px;">
-              <svg class="weight-graph-svg" id="weight-mini-svg" viewBox="0 0 120 48" preserveAspectRatio="none"></svg>
-            </div>
+
           </div>
         </div>
 
@@ -1259,7 +1257,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
         <div class="monthly-card">
           <div class="monthly-card-title">체중 변화</div>
           <div class="m-weight-stats" id="monthly-weight-stats"></div>
-          <div class="m-weight-chart"><svg id="monthly-weight-svg" viewBox="0 0 300 70" preserveAspectRatio="none"></svg></div>
+
         </div>
         <div class="monthly-card">
           <div class="monthly-card-title">공부 · 운동 시간</div>
@@ -2159,39 +2157,7 @@ function renderWcChart(days){
     }
   });
 }
-function renderWeightGraph(){
-  const svg=document.getElementById('weight-mini-svg');
-  if(!svg)return;
-  const all=getAllData();
-  const today=new Date();
-  const vals=[];
-  for(let i=29;i>=0;i--){
-    const d=new Date(today);d.setDate(d.getDate()-i);
-    const str=localDateStr(d);
-    vals.push((all[str]||{}).weight||null);
-  }
-  const nonNull=vals.filter(v=>v!=null);
-  // 데이터 없으면 그냥 빈 상태로 (텍스트 없이)
-  if(nonNull.length<2){svg.innerHTML='';return;}
-  const mn=Math.min(...nonNull)-0.5,mx=Math.max(...nonNull)+0.5;
-  const W=120,H=44;
-  const pts=vals.map((v,i)=>v!=null?`${(i/(vals.length-1)*W).toFixed(1)},${(H-(v-mn)/(mx-mn)*H).toFixed(1)}`:null);
-  let path='',inSeg=false;
-  pts.forEach(p=>{
-    if(p){if(!inSeg){path+=`M${p} `;inSeg=true;}else{path+=`L${p} `;}}
-    else{inSeg=false;}
-  });
-  const firstPt=pts.find(p=>p);
-  const lastPt=[...pts].reverse().find(p=>p);
-  const areaPath=path+`L${lastPt.split(',')[0]},${H} L${firstPt.split(',')[0]},${H} Z`;
-  svg.innerHTML=`
-    <defs><linearGradient id="wg2" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.25"/>
-      <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
-    </linearGradient></defs>
-    <path d="${areaPath}" fill="url(#wg2)"/>
-    <path d="${path}" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`;
-}
+function renderWeightGraph(){}
 function saveStudy(){
   const subj=document.getElementById('ms-subj')?.value?.trim();
   const cont=document.getElementById('ms-cont')?.value?.trim();
@@ -2618,27 +2584,6 @@ function renderMonthly(){
       {l:'최저',v:wMin?wMin+'kg':'--'},
       {l:'최고',v:wMax?wMax+'kg':'--'},
     ].map(s=>`<div class="m-w-stat"><div class="m-w-stat-lbl">${s.l}</div><div class="m-w-stat-val">${s.v}</div></div>`).join('');
-  }
-
-  // ── 체중 미니 차트 SVG
-  const wsvg=document.getElementById('monthly-weight-svg');
-  if(wsvg){
-    const wArr=[];
-    for(let d=1;d<=lastDay;d++){
-      const ds=year+'-'+pad(month+1)+'-'+pad(d);
-      wArr.push((all[ds]||{}).weight||null);
-    }
-    const nonNull=wArr.filter(v=>v!=null);
-    if(nonNull.length>=2){
-      const mn=Math.min(...nonNull)-0.5,mx=Math.max(...nonNull)+0.5;
-      const W=300,H=70;
-      const pts=wArr.map((v,i)=>v!=null?`${(i/(wArr.length-1)*W).toFixed(1)},${(H-(v-mn)/(mx-mn)*(H-6)+3).toFixed(1)}`:null);
-      let path='',inSeg=false;
-      pts.forEach(p=>{if(p){if(!inSeg){path+=`M${p} `;inSeg=true;}else{path+=`L${p} `;}}else{inSeg=false;}});
-      const firstPt=pts.find(p=>p),lastPt=[...pts].reverse().find(p=>p);
-      const area=path+`L${lastPt.split(',')[0]},${H} L${firstPt.split(',')[0]},${H} Z`;
-      wsvg.innerHTML=`<defs><linearGradient id="mwg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--accent)" stop-opacity="0.18"/><stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/></linearGradient></defs><path d="${area}" fill="url(#mwg)"/><path d="${path}" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`;
-    }else{wsvg.innerHTML='';}
   }
 
   // ── 공부·운동 시간
