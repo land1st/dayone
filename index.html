@@ -557,6 +557,65 @@ body.dark .hero-card{box-shadow:0 8px 24px rgba(0,0,0,.4);}
 .toast{position:fixed;bottom:24px;right:24px;background:var(--text);color:var(--bg);padding:9px 16px;border-radius:9px;font-size:13px;font-weight:500;z-index:2000;opacity:0;transform:translateY(8px);transition:all .2s;pointer-events:none;}
 .toast.show{opacity:1;transform:translateY(0);}
 
+/* ────── MONTHLY REPORT ────── */
+.monthly-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+.monthly-month-nav{display:flex;align-items:center;gap:6px;}
+.monthly-nav-btn{width:26px;height:26px;border-radius:6px;border:1px solid var(--border);background:none;cursor:pointer;color:var(--text2);display:flex;align-items:center;justify-content:center;transition:all .12s;font-size:14px;}
+.monthly-nav-btn:hover{background:var(--accent-light);border-color:var(--accent);color:var(--accent);}
+.monthly-month-lbl{font-size:13px;font-weight:600;color:var(--text);min-width:100px;text-align:center;}
+.monthly-summary-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+.monthly-sum-card{background:var(--surface2);border-radius:10px;padding:14px 12px;}
+.monthly-sum-lbl{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;}
+.monthly-sum-val{font-size:22px;font-weight:600;color:var(--accent);line-height:1;}
+.monthly-sum-unit{font-size:12px;font-weight:400;color:var(--text3);}
+.monthly-sum-sub{font-size:11px;color:var(--text3);margin-top:4px;}
+.monthly-badge{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;margin-top:4px;}
+.monthly-badge.up{background:var(--green-bg);color:var(--green);}
+.monthly-badge.dn{background:#fce4e4;color:var(--red);}
+body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
+.monthly-two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.monthly-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;}
+.monthly-card-title{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px;}
+.m-habit-row{display:flex;align-items:center;gap:10px;margin-bottom:9px;}
+.m-habit-row:last-child{margin-bottom:0;}
+.m-habit-name{font-size:12px;color:var(--text);min-width:68px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.m-habit-track{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
+.m-habit-fill{height:100%;border-radius:3px;background:var(--accent);transition:width .5s ease;}
+.m-habit-pct{font-size:11px;color:var(--text3);min-width:30px;text-align:right;}
+.m-mood-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;}
+.m-mood-item{display:flex;flex-direction:column;align-items:center;gap:4px;padding:9px 4px;border-radius:9px;background:var(--surface2);}
+.m-mood-emoji{font-size:18px;line-height:1;}
+.m-mood-cnt{font-size:14px;font-weight:600;color:var(--text);line-height:1;}
+.m-mood-lbl{font-size:9px;color:var(--text3);text-align:center;line-height:1.3;}
+.m-mood-bar-wrap{width:100%;height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:2px;}
+.m-mood-bar{height:100%;border-radius:2px;background:var(--accent);}
+.m-weight-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px;}
+.m-w-stat{background:var(--surface2);border-radius:8px;padding:9px 10px;}
+.m-w-stat-lbl{font-size:9px;color:var(--text3);margin-bottom:3px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;}
+.m-w-stat-val{font-size:14px;font-weight:600;color:var(--text);}
+.m-weight-chart{height:72px;width:100%;margin-top:4px;}
+.m-weight-chart svg{width:100%;height:100%;}
+.m-time-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.m-time-card{background:var(--surface2);border-radius:9px;padding:12px;}
+.m-time-icon{font-size:16px;margin-bottom:5px;color:var(--text3);}
+.m-time-val{font-size:18px;font-weight:600;color:var(--text);line-height:1;}
+.m-time-unit{font-size:11px;font-weight:400;color:var(--text3);}
+.m-time-sub{font-size:10px;color:var(--text3);margin-top:3px;}
+.m-diary-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.m-diary-bar-track{flex:1;height:7px;background:var(--border);border-radius:4px;overflow:hidden;}
+.m-diary-bar-fill{height:100%;border-radius:4px;background:var(--accent);}
+.m-diary-bar-lbl{font-size:12px;color:var(--text2);white-space:nowrap;}
+.m-day-dots{display:flex;flex-wrap:wrap;gap:4px;}
+.m-day-dot{width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;cursor:default;}
+.m-dot-on{background:var(--accent);color:#fff;}
+.m-dot-off{background:var(--surface2);color:var(--text3);}
+.m-empty{font-size:13px;color:var(--text3);font-style:italic;padding:12px 0;text-align:center;}
+@media(max-width:680px){
+  .monthly-summary-row{grid-template-columns:1fr 1fr;}
+  .monthly-two-col{grid-template-columns:1fr;}
+  .m-weight-stats{grid-template-columns:repeat(2,1fr);}
+}
+
 /* scrollbar */
 ::-webkit-scrollbar{width:5px;}
 ::-webkit-scrollbar-track{background:transparent;}
@@ -825,6 +884,7 @@ body.dark .hero-card{box-shadow:0 8px 24px rgba(0,0,0,.4);}
     <span class="nav-lbl">기록</span>
     <div class="nav-item" id="nav-calendar" onclick="goPage('calendar')"><div class="nav-dot"></div>캘린더</div>
     <div class="nav-item" id="nav-stats" onclick="goPage('stats')"><div class="nav-dot"></div>통계</div>
+    <div class="nav-item" id="nav-monthly" onclick="goPage('monthly')"><div class="nav-dot"></div>월간 리포트</div>
     <span class="nav-lbl">관리</span>
     <div class="nav-item" id="nav-settings" onclick="goPage('settings')"><div class="nav-dot"></div>설정</div>
   </div>
@@ -922,6 +982,7 @@ body.dark .hero-card{box-shadow:0 8px 24px rgba(0,0,0,.4);}
       <div class="nav-item" id="dnav-dashboard" onclick="goPage('dashboard');closeDrawer();"><div class="nav-dot"></div>대시보드</div>
       <div class="nav-item" id="dnav-calendar" onclick="goPage('calendar');closeDrawer();"><div class="nav-dot"></div>캘린더</div>
       <div class="nav-item" id="dnav-stats" onclick="goPage('stats');closeDrawer();"><div class="nav-dot"></div>통계</div>
+      <div class="nav-item" id="dnav-monthly" onclick="goPage('monthly');closeDrawer();"><div class="nav-dot"></div>월간 리포트</div>
       <div class="nav-item" id="dnav-settings" onclick="goPage('settings');closeDrawer();"><div class="nav-dot"></div>설정</div>
     </div>
     <div class="sidebar-widgets" style="margin-top:8px;">
@@ -1167,6 +1228,56 @@ body.dark .hero-card{box-shadow:0 8px 24px rgba(0,0,0,.4);}
       </div>
     </div>
 
+    <!-- MONTHLY REPORT -->
+    <div class="page" id="page-monthly">
+      <div class="monthly-header">
+        <div style="font-size:15px;font-weight:600;color:var(--text);">월간 리포트</div>
+        <div class="monthly-month-nav">
+          <button class="monthly-nav-btn" onclick="monthlyMove(-1)">‹</button>
+          <span class="monthly-month-lbl" id="monthly-month-lbl"></span>
+          <button class="monthly-nav-btn" onclick="monthlyMove(1)">›</button>
+        </div>
+      </div>
+
+      <!-- 요약 4칸 -->
+      <div class="monthly-summary-row" id="monthly-summary-row"></div>
+
+      <!-- 습관 달성률 + 기분 분포 -->
+      <div class="monthly-two-col">
+        <div class="monthly-card">
+          <div class="monthly-card-title">습관 달성률</div>
+          <div id="monthly-habit-bars"></div>
+        </div>
+        <div class="monthly-card">
+          <div class="monthly-card-title">기분 분포</div>
+          <div class="m-mood-grid" id="monthly-mood-grid"></div>
+        </div>
+      </div>
+
+      <!-- 체중 변화 + 공부·운동 시간 -->
+      <div class="monthly-two-col">
+        <div class="monthly-card">
+          <div class="monthly-card-title">체중 변화</div>
+          <div class="m-weight-stats" id="monthly-weight-stats"></div>
+          <div class="m-weight-chart"><svg id="monthly-weight-svg" viewBox="0 0 300 70" preserveAspectRatio="none"></svg></div>
+        </div>
+        <div class="monthly-card">
+          <div class="monthly-card-title">공부 · 운동 시간</div>
+          <div class="m-time-grid" id="monthly-time-grid"></div>
+        </div>
+      </div>
+
+      <!-- 일기 기록 현황 -->
+      <div class="monthly-card" style="margin-bottom:12px;">
+        <div class="monthly-card-title">일기 기록 현황</div>
+        <div class="m-diary-bar-row">
+          <div class="m-diary-bar-track"><div class="m-diary-bar-fill" id="monthly-diary-bar" style="width:0%"></div></div>
+          <span class="m-diary-bar-lbl" id="monthly-diary-lbl"></span>
+        </div>
+        <div class="m-day-dots" id="monthly-day-dots"></div>
+      </div>
+    </div>
+
     <!-- SETTINGS -->
     <div class="page" id="page-settings">
       <div class="settings-section">
@@ -1236,6 +1347,10 @@ body.dark .hero-card{box-shadow:0 8px 24px rgba(0,0,0,.4);}
     <div class="mob-tab" id="mtab-stats" onclick="goPage('stats')">
       <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
       <span>통계</span>
+    </div>
+    <div class="mob-tab" id="mtab-monthly" onclick="goPage('monthly')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="15" x2="16" y2="15"/></svg>
+      <span>월간</span>
     </div>
     <div class="mob-tab" id="mtab-settings" onclick="goPage('settings')">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
@@ -1624,7 +1739,7 @@ function goPage(page){
   const pe=document.getElementById('page-'+page);
   if(pe)pe.classList.add('active');
 
-  ['dashboard','calendar','stats','settings'].forEach(p=>{
+  ['dashboard','calendar','stats','settings','monthly'].forEach(p=>{
     const n=document.getElementById('nav-'+p);
     const dn=document.getElementById('dnav-'+p);
     const mn=document.getElementById('mtab-'+p);
@@ -1633,12 +1748,13 @@ function goPage(page){
     if(mn)mn.classList.toggle('active',p===page);
   });
 
-  const titles={dashboard:'대시보드',calendar:'캘린더',stats:'통계',settings:'설정'};
+  const titles={dashboard:'대시보드',calendar:'캘린더',stats:'통계',settings:'설정',monthly:'월간 리포트'};
   document.getElementById('topbar-title').textContent=titles[page]||page;
   document.getElementById('date-nav-wrap').style.display=page==='dashboard'?'flex':'none';
 
   if(page==='calendar')renderCalendar();
   if(page==='stats')renderStats();
+  if(page==='monthly')renderMonthly();
   if(page==='settings'){renderHabitSettings();initWeatherCityUI();}
 }
 
@@ -2380,7 +2496,193 @@ function renderStats(){
   });
 }
 
-// ── SETTINGS ──
+// ── MONTHLY REPORT ──
+let monthlyYear=(()=>{const n=new Date();return n.getFullYear();})();
+let monthlyMonth=(()=>{const n=new Date();return n.getMonth();})();
+
+function monthlyMove(dir){
+  monthlyMonth+=dir;
+  if(monthlyMonth>11){monthlyMonth=0;monthlyYear++;}
+  else if(monthlyMonth<0){monthlyMonth=11;monthlyYear--;}
+  renderMonthly();
+}
+
+function renderMonthly(){
+  const all=getAllData();
+  const habits=getHabits();
+  const year=monthlyYear;
+  const month=monthlyMonth;
+  const dim=new Date(year,month+1,0).getDate();
+  const today=new Date();
+  const isCurrentMonth=(year===today.getFullYear()&&month===today.getMonth());
+  const lastDay=isCurrentMonth?today.getDate():dim;
+
+  // 월 레이블
+  const lbl=document.getElementById('monthly-month-lbl');
+  if(lbl)lbl.textContent=year+'년 '+(month+1)+'월';
+
+  // 해당 월 데이터 수집
+  let recordDays=0,diaryDays=0,hDone=0,hTotal=0;
+  let studyMin=0,exMin=0,studyDays=0,exDays=0;
+  const weights=[];
+  const moodCounts=[0,0,0,0,0];
+  for(let d=1;d<=lastDay;d++){
+    const ds=year+'-'+pad(month+1)+'-'+pad(d);
+    const dd=all[ds]||{};
+    const hasAny=!!(dd.diary||dd.diaryTitle||dd.weight||(dd.habits&&Object.keys(dd.habits).length)||(dd.study&&dd.study.length)||(dd.exercises&&dd.exercises.length)||dd.mood);
+    if(hasAny)recordDays++;
+    if(dd.diary||dd.diaryTitle)diaryDays++;
+    habits.forEach(h=>{hTotal++;if(dd.habits&&dd.habits[h])hDone++;});
+    if(dd.weight)weights.push({d,v:dd.weight});
+    if(dd.mood&&dd.mood>=1&&dd.mood<=5)moodCounts[dd.mood-1]++;
+    if(dd.study&&dd.study.length){const m=dd.study.reduce((s,x)=>s+(x.dur||0),0);studyMin+=m;if(m>0)studyDays++;}
+    if(dd.exercises&&dd.exercises.length){const m=dd.exercises.reduce((s,x)=>s+(x.dur||0),0);exMin+=m;if(m>0)exDays++;}
+  }
+  const habitPct=hTotal?Math.round(hDone/hTotal*100):0;
+
+  // 체중 변화
+  const wFirst=weights.length?weights[0].v:null;
+  const wLast=weights.length?weights[weights.length-1].v:null;
+  const wDiff=wFirst&&wLast?(wLast-wFirst).toFixed(1):null;
+
+  // ── 요약 카드
+  const sr=document.getElementById('monthly-summary-row');
+  if(sr)sr.innerHTML=[
+    {l:'기록일수',v:recordDays,u:'일',s:lastDay+'일 중'},
+    {l:'습관 달성률',v:habitPct,u:'%',s:hDone+'/'+hTotal+' 완료'},
+    {l:'일기 작성',v:diaryDays,u:'일',s:lastDay+'일 중'},
+    {l:'체중 변화',v:wDiff!==null?(Math.abs(wDiff)):'--',u:wDiff!==null?'kg':'',badge:wDiff!==null?wDiff:null,s:wDiff===null?'기록 없음':''},
+  ].map(s=>{
+    let badgeHtml='';
+    if(s.badge!==null&&s.badge!==undefined){
+      const n=parseFloat(s.badge);
+      if(!isNaN(n)){
+        const cls=n<=0?'dn':'up';
+        const arrow=n<=0?'▼':'▲';
+        const label=n<=0?'감량':'증가';
+        badgeHtml=`<div class="monthly-badge ${cls}">${arrow} ${label}</div>`;
+      }
+    }
+    return`<div class="monthly-sum-card">
+      <div class="monthly-sum-lbl">${s.l}</div>
+      <div class="monthly-sum-val">${s.v}<span class="monthly-sum-unit">${s.u}</span></div>
+      ${s.s?`<div class="monthly-sum-sub">${s.s}</div>`:''}
+      ${badgeHtml}
+    </div>`;
+  }).join('');
+
+  // ── 습관 달성률 바
+  const hb=document.getElementById('monthly-habit-bars');
+  if(hb){
+    if(!habits.length){hb.innerHTML='<div class="m-empty">설정에서 습관을 추가하세요</div>';}
+    else{
+      hb.innerHTML=habits.map(h=>{
+        let cnt=0;
+        for(let d=1;d<=lastDay;d++){const ds=year+'-'+pad(month+1)+'-'+pad(d);const dd=all[ds]||{};if(dd.habits&&dd.habits[h])cnt++;}
+        const p=Math.round(cnt/lastDay*100);
+        return`<div class="m-habit-row">
+          <span class="m-habit-name">${h}</span>
+          <div class="m-habit-track"><div class="m-habit-fill" style="width:${p}%"></div></div>
+          <span class="m-habit-pct">${p}%</span>
+        </div>`;
+      }).join('');
+    }
+  }
+
+  // ── 기분 분포
+  const MOOD_LABELS=['울적함','보통','차분함','아주 좋음','활기참'];
+  const MOODS_EMOJIS=['😔','😐','🙂','😊','😄'];
+  const maxMood=Math.max(...moodCounts,1);
+  const mg=document.getElementById('monthly-mood-grid');
+  if(mg){
+    mg.innerHTML=moodCounts.map((cnt,i)=>{
+      const barW=Math.round(cnt/maxMood*100);
+      return`<div class="m-mood-item">
+        <div class="m-mood-emoji">${MOODS_EMOJIS[i]}</div>
+        <div class="m-mood-cnt">${cnt}</div>
+        <div class="m-mood-lbl">${MOOD_LABELS[i]}</div>
+        <div class="m-mood-bar-wrap"><div class="m-mood-bar" style="width:${barW}%"></div></div>
+      </div>`;
+    }).join('');
+  }
+
+  // ── 체중 변화 통계
+  const ws=document.getElementById('monthly-weight-stats');
+  if(ws){
+    const wVals=weights.map(w=>w.v);
+    const wMin=wVals.length?Math.min(...wVals):null;
+    const wMax=wVals.length?Math.max(...wVals):null;
+    ws.innerHTML=[
+      {l:'월초',v:wFirst?wFirst+'kg':'--'},
+      {l:'월말',v:wLast?wLast+'kg':'--'},
+      {l:'최저',v:wMin?wMin+'kg':'--'},
+      {l:'최고',v:wMax?wMax+'kg':'--'},
+    ].map(s=>`<div class="m-w-stat"><div class="m-w-stat-lbl">${s.l}</div><div class="m-w-stat-val">${s.v}</div></div>`).join('');
+  }
+
+  // ── 체중 미니 차트 SVG
+  const wsvg=document.getElementById('monthly-weight-svg');
+  if(wsvg){
+    const wArr=[];
+    for(let d=1;d<=lastDay;d++){
+      const ds=year+'-'+pad(month+1)+'-'+pad(d);
+      wArr.push((all[ds]||{}).weight||null);
+    }
+    const nonNull=wArr.filter(v=>v!=null);
+    if(nonNull.length>=2){
+      const mn=Math.min(...nonNull)-0.5,mx=Math.max(...nonNull)+0.5;
+      const W=300,H=70;
+      const pts=wArr.map((v,i)=>v!=null?`${(i/(wArr.length-1)*W).toFixed(1)},${(H-(v-mn)/(mx-mn)*(H-6)+3).toFixed(1)}`:null);
+      let path='',inSeg=false;
+      pts.forEach(p=>{if(p){if(!inSeg){path+=`M${p} `;inSeg=true;}else{path+=`L${p} `;}}else{inSeg=false;}});
+      const firstPt=pts.find(p=>p),lastPt=[...pts].reverse().find(p=>p);
+      const area=path+`L${lastPt.split(',')[0]},${H} L${firstPt.split(',')[0]},${H} Z`;
+      wsvg.innerHTML=`<defs><linearGradient id="mwg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--accent)" stop-opacity="0.18"/><stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/></linearGradient></defs><path d="${area}" fill="url(#mwg)"/><path d="${path}" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+    }else{wsvg.innerHTML='';}
+  }
+
+  // ── 공부·운동 시간
+  const tg=document.getElementById('monthly-time-grid');
+  if(tg){
+    const fmtTime=m=>{if(!m)return'0분';if(m<60)return m+'분';return Math.floor(m/60)+'시간'+(m%60?(' '+m%60+'분'):'');};
+    tg.innerHTML=[
+      {icon:'📚',label:'공부',val:fmtTime(studyMin),min:studyMin,days:studyDays},
+      {icon:'💪',label:'운동',val:fmtTime(exMin),min:exMin,days:exDays},
+    ].map(t=>`<div class="m-time-card">
+      <div class="m-time-icon">${t.icon}</div>
+      <div class="m-time-val">${t.val}</div>
+      ${t.min>=60?`<div style="font-size:10px;color:var(--text3);margin-top:1px;">${t.min}분</div>`:''}
+      <div class="m-time-sub">${t.days}일 기록</div>
+    </div>`).join('');
+  }
+
+  // ── 일기 기록 현황
+  const bar=document.getElementById('monthly-diary-bar');
+  const barLbl=document.getElementById('monthly-diary-lbl');
+  if(bar)bar.style.width=(lastDay?Math.round(diaryDays/lastDay*100):0)+'%';
+  if(barLbl)barLbl.textContent=diaryDays+' / '+lastDay+'일';
+
+  const dd2=document.getElementById('monthly-day-dots');
+  if(dd2){
+    let dots='';
+    for(let d=1;d<=dim;d++){
+      const ds=year+'-'+pad(month+1)+'-'+pad(d);
+      const dayData=all[ds]||{};
+      const hasDiary=!!(dayData.diary||dayData.diaryTitle);
+      const isToday=isCurrentMonth&&d===today.getDate();
+      const isFuture=isCurrentMonth&&d>today.getDate();
+      let cls='m-dot-off';
+      if(hasDiary)cls='m-dot-on';
+      let style='';
+      if(isToday&&!hasDiary)style=' style="outline:2px solid var(--accent);outline-offset:-2px;"';
+      if(isFuture)style=' style="opacity:.3;"';
+      dots+=`<div class="m-day-dot ${cls}"${style}>${d}</div>`;
+    }
+    dd2.innerHTML=dots;
+  }
+}
+
+
 function renderHabitSettings(){
   const habits=getHabits();
   const el=document.getElementById('habit-edit-list');if(!el)return;
