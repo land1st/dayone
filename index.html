@@ -1688,13 +1688,13 @@ function renderMiniCal(){
 function mcMove(dir){mcMonth+=dir;if(mcMonth>11){mcMonth=0;mcYear++;}else if(mcMonth<0){mcMonth=11;mcYear--;}renderMiniCal();}
 function mcClick(str){curDateStr=str;goPage('dashboard');loadDay(str);}
 
-// ── TODAY WIDGET (from yesterday) ──
+// ── TODAY WIDGET ──
 function getYesterday(){
   const d=new Date();d.setDate(d.getDate()-1);
   return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
 }
 function renderTodayWidget(){
-  const yStr=getYesterday();
+  const yStr=todayStr();
   const d=getDayData(yStr);
   const todos=d.todos||[];
   ['tw-list','dtw-list'].forEach((lid,idx)=>{
@@ -1713,15 +1713,15 @@ function renderTodayWidget(){
   });
 }
 function toggleTW(i){
-  const ys=getYesterday();const d=getDayData(ys);
+  const ys=todayStr();const d=getDayData(ys);
   if(d.todos&&d.todos[i]){d.todos[i].done=!d.todos[i].done;saveDayData(ys,d);renderTodayWidget();}
 }
 
 function addTodayTodo(){
   const inp=document.getElementById('tw-add-inp');
   const v=inp?.value?.trim();if(!v)return;
-  // 오늘 할 일은 어제 데이터에 저장 (어제 내일할일 = 오늘 할일)
-  const ys=getYesterday();const d=getDayData(ys);
+  // 오늘 할 일은 오늘 데이터에 저장
+  const ys=todayStr();const d=getDayData(ys);
   if(!d.todos)d.todos=[];
   d.todos.push({text:v,done:false});
   saveDayData(ys,d);
@@ -2886,9 +2886,25 @@ function loadGoogleAPI(){
       });
       gsiReady=true;
       checkGoogleReady();
-      // 저장된 토큰 복원
+      // 저장된 토큰 복원 — 유효성 검증 후 UI 업데이트
       const saved=localStorage.getItem('g_token');
-      if(saved){gAccessToken=saved;updateSyncUI(true);}
+      if(saved){
+        fetch('https://www.googleapis.com/oauth2/v3/tokeninfo?access_token='+saved)
+          .then(r=>r.json())
+          .then(info=>{
+            if(info.error){
+              localStorage.removeItem('g_token');
+              updateSyncUI(false);
+            } else {
+              gAccessToken=saved;
+              updateSyncUI(true);
+            }
+          })
+          .catch(()=>{
+            localStorage.removeItem('g_token');
+            updateSyncUI(false);
+          });
+      }
     }
   },300);
 }
