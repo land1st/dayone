@@ -287,6 +287,8 @@ body.dark .hero-card{box-shadow:0 8px 24px rgba(0,0,0,.4);}
 #card-meal{order:5;}
 #card-weight{order:6;}
 #card-todo{order:7;display:none;}
+#card-todo-today{order:7;}
+#card-todo-tomorrow{order:8;}
 
 /* 공부+체중 min-height */
 #card-study,#card-weight{min-height:140px;display:flex;flex-direction:column;}
@@ -926,18 +928,6 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
       <div class="mini-cal-grid" id="mc-grid"></div>
     </div>
 
-    <!-- 오늘 할 일 — 다른 위젯과 동일한 패딩/스타일 -->
-    <div class="clock-widget" style="flex-direction:column;align-items:stretch;gap:0;padding:10px 12px;">
-      <div class="tw-header" style="margin-bottom:7px;">
-        <span class="tw-title">오늘 할 일</span>
-        <span class="tw-count" id="tw-count"></span>
-      </div>
-      <div id="tw-list"></div>
-      <div style="display:flex;gap:6px;margin-top:8px;align-items:center;">
-        <button class="add-btn" style="font-size:13px;padding:5px 10px;flex-shrink:0;border-radius:7px;" onclick="addTodayTodo()">+</button>
-        <input class="todo-inp" id="tw-add-inp" type="text" placeholder="오늘 할 일 추가..." style="font-size:12px;padding:5px 8px;flex:1;min-width:0;" onkeydown="if(event.key==='Enter')addTodayTodo()">
-      </div>
-    </div>
   </div>
 
   <div class="dark-toggle-wrap">
@@ -986,18 +976,6 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
       <div class="nav-item" id="dnav-settings" onclick="goPage('settings');closeDrawer();"><div class="nav-dot"></div>설정</div>
     </div>
     <div class="sidebar-widgets" style="margin-top:8px;">
-      <!-- 오늘 할 일 -->
-      <div class="clock-widget" style="flex-direction:column;align-items:stretch;gap:0;padding:10px 12px;">
-        <div class="tw-header" style="margin-bottom:7px;">
-          <span class="tw-title">오늘 할 일</span>
-          <span class="tw-count" id="dtw-count"></span>
-        </div>
-        <div id="dtw-list"></div>
-        <div style="display:flex;gap:6px;margin-top:8px;align-items:center;">
-          <button class="add-btn" style="font-size:13px;padding:5px 10px;flex-shrink:0;border-radius:7px;" onclick="addTodayTodo()">+</button>
-          <input class="todo-inp" type="text" placeholder="오늘 할 일 추가..." style="font-size:12px;padding:5px 8px;flex:1;min-width:0;" onkeydown="if(event.key==='Enter')addTodayTodo()">
-        </div>
-      </div>
       <!-- 시계 -->
       <div class="clock-widget">
         <div class="analog-clock">
@@ -1176,6 +1154,48 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
               <button class="add-btn" onclick="saveWeight()">저장</button>
             </div>
 
+          </div>
+        </div>
+
+        <!-- 오늘 할 일 -->
+        <div class="do-card pc-col-1 mob-half" id="card-todo-today" style="order:7;">
+          <div class="do-card-head">
+            <div class="do-card-left">
+              <span class="do-eyebrow">오늘 할 일</span>
+              <span class="badge badge-gray" id="todo-today-badge"></span>
+            </div>
+            <div style="display:flex;gap:6px;">
+              <button class="collapse-btn" onclick="toggleCard('card-todo-today')">▾</button>
+            </div>
+          </div>
+          <div class="card-body" id="cb-todo-today">
+            <div id="todo-today-date" style="font-size:11px;color:var(--text3);margin-bottom:6px;"></div>
+            <div class="todo-list" id="todo-today-list"></div>
+            <div class="todo-inp-row">
+              <input class="todo-inp" id="todo-today-inp" type="text" placeholder="할 일 추가..." onkeydown="if(event.key==='Enter')addTodoToday()">
+              <button class="add-btn" onclick="addTodoToday()">+</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 내일 할 일 -->
+        <div class="do-card pc-col-1 mob-half" id="card-todo-tomorrow" style="order:8;">
+          <div class="do-card-head">
+            <div class="do-card-left">
+              <span class="do-eyebrow">내일 할 일</span>
+              <span class="badge badge-gray" id="todo-tomorrow-badge"></span>
+            </div>
+            <div style="display:flex;gap:6px;">
+              <button class="collapse-btn" onclick="toggleCard('card-todo-tomorrow')">▾</button>
+            </div>
+          </div>
+          <div class="card-body" id="cb-todo-tomorrow">
+            <div id="todo-tomorrow-date" style="font-size:11px;color:var(--text3);margin-bottom:6px;"></div>
+            <div class="todo-list" id="todo-tomorrow-list"></div>
+            <div class="todo-inp-row">
+              <input class="todo-inp" id="todo-tomorrow-inp" type="text" placeholder="할 일 추가..." onkeydown="if(event.key==='Enter')addTodoTomorrow()">
+              <button class="add-btn" onclick="addTodoTomorrow()">+</button>
+            </div>
           </div>
         </div>
 
@@ -1688,47 +1708,81 @@ function renderMiniCal(){
 function mcMove(dir){mcMonth+=dir;if(mcMonth>11){mcMonth=0;mcYear++;}else if(mcMonth<0){mcMonth=11;mcYear--;}renderMiniCal();}
 function mcClick(str){curDateStr=str;goPage('dashboard');loadDay(str);}
 
-// ── TODAY WIDGET ──
+// ── TODAY / TOMORROW TODO CARDS ──
 function getYesterday(){
   const d=new Date();d.setDate(d.getDate()-1);
   return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
 }
-function renderTodayWidget(){
-  const yStr=todayStr();
-  const d=getDayData(yStr);
-  const todos=d.todos||[];
-  ['tw-list','dtw-list'].forEach((lid,idx)=>{
-    const cid=idx===0?'tw-count':'dtw-count';
-    const el=document.getElementById(lid);
-    const cel=document.getElementById(cid);
-    if(!el)return;
-    if(!todos.length){el.innerHTML='';if(cel)cel.textContent='';return;}
-    const done=todos.filter(t=>t.done).length;
-    if(cel)cel.textContent=done+'/'+todos.length;
-    el.innerHTML=todos.map((t,i)=>`
-      <div class="tw-row">
-        <div class="tw-chk ${t.done?'on':''}" onclick="toggleTW(${i})">${t.done?'✓':''}</div>
-        <span class="tw-text ${t.done?'done':''}">${t.text}</span>
+function getTomorrowStr(base){
+  const d=new Date(base+'T00:00:00');d.setDate(d.getDate()+1);
+  return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+}
+function renderTodayWidget(){}
+function renderTodoTodayCard(){
+  const todos=(getDayData(curDateStr).todos)||[];
+  const dEl=document.getElementById('todo-today-date');
+  const lEl=document.getElementById('todo-today-list');
+  const bEl=document.getElementById('todo-today-badge');
+  if(dEl)dEl.textContent=formatDate(curDateStr);
+  if(bEl){const done=todos.filter(t=>t.done).length;bEl.textContent=todos.length?done+'/'+todos.length:'';}
+  if(lEl){
+    if(!todos.length){lEl.innerHTML='<div class="empty">할 일이 없습니다</div>';return;}
+    lEl.innerHTML=todos.map((t,i)=>`
+      <div class="todo-row">
+        <div class="todo-chk ${t.done?'on':''}" onclick="toggleTodoToday(${i})">${t.done?'✓':''}</div>
+        <span class="todo-text ${t.done?'done':''}">${t.text}</span>
+        <button class="todo-del" onclick="delTodoToday(${i})">×</button>
       </div>`).join('');
-  });
+  }
+  renderTodoTomorrowCard();
 }
-function toggleTW(i){
-  const ys=todayStr();const d=getDayData(ys);
-  if(d.todos&&d.todos[i]){d.todos[i].done=!d.todos[i].done;saveDayData(ys,d);renderTodayWidget();}
+function renderTodoTomorrowCard(){
+  const ts=getTomorrowStr(curDateStr);
+  const todos=(getDayData(ts).todos)||[];
+  const dEl=document.getElementById('todo-tomorrow-date');
+  const lEl=document.getElementById('todo-tomorrow-list');
+  const bEl=document.getElementById('todo-tomorrow-badge');
+  if(dEl)dEl.textContent=formatDate(ts);
+  if(bEl)bEl.textContent=todos.length||'';
+  if(lEl){
+    if(!todos.length){lEl.innerHTML='<div class="empty">할 일이 없습니다</div>';return;}
+    lEl.innerHTML=todos.map((t,i)=>`
+      <div class="todo-row">
+        <div class="todo-chk ${t.done?'on':''}" onclick="toggleTodoTomorrow(${i})">${t.done?'✓':''}</div>
+        <span class="todo-text ${t.done?'done':''}">${t.text}</span>
+        <button class="todo-del" onclick="delTodoTomorrow(${i})">×</button>
+      </div>`).join('');
+  }
 }
-
-function addTodayTodo(){
-  const inp=document.getElementById('tw-add-inp');
-  const v=inp?.value?.trim();if(!v)return;
-  // 오늘 할 일은 오늘 데이터에 저장
-  const ys=todayStr();const d=getDayData(ys);
-  if(!d.todos)d.todos=[];
-  d.todos.push({text:v,done:false});
-  saveDayData(ys,d);
-  inp.value='';
-  renderTodayWidget();
-  toast('오늘 할 일 추가');
+function toggleTodoToday(i){
+  const d=getDayData(curDateStr);
+  if(d.todos&&d.todos[i]){d.todos[i].done=!d.todos[i].done;saveDayData(curDateStr,d);renderTodoTodayCard();}
 }
+function delTodoToday(i){
+  const d=getDayData(curDateStr);if(d.todos)d.todos.splice(i,1);
+  saveDayData(curDateStr,d);renderTodoTodayCard();
+}
+function addTodoToday(){
+  const inp=document.getElementById('todo-today-inp');const v=inp?.value?.trim();if(!v)return;
+  const d=getDayData(curDateStr);if(!d.todos)d.todos=[];
+  d.todos.push({text:v,done:false});saveDayData(curDateStr,d);
+  inp.value='';renderTodoTodayCard();
+}
+function toggleTodoTomorrow(i){
+  const ts=getTomorrowStr(curDateStr);const d=getDayData(ts);
+  if(d.todos&&d.todos[i]){d.todos[i].done=!d.todos[i].done;saveDayData(ts,d);renderTodoTomorrowCard();}
+}
+function delTodoTomorrow(i){
+  const ts=getTomorrowStr(curDateStr);const d=getDayData(ts);if(d.todos)d.todos.splice(i,1);
+  saveDayData(ts,d);renderTodoTomorrowCard();
+}
+function addTodoTomorrow(){
+  const inp=document.getElementById('todo-tomorrow-inp');const v=inp?.value?.trim();if(!v)return;
+  const ts=getTomorrowStr(curDateStr);const d=getDayData(ts);if(!d.todos)d.todos=[];
+  d.todos.push({text:v,done:false});saveDayData(ts,d);
+  inp.value='';renderTodoTomorrowCard();
+}
+function addTodayTodo(){}
 
 // ── PAGE NAV ──
 function goPage(page){
@@ -1828,6 +1882,8 @@ function loadDay(str){
   renderTodoList(d.todos||[]);
   // study preview
   renderStudyPreview(d.study||[]);
+  // 오늘/내일 할 일 카드
+  renderTodoTodayCard();
 }
 
 function saveAll(){
@@ -2886,25 +2942,9 @@ function loadGoogleAPI(){
       });
       gsiReady=true;
       checkGoogleReady();
-      // 저장된 토큰 복원 — 유효성 검증 후 UI 업데이트
+      // 저장된 토큰 복원
       const saved=localStorage.getItem('g_token');
-      if(saved){
-        fetch('https://www.googleapis.com/oauth2/v3/tokeninfo?access_token='+saved)
-          .then(r=>r.json())
-          .then(info=>{
-            if(info.error){
-              localStorage.removeItem('g_token');
-              updateSyncUI(false);
-            } else {
-              gAccessToken=saved;
-              updateSyncUI(true);
-            }
-          })
-          .catch(()=>{
-            localStorage.removeItem('g_token');
-            updateSyncUI(false);
-          });
-      }
+      if(saved){gAccessToken=saved;updateSyncUI(true);}
     }
   },300);
 }
