@@ -316,7 +316,7 @@ body.dark .hero-card{box-shadow:0 8px 24px rgba(0,0,0,.4);}
 .badge-green{background:var(--green-bg);color:var(--green);}
 .badge-blue{background:var(--blue-bg);color:var(--blue);}
 .badge-gray{background:var(--surface2);color:var(--text3);border:1px solid var(--border);}
-#todo-today-badge,#todo-tomorrow-badge{min-width:36px;text-align:center;display:inline-block;}
+#todo-today-badge,#todo-tomorrow-badge{min-width:36px;min-height:20px;text-align:center;display:inline-block;vertical-align:middle;}
 #cb-todo-today,#cb-todo-tomorrow{padding-bottom:10px;}
 
 /* habit */
@@ -1726,7 +1726,7 @@ function renderTodoTodayCard(){
   const lEl=document.getElementById('todo-today-list');
   const bEl=document.getElementById('todo-today-badge');
   if(dEl)dEl.textContent=formatDate(curDateStr);
-  if(bEl){const done=todos.filter(t=>t.done).length;bEl.textContent=todos.length?done+'/'+todos.length:'';}
+  if(bEl){const done=todos.filter(t=>t.done).length;bEl.textContent=todos.length?done+'/'+todos.length:'\u00A0';}
   if(lEl){
     if(!todos.length){lEl.innerHTML='<div class="empty">할 일이 없습니다</div>';return;}
     lEl.innerHTML=todos.map((t,i)=>`
@@ -1745,7 +1745,7 @@ function renderTodoTomorrowCard(){
   const lEl=document.getElementById('todo-tomorrow-list');
   const bEl=document.getElementById('todo-tomorrow-badge');
   if(dEl)dEl.textContent=formatDate(ts);
-  if(bEl)bEl.textContent=todos.length||'';
+  if(bEl)bEl.textContent=todos.length?todos.length:'\u00A0';
   if(lEl){
     if(!todos.length){lEl.innerHTML='<div class="empty">할 일이 없습니다</div>';return;}
     lEl.innerHTML=todos.map((t,i)=>`
