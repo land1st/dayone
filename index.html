@@ -2944,9 +2944,25 @@ function loadGoogleAPI(){
       });
       gsiReady=true;
       checkGoogleReady();
-      // 저장된 토큰 복원
+      // 저장된 토큰 복원 — 유효성 검증 후 UI 업데이트
       const saved=localStorage.getItem('g_token');
-      if(saved){gAccessToken=saved;updateSyncUI(true);}
+      if(saved){
+        fetch('https://www.googleapis.com/oauth2/v3/tokeninfo?access_token='+saved)
+          .then(r=>r.json())
+          .then(info=>{
+            if(info.error){
+              localStorage.removeItem('g_token');
+              updateSyncUI(false);
+            } else {
+              gAccessToken=saved;
+              updateSyncUI(true);
+            }
+          })
+          .catch(()=>{
+            localStorage.removeItem('g_token');
+            updateSyncUI(false);
+          });
+      }
     }
   },300);
 }
