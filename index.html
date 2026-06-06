@@ -163,16 +163,28 @@ body.dark .toggle-thumb{transform:translateX(13px);}
 .mood-btn:hover{opacity:.75;transform:scale(1.1);}
 .mood-btn.on{opacity:1;}
 
-/* ────── MOBILE TOPBAR (iOS Large Title 스타일) ────── */
-.mobile-topbar{display:none;flex-direction:column;flex-shrink:0;background:#EFEFF4;}
-.mob-large-header{padding:8px 20px 14px;display:flex;align-items:flex-end;justify-content:space-between;}
-.mob-header-left .mob-date-kicker{font-size:13.5px;font-weight:650;color:#6667AB;letter-spacing:.2px;margin-bottom:3px;}
-.mob-header-left .mob-large-title{font-size:34px;font-weight:800;letter-spacing:-.8px;color:#1A1A1C;line-height:1;}
-body.dark .mob-header-left .mob-large-title{color:#F4F2EE;}
-body.dark .mobile-topbar{background:#0F0F11;}
-.mob-avatar-btn{width:40px;height:40px;border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(40,40,70,.1);border:none;display:flex;align-items:center;justify-content:center;font-size:21px;cursor:pointer;overflow:hidden;flex-shrink:0;}
-.mob-avatar-btn img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:none;}
-/* 기존 drawer 관련 — PC에서만 사용, 모바일은 숨김 */
+/* ────── MOBILE TOPBAR ────── */
+.mobile-topbar{display:none;height:50px;background:var(--sidebar-bg);border-bottom:1px solid var(--border);padding:0 16px;align-items:center;justify-content:space-between;flex-shrink:0;}
+.mob-hamburger{background:none;border:none;cursor:pointer;padding:6px;display:flex;flex-direction:column;gap:4px;}
+.mob-hamburger span{display:block;width:18px;height:1.5px;background:var(--text2);border-radius:1px;}
+.mob-logo{font-size:16px;font-weight:700;color:var(--accent);letter-spacing:.06em;cursor:pointer;}
+.mob-profile{cursor:pointer;}
+.mob-profile-av{width:30px;height:30px;border-radius:50%;background:var(--accent-light);border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:15px;overflow:hidden;}
+.mob-profile-av img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.mob-sync-btn{height:28px;padding:0 10px;border-radius:7px;border:1px solid var(--border);background:var(--surface2);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);font-size:11px;font-weight:700;letter-spacing:.05em;transition:all .12s;flex-shrink:0;font-family:inherit;}
+.mob-sync-btn:hover{border-color:var(--accent);color:var(--accent);}
+.mob-sync-btn.connected{border-color:var(--green);color:var(--green);background:var(--green-bg);}
+.mob-sync-btn.syncing svg{animation:spin 1s linear infinite;}
+
+/* ────── MOBILE BOTTOM TAB ────── */
+.mobile-tab-bar{display:none;height:60px;background:var(--card);border-top:1px solid var(--border);flex-shrink:0;align-items:center;justify-content:space-around;padding:0 8px 4px;}
+.mob-tab{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 12px;cursor:pointer;flex:1;}
+.mob-tab svg{width:20px;height:20px;stroke:var(--text3);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:stroke .12s;}
+.mob-tab span{font-size:10px;color:var(--text3);font-weight:500;transition:color .12s;}
+.mob-tab.active svg{stroke:var(--accent);}
+.mob-tab.active span{color:var(--accent);font-weight:600;}
+
+/* ────── DRAWER ────── */
 .drawer-overlay{display:none;position:fixed;inset:0;z-index:200;}
 .drawer-overlay.open{display:block;}
 .drawer-dim{position:absolute;inset:0;background:rgba(0,0,0,.45);}
@@ -180,26 +192,6 @@ body.dark .mobile-topbar{background:#0F0F11;}
 .drawer-overlay.open .drawer-panel{transform:translateX(0);}
 .drawer-panel::-webkit-scrollbar{width:3px;}
 .drawer-panel::-webkit-scrollbar-thumb{background:var(--border2);}
-
-/* ────── MOBILE BOTTOM TAB (iOS Glass 탭바) ────── */
-.mobile-tab-bar{display:none;position:relative;height:83px;flex-shrink:0;padding-bottom:20px;align-items:flex-start;}
-.mob-tabbar-glass{position:absolute;inset:0;backdrop-filter:blur(22px) saturate(180%);-webkit-backdrop-filter:blur(22px) saturate(180%);background:rgba(248,248,252,.82);border-top:.5px solid rgba(60,60,67,.14);}
-body.dark .mob-tabbar-glass{background:rgba(24,24,28,.88);}
-.mob-tabbar-inner{position:relative;display:flex;width:100%;padding:9px 6px 0;}
-.mob-tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;background:none;border:none;font-family:inherit;}
-.mob-tab svg{width:26px;height:26px;stroke:rgba(60,60,67,.45);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;transition:stroke .12s;}
-.mob-tab span{font-size:10.5px;color:rgba(60,60,67,.45);font-weight:550;letter-spacing:-.1px;transition:color .12s;}
-.mob-tab.active svg{stroke:#6667AB;stroke-width:2.1;}
-.mob-tab.active span{color:#6667AB;font-weight:700;}
-body.dark .mob-tab svg{stroke:rgba(235,235,245,.45);}
-body.dark .mob-tab span{color:rgba(235,235,245,.45);}
-body.dark .mob-tab.active svg{stroke:#9C9DD3;}
-body.dark .mob-tab.active span{color:#9C9DD3;}
-
-/* ────── MOBILE FAB ────── */
-.mob-fab{display:none;position:fixed;right:18px;bottom:100px;z-index:45;width:56px;height:56px;border-radius:19px;background:linear-gradient(150deg,#6667AB,#54549A);box-shadow:0 8px 20px rgba(102,103,171,.42),inset 0 1px 1px rgba(255,255,255,.25);border:none;align-items:center;justify-content:center;cursor:pointer;transition:transform .18s cubic-bezier(.34,1.4,.5,1);-webkit-tap-highlight-color:transparent;}
-.mob-fab:active{transform:scale(.92);}
-.mob-fab svg{width:28px;height:28px;stroke:#fff;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;}
 
 /* ────── MAIN ────── */
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
@@ -709,144 +701,45 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   .ob-footer-inner{width:420px;}
 }
 @media(max-width:680px){
-  /* ── 레이아웃 ── */
   .sidebar{display:none;}
-  .mobile-topbar{display:flex;flex-direction:column;}
+  .mobile-topbar{display:flex;}
   .mobile-tab-bar{display:flex;}
-  .mob-fab{display:flex;}
-  body{flex-direction:column;background:#EFEFF4;}
-  body.dark{background:#0F0F11;}
-  .main{overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch;background:#EFEFF4;}
-  body.dark .main{background:#0F0F11;}
+  body{flex-direction:column;}
+  .main{overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch;}
   .topbar{display:none;}
+  .content{overflow:visible;padding:14px 18px 24px;}
+  .dash-header{margin-bottom:20px;}
+  .dash-date-lbl{font-size:12px;margin-bottom:6px;}
+  .dash-title{font-size:28px;font-weight:800;}
 
-  /* ── 콘텐츠 영역 ── */
-  .content{overflow:visible;padding:0 0 24px;}
-  .dash-header{display:none;}  /* Large Title로 대체 */
-
-  /* ── 히어로 카드 (iOS 그라데이션 스타일) ── */
-  .hero-card{
-    margin:0 16px 22px;
-    border-radius:26px;
-    padding:20px 18px 16px;
-    background:linear-gradient(150deg,#6667AB 0%,#54549A 62%,#46467F 100%);
-    box-shadow:0 10px 26px rgba(102,103,171,.34);
-    position:relative;overflow:hidden;
-  }
-  .hero-card::before{content:'';position:absolute;right:-50px;top:-50px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.08);pointer-events:none;}
-  .hero-card::after{content:'';position:absolute;left:-30px;bottom:-60px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.05);pointer-events:none;}
-  .hero-inner{display:flex;align-items:center;gap:16px;position:relative;}
-  .hero-ring-wrap{order:-1;flex-shrink:0;}
-  .hero-ring-svg{transform:rotate(-90deg);}
-  .ring-track{stroke:rgba(255,255,255,.22);}
-  .ring-fill{stroke:#fff;stroke-linecap:round;transition:stroke-dashoffset .6s cubic-bezier(.34,1.3,.5,1);}
-  .hero-pct{color:#fff;font-size:18px;font-weight:800;letter-spacing:-.5px;}
-  .hero-eyebrow{font-size:12.5px;font-weight:600;color:rgba(255,255,255,.7);letter-spacing:.4px;text-transform:uppercase;margin-bottom:4px;}
-  .hero-metric{font-size:40px;font-weight:820;color:#fff;letter-spacing:-1.5px;line-height:1;}
-  .hero-metric-sub{font-size:19px;font-weight:650;color:rgba(255,255,255,.6);}
-  .hero-sub{font-size:13px;font-weight:550;color:rgba(255,255,255,.8);margin-top:5px;}
-  .hero-tiles{display:flex;gap:8px;margin-top:16px;position:relative;}
-  .hero-tile{flex:1;background:rgba(255,255,255,.14);border-radius:15px;padding:11px 8px 10px;display:flex;flex-direction:column;align-items:center;gap:5px;border:.5px solid rgba(255,255,255,.18);cursor:pointer;}
-  .hero-tile-icon{display:flex;align-items:center;justify-content:center;}
-  .hero-tile-val{font-size:17px;font-weight:750;color:#fff;letter-spacing:-.3px;}
-  .hero-tile-lbl{font-size:11px;font-weight:500;color:rgba(255,255,255,.62);}
-
-  /* ── 섹션 라벨 ── */
-  .mob-section-label{display:flex;align-items:flex-end;justify-content:space-between;padding:0 4px 7px;margin:0 20px;margin-top:22px;}
-  .mob-section-label span{font-size:13px;font-weight:600;letter-spacing:.2px;color:rgba(60,60,67,.62);text-transform:uppercase;}
-  .mob-section-label .mob-sec-action{font-size:13px;font-weight:650;color:#6667AB;text-transform:none;letter-spacing:0;}
-
-  /* ── iOS GroupCard 스타일 (do-card) ── */
-  .do-card{
-    background:#fff;
-    border-radius:22px;
-    margin:0 16px;
-    box-shadow:0 1px 1px rgba(0,0,0,.03),0 6px 18px rgba(40,40,70,.05);
-    overflow:hidden;
-    padding:0;
-    margin-bottom:0;
-  }
-  body.dark .do-card{background:#1B1C1F;}
-
-  /* 카드 헤더 숨김 (섹션 라벨로 대체) */
-  .do-card-head{display:none;}
-
-  /* card-body 안 스타일 리셋 */
-  .card-body{padding:0;}
-
-  /* ── 그리드: 1단 ── */
-  .dash-grid{grid-template-columns:1fr;gap:0;align-items:start;background:transparent;}
+  /* 모바일 그리드: 1단 */
+  .dash-grid{grid-template-columns:1fr;gap:10px;align-items:start;}
   .pc-full{grid-column:auto;}
-  #card-habit{order:1;grid-column:1/-1;margin-bottom:22px;}
-  #card-diary{order:2;grid-column:1/-1;margin-bottom:22px;}
-  #card-study{order:3;grid-column:1/-1;margin-bottom:22px;}
-  #card-exercise{order:4;grid-column:1/-1;margin-bottom:22px;}
-  #card-meal{order:5;grid-column:1/-1;margin-bottom:22px;}
-  #card-weight{order:6;grid-column:1/-1;margin-bottom:22px;}
-  #card-todo,#card-todo-today{display:none;}
 
-  /* ── 습관 리스트 행 (iOS 스타일) ── */
-  .habit-row{display:flex;align-items:center;gap:13px;padding:13px 16px;cursor:pointer;position:relative;user-select:none;-webkit-tap-highlight-color:transparent;}
-  .habit-emoji{width:34px;height:34px;border-radius:10px;background:#ECECF7;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:18px;}
-  .habit-info{flex:1;min-width:0;}
-  .habit-name{font-size:16px;font-weight:550;letter-spacing:-.3px;color:#1A1A1C;transition:color .2s;}
-  body.dark .habit-name{color:#F4F2EE;}
-  .habit-name.done{color:rgba(60,60,67,.34);text-decoration:line-through;text-decoration-color:rgba(60,60,67,.34);}
-  .habit-streak{display:flex;align-items:center;gap:3px;margin-top:2px;}
-  .habit-streak span{font-size:11.5px;font-weight:600;color:#FF9F0A;}
-  .ios-check{width:27px;height:27px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .22s cubic-bezier(.34,1.4,.5,1);}
-  .ios-check.off{background:transparent;border:2px solid rgba(60,60,67,.22);}
-  .ios-check.on{background:#6667AB;border:1px solid #6667AB;}
-  .ios-check.on svg{display:block;}
-  .ios-check svg{display:none;width:15px;height:15px;stroke:#fff;stroke-width:3.2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
-  .habit-separator{position:absolute;left:63px;right:0;bottom:0;height:.5px;background:rgba(60,60,67,.13);}
-  .habit-progress{display:none;}
+  /* 모바일 order: 습관→일기→공부→운동→식사→체중 모두 1단 */
+  #card-habit{order:1;grid-column:1/-1;}
+  #card-diary{order:2;grid-column:1/-1;}
+  #card-study{order:3;grid-column:1/-1;}
+  #card-exercise{order:4;grid-column:1/-1;}
+  #card-meal{order:5;grid-column:1/-1;}
+  #card-weight{order:6;grid-column:1/-1;}
+  #card-todo{display:none;}
 
-  /* ── 일기 카드 ── */
-  .diary-card-preview{padding:16px;}
-  .diary-prev-head{display:flex;align-items:center;gap:11px;margin-bottom:11px;}
-  .diary-prev-mood-wrap{width:42px;height:42px;border-radius:13px;background:#FFF3DF;display:flex;align-items:center;justify-content:center;font-size:23px;flex-shrink:0;}
-  .diary-prev-meta{flex:1;}
-  .diary-prev-title{font-size:16px;font-weight:650;color:#1A1A1C;letter-spacing:-.3px;}
-  body.dark .diary-prev-title{color:#F4F2EE;}
-  .diary-prev-mood-lbl{font-size:12.5px;font-weight:500;color:rgba(60,60,67,.62);margin-top:1px;}
-  .diary-prev-time{font-size:11.5px;font-weight:600;color:rgba(60,60,67,.34);}
-  .diary-prev-body{font-size:14.5px;line-height:1.62;color:rgba(60,60,67,.62);letter-spacing:-.2px;}
-  .diary-prev-tags{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;}
-  .diary-prev-tag{font-size:12px;font-weight:600;color:#6667AB;background:#ECECF7;padding:4px 10px;border-radius:8px;}
-  .diary-prev-empty{padding:20px 16px;font-size:15px;color:rgba(60,60,67,.34);text-align:center;}
+  /* 모바일 섹션 타이틀 */
+  .do-eyebrow{font-size:14px;font-weight:700;}
 
-  /* ── 공부/운동/식사 리스트 ── */
-  .study-row,.exercise-row,.meal-row{display:flex;align-items:center;gap:13px;padding:13px 16px;position:relative;}
-  .ios-row-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-  .ios-row-main{flex:1;min-width:0;}
-  .ios-row-title{font-size:15.5px;font-weight:600;color:#1A1A1C;letter-spacing:-.3px;}
-  body.dark .ios-row-title{color:#F4F2EE;}
-  .ios-row-sub{font-size:12.5px;color:rgba(60,60,67,.62);margin-top:1px;}
-  .ios-row-right{font-size:13px;font-weight:600;color:rgba(60,60,67,.34);}
-  .ios-row-sep{position:absolute;left:63px;right:0;bottom:0;height:.5px;background:rgba(60,60,67,.13);}
-
-  /* 체중 카드 */
-  #card-weight .card-body{padding:16px 16px 14px;}
-  .big-val{font-size:40px;font-weight:800;color:#1A1A1C;letter-spacing:-.8px;}
-  body.dark .big-val{color:#F4F2EE;}
-  .unit-sm{font-size:16px;font-weight:600;color:rgba(60,60,67,.62);}
-  .inline-edit-row{display:flex;gap:8px;margin-top:12px;}
-  .inline-input{flex:1;padding:10px 14px;border-radius:12px;border:1.5px solid rgba(60,60,67,.13);background:#F7F7FA;font-size:15px;font-family:inherit;color:#1A1A1C;outline:none;}
-  body.dark .inline-input{background:#26272A;color:#F4F2EE;border-color:rgba(235,235,245,.13);}
-  .inline-input:focus{border-color:#6667AB;}
-  .add-btn{padding:10px 18px;border-radius:12px;background:#6667AB;color:#fff;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;}
-  .weight-graph-wrap{display:none;}
-
-  /* ── 하단 탭바 높이만큼 여유 ── */
-  .content .page{padding-bottom:100px;}
-
-  /* ── 기타 ── */
-  .do-eyebrow{font-size:13px;font-weight:600;}
+  #card-study,#card-weight{min-height:unset;}
+  .hero-card{border-radius:18px;margin-bottom:14px;}
+  .hero-metric{font-size:38px;}
+  .hero-tiles{gap:6px;}
+  .hero-tile{padding:8px 8px;}
+  .hero-tile-val{font-size:14px;}
   .stats-grid{grid-template-columns:1fr 1fr;gap:10px;}
   .cal-cell{min-height:54px;padding:5px;}
-  .modal{max-width:96vw;border-radius:22px;}
-  .empty{padding:20px 16px;text-align:center;color:rgba(60,60,67,.34);font-size:14px;}
+  .modal{max-width:96vw;}
+  .do-card{border-radius:16px;padding:14px 14px 12px;}
+  .do-card-head{margin-bottom:10px;}
+  .weight-graph-wrap{display:none;}
 }
 </style>
 </head>
@@ -1058,17 +951,15 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   </div>
 </div>
 
-<!-- ══════ MOBILE TOPBAR (iOS Large Title) ══════ -->
-<div class="mobile-topbar" id="mobile-topbar">
-  <div class="mob-large-header">
-    <div class="mob-header-left">
-      <div class="mob-date-kicker" id="mob-date-kicker"></div>
-      <div class="mob-large-title" id="mob-large-title">오늘</div>
+<!-- ══════ MOBILE TOPBAR ══════ -->
+<div class="mobile-topbar">
+  <button class="mob-hamburger" onclick="openDrawer()"><span></span><span></span><span></span></button>
+  <div class="mob-logo" onclick="goPage('dashboard')">DAY ONE</div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <button class="mob-sync-btn" id="mob-sync-btn" onclick="handleMobGoogleClick()">LOGIN</button>
+    <div class="mob-profile" onclick="openDrawer()">
+      <div class="mob-profile-av" id="mob-profile-av">🙂</div>
     </div>
-    <button class="mob-avatar-btn" id="mob-avatar-btn">
-      <img id="mob-avatar-img" src="" alt="">
-      <span id="mob-avatar-emoji">🙂</span>
-    </button>
   </div>
 </div>
 
@@ -1181,8 +1072,6 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
       <div class="dash-grid">
 
         <!-- 1행: 습관+운동 -->
-        <!-- 모바일 섹션 라벨: 습관 -->
-        <div class="mob-section-label" style="grid-column:1/-1;order:0;"><span>습관 체크</span><span class="mob-sec-action" id="mob-habit-badge">0/0 완료</span></div>
         <div class="do-card pc-col-1 mob-full" id="card-habit">
           <div class="do-card-head">
             <div class="do-card-left"><span class="do-eyebrow">습관 체크</span><span class="badge badge-green" id="habit-badge">0/0</span></div>
@@ -1194,9 +1083,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
           </div>
         </div>
 
-        <!-- 모바일 섹션 라벨: 운동 -->
-        <div class="mob-section-label" style="grid-column:1/-1;order:3;"><span>운동</span><span class="mob-sec-action" id="mob-exercise-badge">0분</span></div>
-        <div class="do-card pc-col-1 mob-half" id="card-exercise" style="order:4;">
+        <div class="do-card pc-col-1 mob-half" id="card-exercise">
           <div class="do-card-head">
             <div class="do-card-left"><span class="do-eyebrow">운동</span><span class="badge badge-green" id="exercise-badge">0분</span></div>
             <div style="display:flex;gap:6px;">
@@ -1210,9 +1097,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
         </div>
 
         <!-- 2행: 일기+공부 (PC 2열, 모바일 각 full/half) -->
-        <!-- 모바일 섹션 라벨: 일기 -->
-        <div class="mob-section-label" style="grid-column:1/-1;order:5;"><span>오늘의 일기</span></div>
-        <div class="do-card pc-col-1 mob-full" id="card-diary" style="order:6;">
+        <div class="do-card pc-col-1 mob-full" id="card-diary">
           <div class="do-card-head">
             <div class="do-card-left"><span class="do-eyebrow">오늘의 일기</span><span id="diary-mood-disp" style="font-size:16px;margin-left:4px;"></span></div>
             <div style="display:flex;align-items:center;gap:6px;">
@@ -1227,9 +1112,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
           </div>
         </div>
 
-        <!-- 모바일 섹션 라벨: 공부 -->
-        <div class="mob-section-label" style="grid-column:1/-1;order:7;"><span>공부</span><span class="mob-sec-action" id="mob-study-badge">0h</span></div>
-        <div class="do-card pc-col-1 mob-half" id="card-study" style="order:8;">
+        <div class="do-card pc-col-1 mob-half" id="card-study">
           <div class="do-card-head">
             <div class="do-card-left"><span class="do-eyebrow">공부</span><span class="badge badge-blue" id="study-badge">0h</span></div>
             <div style="display:flex;gap:6px;">
@@ -1245,9 +1128,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
         </div>
 
         <!-- 3행: 식사+체중 -->
-        <!-- 모바일 섹션 라벨: 식사 -->
-        <div class="mob-section-label" style="grid-column:1/-1;order:9;"><span>식사</span></div>
-        <div class="do-card pc-col-1 mob-half" id="card-meal" style="order:10;">
+        <div class="do-card pc-col-1 mob-half" id="card-meal">
           <div class="do-card-head">
             <div class="do-card-left"><span class="do-eyebrow">식사</span></div>
             <div style="display:flex;gap:6px;">
@@ -1260,9 +1141,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
           </div>
         </div>
 
-        <!-- 모바일 섹션 라벨: 체중 -->
-        <div class="mob-section-label" style="grid-column:1/-1;order:11;"><span>체중</span></div>
-        <div class="do-card pc-col-1 mob-half" id="card-weight" style="order:12;">
+        <div class="do-card pc-col-1 mob-half" id="card-weight">
           <div class="do-card-head">
             <div class="do-card-left"><span class="do-eyebrow">체중</span></div>
             <button class="collapse-btn" onclick="toggleCard('card-weight')">▾</button>
@@ -1475,31 +1354,27 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
 
   </div><!-- /content -->
 
-  <!-- MOBILE FAB -->
-  <button class="mob-fab" id="mob-fab" onclick="mobFabAction()">
-    <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-  </button>
-
-  <!-- MOBILE BOTTOM TAB (iOS Glass) -->
+  <!-- MOBILE BOTTOM TAB -->
   <div class="mobile-tab-bar">
-    <div class="mob-tabbar-glass"></div>
-    <div class="mob-tabbar-inner">
-      <button class="mob-tab active" id="mtab-dashboard" onclick="goPage('dashboard')">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.866 3.134-7 7-7s7 3.134 7 7"/></svg>
-        <span>오늘</span>
-      </button>
-      <button class="mob-tab" id="mtab-calendar" onclick="goPage('calendar')">
-        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="3"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        <span>캘린더</span>
-      </button>
-      <button class="mob-tab" id="mtab-stats" onclick="goPage('stats')">
-        <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-        <span>통계</span>
-      </button>
-      <button class="mob-tab" id="mtab-settings" onclick="goPage('settings')">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-        <span>설정</span>
-      </button>
+    <div class="mob-tab active" id="mtab-dashboard" onclick="goPage('dashboard')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <span>오늘</span>
+    </div>
+    <div class="mob-tab" id="mtab-calendar" onclick="goPage('calendar')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <span>캘린더</span>
+    </div>
+    <div class="mob-tab" id="mtab-stats" onclick="goPage('stats')">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <span>통계</span>
+    </div>
+    <div class="mob-tab" id="mtab-monthly" onclick="goPage('monthly')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="15" x2="16" y2="15"/></svg>
+      <span>월간</span>
+    </div>
+    <div class="mob-tab" id="mtab-settings" onclick="goPage('settings')">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+      <span>설정</span>
     </div>
   </div>
 </div><!-- /main -->
@@ -1931,17 +1806,6 @@ function goPage(page){
   document.getElementById('topbar-title').textContent=titles[page]||page;
   document.getElementById('date-nav-wrap').style.display=page==='dashboard'?'flex':'none';
 
-  // 모바일 Large Title 업데이트
-  const mobTitles={dashboard:'오늘',calendar:'캘린더',stats:'통계',settings:'설정',monthly:'월간 리포트'};
-  const lt=document.getElementById('mob-large-title');
-  if(lt)lt.textContent=mobTitles[page]||page;
-  // 날짜 킥커: 대시보드에서만 표시
-  const kicker=document.getElementById('mob-date-kicker');
-  if(kicker)kicker.style.display=page==='dashboard'?'':'none';
-  // FAB: 대시보드에서만 표시
-  const fab=document.getElementById('mob-fab');
-  if(fab)fab.style.display=page==='dashboard'?'':'none';
-
   if(page==='calendar')renderCalendar();
   if(page==='stats')renderStats();
   if(page==='monthly')renderMonthly();
@@ -1954,14 +1818,6 @@ function updateDateLabel(){
   const dl=document.getElementById('date-lbl');if(dl)dl.textContent=s;
   const dd=document.getElementById('dash-date-lbl');if(dd)dd.textContent=s;
   const sd=document.getElementById('sidebar-date');if(sd)sd.textContent=formatDate(todayStr());
-  // 모바일 Large Title 날짜 킥커
-  const kicker=document.getElementById('mob-date-kicker');
-  if(kicker){
-    const parts=curDateStr.split('-');
-    const dt=new Date(parseInt(parts[0]),parseInt(parts[1])-1,parseInt(parts[2]));
-    const days=['일','월','화','수','목','금','토'];
-    kicker.textContent=`${parseInt(parts[1])}월 ${parseInt(parts[2])}일 ${days[dt.getDay()]}요일`;
-  }
 }
 function moveDate(dir){
   const parts=curDateStr.split('-');
@@ -1990,13 +1846,6 @@ function updateHero(d,habits){
   const ht1=document.getElementById('ht-ex');if(ht1)ht1.textContent=exTotal?exTotal+'분':'0분';
   const ht2=document.getElementById('ht-wt');if(ht2)ht2.textContent=d.weight?d.weight:'--';
   const ht3=document.getElementById('ht-sl');if(ht3)ht3.textContent=(d.sleep!=null)?d.sleep:'--';
-  // 모바일 섹션 badge 동기화
-  const mhb=document.getElementById('mob-habit-badge');if(mhb)mhb.textContent=done+'/'+total+' 완료';
-  const meb=document.getElementById('mob-exercise-badge');if(meb)meb.textContent=exTotal?exTotal+'분':'0분';
-  // 공부 badge
-  const studyMins=(d.study||[]).reduce((s,x)=>s+(x.dur||0),0);
-  const studyH=studyMins>=60?Math.floor(studyMins/60)+'h'+(studyMins%60?studyMins%60+'m':''):studyMins+'m';
-  const msb=document.getElementById('mob-study-badge');if(msb)msb.textContent=studyMins?studyH:'0m';
 }
 
 // ── LOAD DAY ──
@@ -2866,26 +2715,15 @@ function loadProfile(){
   const img=localStorage.getItem('do_pf_img')||'';
   const nd=document.getElementById('pf-name-disp');if(nd)nd.textContent=name||'이름을 입력하세요';
   const bd=document.getElementById('pf-bio-disp');if(bd)bd.textContent=bio||'한 줄 소개를 입력하세요';
-  // PC 사이드바 아바타
+  const mav=document.getElementById('mob-profile-av');
   if(img){
     const pi=document.getElementById('pf-img');const ph=document.getElementById('pf-placeholder');
     if(pi){pi.src=img;pi.style.display='block';}
     if(ph)ph.style.display='none';
-  }
-  syncMobAvatar();
-}
-// 모바일 아바타 동기화
-function syncMobAvatar(){
-  const img=localStorage.getItem('do_pf_img')||'';
-  const name=localStorage.getItem('do_pf_name')||'';
-  const mi=document.getElementById('mob-avatar-img');
-  const me=document.getElementById('mob-avatar-emoji');
-  if(img){
-    if(mi){mi.src=img;mi.style.display='block';}
-    if(me)me.style.display='none';
+    if(mav)mav.innerHTML=`<img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
   }else{
-    if(mi)mi.style.display='none';
-    if(me){me.style.display='';me.textContent=name?name.charAt(0):'🙂';}
+    // 이름 이니셜 표시
+    if(mav)mav.textContent=name?name.charAt(0):'🙂';
   }
 }
 function editProfile(f){
@@ -2903,7 +2741,6 @@ function saveProfile(f){
   localStorage.setItem('do_pf_'+f,v);
   disp.textContent=v||(f==='name'?'이름을 입력하세요':'한 줄 소개를 입력하세요');
   disp.style.display='';inp.style.display='none';
-  syncMobAvatar();
 }
 function cancelProfile(f){
   const inp=document.getElementById('pf-'+f+'-inp');
@@ -2919,15 +2756,11 @@ function handleProfileImg(e){
     const pi=document.getElementById('pf-img');const ph=document.getElementById('pf-placeholder');
     if(pi){pi.src=src;pi.style.display='block';}
     if(ph)ph.style.display='none';
-    syncMobAvatar();
+    const mav=document.getElementById('mob-profile-av');
+    if(mav)mav.innerHTML=`<img src="${src}" alt="">`;
     toast('프로필 사진 저장');
   };
   reader.readAsDataURL(file);
-}
-
-// 모바일 FAB 액션 (페이지별 분기)
-function mobFabAction(){
-  if(curPage==='dashboard')openDiaryEditor();
 }
 
 // ── MODAL ──
@@ -3066,9 +2899,6 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   // Google API 초기화
   loadGoogleAPI();
-
-  // 모바일 아바타 버튼 동기화
-  syncMobAvatar();
 });
 </script>
 
