@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Day One</title>
 <!-- PWA 홈화면 아이콘 -->
 <link rel="apple-touch-icon" href="https://land1st.github.io/dayone/2_mark.png">
@@ -172,6 +172,9 @@ body.dark .mob-header-left .mob-large-title{color:#F4F2EE;}
 body.dark .mobile-topbar{background:#0F0F11;}
 .mob-avatar-btn{width:40px;height:40px;border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(40,40,70,.1);border:none;display:flex;align-items:center;justify-content:center;font-size:21px;cursor:pointer;overflow:hidden;flex-shrink:0;}
 .mob-avatar-btn img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:none;}
+.mob-sync-btn{height:32px;padding:0 12px;border-radius:10px;border:1.5px solid rgba(102,103,171,.35);background:rgba(102,103,171,.08);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#6667AB;font-size:12px;font-weight:700;letter-spacing:.04em;transition:all .12s;flex-shrink:0;font-family:inherit;}
+.mob-sync-btn.connected{border-color:rgba(52,199,89,.5);color:#34C759;background:rgba(52,199,89,.08);}
+.mob-sync-btn.syncing svg{animation:spin 1s linear infinite;}
 /* 기존 drawer 관련 — PC에서만 사용, 모바일은 숨김 */
 .drawer-overlay{display:none;position:fixed;inset:0;z-index:200;}
 .drawer-overlay.open{display:block;}
@@ -182,7 +185,7 @@ body.dark .mobile-topbar{background:#0F0F11;}
 .drawer-panel::-webkit-scrollbar-thumb{background:var(--border2);}
 
 /* ────── MOBILE BOTTOM TAB (iOS Glass 탭바) ────── */
-.mobile-tab-bar{display:none;position:relative;height:83px;flex-shrink:0;padding-bottom:20px;align-items:flex-start;}
+.mobile-tab-bar{display:none;position:relative;flex-shrink:0;align-items:flex-start;}
 .mob-tabbar-glass{position:absolute;inset:0;backdrop-filter:blur(22px) saturate(180%);-webkit-backdrop-filter:blur(22px) saturate(180%);background:rgba(248,248,252,.82);border-top:.5px solid rgba(60,60,67,.14);}
 body.dark .mob-tabbar-glass{background:rgba(24,24,28,.88);}
 .mob-tabbar-inner{position:relative;display:flex;width:100%;padding:9px 6px 0;}
@@ -711,9 +714,9 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
 @media(max-width:680px){
   /* ── 레이아웃 ── */
   .sidebar{display:none;}
-  .mobile-topbar{display:flex;flex-direction:column;}
-  .mobile-tab-bar{display:flex;}
-  .mob-fab{display:flex;}
+  .mobile-topbar{display:flex;flex-direction:column;padding-top:env(safe-area-inset-top);}
+  .mobile-tab-bar{display:flex;padding-bottom:env(safe-area-inset-bottom);}
+  .mob-fab{display:flex;bottom:calc(100px + env(safe-area-inset-bottom));}
   body{flex-direction:column;background:#EFEFF4;}
   body.dark{background:#0F0F11;}
   .main{overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch;background:#EFEFF4;}
@@ -839,7 +842,41 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   .weight-graph-wrap{display:none;}
 
   /* ── 하단 탭바 높이만큼 여유 ── */
-  .content .page{padding-bottom:100px;}
+  .content .page{padding-bottom:calc(100px + env(safe-area-inset-bottom));}
+
+  /* ── 운동 행 iOS 스타일 ── */
+  #exercise-body>div{border-bottom:.5px solid rgba(60,60,67,.1);padding:13px 16px !important;display:flex !important;align-items:center !important;justify-content:space-between !important;gap:0 !important;}
+  #exercise-body>div:last-child{border-bottom:none;}
+  #exercise-body>div>div:first-child{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
+  #exercise-body>div .ex-type{font-size:15.5px;font-weight:600;color:#1A1A1C;letter-spacing:-.2px;}
+  body.dark #exercise-body>div .ex-type{color:#F4F2EE;}
+  #exercise-body>div span[style*="font-size:18px"]{font-size:15px !important;font-weight:700 !important;color:#6667AB !important;}
+  #exercise-body>div .ex-sub{font-size:12.5px;color:rgba(60,60,67,.52);margin-top:0;padding-left:0;}
+  #exercise-body>div button{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:rgba(60,60,67,.07) !important;display:flex;align-items:center;justify-content:center;font-size:16px !important;color:rgba(60,60,67,.4) !important;}
+
+  /* ── 공부 행 iOS 스타일 ── */
+  .study-prev-row{padding:13px 16px !important;border-bottom:.5px solid rgba(60,60,67,.1) !important;display:flex;align-items:center;justify-content:space-between;}
+  .study-prev-row:last-child{border-bottom:none !important;}
+  .study-prev-subj{font-size:15.5px !important;font-weight:600 !important;color:#1A1A1C !important;}
+  body.dark .study-prev-subj{color:#F4F2EE !important;}
+  .study-prev-dur{font-size:13px !important;font-weight:600 !important;color:rgba(60,60,67,.45) !important;}
+  .study-card-preview{min-height:unset !important;cursor:pointer;}
+
+  /* ── 식사 행 iOS 스타일 ── */
+  .meal-row{padding:13px 16px !important;border-bottom:.5px solid rgba(60,60,67,.1) !important;display:flex !important;align-items:center !important;gap:10px !important;margin-bottom:0 !important;}
+  .meal-row:last-child{border-bottom:none !important;}
+  .meal-time{font-size:12px !important;font-weight:650 !important;color:#6667AB !important;background:#ECECF7;padding:3px 8px;border-radius:7px;white-space:nowrap;flex-shrink:0;}
+  .meal-food{font-size:15px !important;font-weight:500 !important;color:#1A1A1C !important;flex:1;}
+  body.dark .meal-food{color:#F4F2EE !important;}
+
+  /* ── 오늘 할 일 카드 ── */
+  #card-todo-today{display:none !important;}
+  #card-todo-tomorrow{margin:0 16px;margin-bottom:22px;}
+  #cb-todo-today,#cb-todo-tomorrow{padding:12px 16px 14px !important;}
+  #todo-today-date,#todo-tomorrow-date{font-size:12px !important;font-weight:600 !important;color:#6667AB !important;margin-bottom:10px !important;}
+  .todo-inp-row{gap:10px !important;}
+  .todo-inp{border-radius:12px !important;padding:10px 14px !important;font-size:14px !important;background:#F7F7FA !important;border:1.5px solid rgba(60,60,67,.13) !important;}
+  .add-btn{border-radius:12px !important;padding:10px 16px !important;}
 
   /* ── 기타 ── */
   .do-eyebrow{font-size:13px;font-weight:600;}
@@ -1065,10 +1102,13 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
       <div class="mob-date-kicker" id="mob-date-kicker"></div>
       <div class="mob-large-title" id="mob-large-title">오늘</div>
     </div>
-    <button class="mob-avatar-btn" id="mob-avatar-btn">
-      <img id="mob-avatar-img" src="" alt="">
-      <span id="mob-avatar-emoji">🙂</span>
-    </button>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="mob-sync-btn" id="mob-sync-btn" onclick="handleMobGoogleClick()">LOGIN</button>
+      <button class="mob-avatar-btn" id="mob-avatar-btn">
+        <img id="mob-avatar-img" src="" alt="">
+        <span id="mob-avatar-emoji">🙂</span>
+      </button>
+    </div>
   </div>
 </div>
 
@@ -2107,14 +2147,24 @@ function renderDiaryPreview(d){
 }
 
 function renderStudyPreview(sessions){
+function renderStudyPreview(sessions){
   const el=document.getElementById('study-preview');
   if(!el)return;
   if(!sessions||!sessions.length){el.innerHTML='<div class="empty">기록이 없습니다</div>';return;}
   el.innerHTML=sessions.map(s=>`
-    <div class="study-prev-row">
-      <span class="study-prev-subj">${s.subject||'(과목 없음)'}</span>
-      <span class="study-prev-dur">${s.dur?s.dur+'분':''}</span>
+    <div class="study-prev-row" style="padding:13px 16px;border-bottom:.5px solid rgba(60,60,67,.1);display:flex;align-items:center;justify-content:space-between;gap:12px;">
+      <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0;">
+        <div style="width:36px;height:36px;border-radius:11px;background:#EDF4FF;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">📚</div>
+        <div style="min-width:0;">
+          <div class="study-prev-subj" style="font-size:15.5px;font-weight:600;color:#1A1A1C;letter-spacing:-.2px;">${s.subject||'(과목 없음)'}</div>
+          ${s.content?`<div style="font-size:12.5px;color:rgba(60,60,67,.52);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${s.content}</div>`:''}
+        </div>
+      </div>
+      <span class="study-prev-dur" style="font-size:13px;font-weight:700;color:#6667AB;flex-shrink:0;">${s.dur?s.dur+'분':''}</span>
     </div>`).join('');
+  // 마지막 항목 구분선 제거
+  const items=el.querySelectorAll('.study-prev-row');
+  if(items.length)items[items.length-1].style.borderBottom='none';
 }
 
 // ── READER ──
@@ -2390,16 +2440,23 @@ function delStudy(i){
 
 // ── MEAL ──
 function renderMealList(meals){
+function renderMealList(meals){
   const el=document.getElementById('meal-list');if(!el)return;
   if(!meals.length){el.innerHTML='<div class="empty">기록이 없습니다</div>';return;}
+  const mealIcons={'아침':'🌅','점심':'☀️','저녁':'🌙','간식':'🍎'};
   el.innerHTML=meals.map((m,i)=>`
-    <div class="meal-row">
-      <span class="meal-time">${m.time}</span>
-      <span class="meal-food">${m.food}</span>
-      <button style="margin-left:auto;background:none;border:none;cursor:pointer;color:var(--text3);font-size:14px;" onclick="delMeal(${i})">×</button>
+    <div class="meal-row" style="padding:13px 16px;border-bottom:.5px solid rgba(60,60,67,.1);display:flex;align-items:center;gap:10px;margin-bottom:0;">
+      <div style="width:36px;height:36px;border-radius:11px;background:#FFF4E5;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">${mealIcons[m.time]||'🍽️'}</div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:15px;font-weight:600;color:#1A1A1C;letter-spacing:-.2px;">${m.food}</div>
+        <div style="font-size:12px;font-weight:600;color:rgba(60,60,67,.45);margin-top:1px;">${m.time||''}</div>
+      </div>
+      <button style="width:28px;height:28px;border-radius:50%;background:rgba(60,60,67,.07);border:none;cursor:pointer;color:rgba(60,60,67,.4);font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;" onclick="delMeal(${i})">×</button>
     </div>`).join('');
+  // 마지막 항목 구분선 제거
+  const items=el.querySelectorAll('[style*="border-bottom"]');
+  if(items.length)items[items.length-1].style.borderBottom='none';
 }
-function saveMeal(){
   const time=document.getElementById('mm-time')?.value;
   const food=document.getElementById('mm-food')?.value?.trim();
   if(!food){toast('음식을 입력하세요');return;}
@@ -2431,21 +2488,23 @@ function renderExercise(sessions){
   const total=sessions.reduce((s,x)=>s+(x.dur||0),0);
   if(badge)badge.textContent=total?total+'분':'기록됨';
   el.innerHTML=sessions.map((ex,i)=>`
-    <div style="padding:8px 0;border-bottom:1px solid var(--border);">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
-        <div style="display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;">
-          <div class="ex-type">${ex.type}</div>
-          ${ex.dur?`<span style="font-size:18px;font-weight:600;color:var(--accent);">${ex.dur}<span style="font-size:12px;font-weight:400;color:var(--text3);margin-left:2px;">분</span></span>`:''}
+    <div style="padding:13px 16px;border-bottom:.5px solid rgba(60,60,67,.1);display:flex;align-items:center;justify-content:space-between;gap:12px;">
+      <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0;">
+        <div style="width:36px;height:36px;border-radius:11px;background:#EEF3FF;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🏃</div>
+        <div style="min-width:0;">
+          <div class="ex-type" style="font-size:15.5px;font-weight:600;color:#1A1A1C;letter-spacing:-.2px;">${ex.type}</div>
+          ${ex.note?`<div style="font-size:12.5px;color:rgba(60,60,67,.52);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${ex.note}</div>`:''}
         </div>
-        <button style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:14px;padding:0 2px;" onclick="delExercise(${i})">×</button>
       </div>
-      ${ex.note?`<div class="ex-sub" style="white-space:pre-wrap;word-break:break-word;">${ex.note}</div>`:''}
-    </div>`).join('').replace(/border-bottom[^;]+;([^"]*)<\/div>\s*$/, (m)=>m.replace('border-bottom:1px solid var(--border);','border-bottom:none;'));
-  // 마지막 항목 border 제거
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+        ${ex.dur?`<span style="font-size:14px;font-weight:700;color:#6667AB;">${ex.dur}<span style="font-size:11px;font-weight:500;color:rgba(60,60,67,.45);margin-left:2px;">분</span></span>`:''}
+        <button style="width:28px;height:28px;border-radius:50%;background:rgba(60,60,67,.07);border:none;cursor:pointer;color:rgba(60,60,67,.4);font-size:16px;display:flex;align-items:center;justify-content:center;" onclick="delExercise(${i})">×</button>
+      </div>
+    </div>`).join('');
+  // 마지막 항목 구분선 제거
   const items=el.querySelectorAll('[style*="border-bottom"]');
   if(items.length)items[items.length-1].style.borderBottom='none';
 }
-
 function saveExercise(){
   const type=document.getElementById('me-type')?.value?.trim();
   const dur=parseInt(document.getElementById('me-dur')?.value)||0;
