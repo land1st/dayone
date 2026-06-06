@@ -637,7 +637,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px;}
 
 /* ────── ONBOARDING ────── */
-.ob-overlay{position:fixed;inset:0;z-index:9000;background:var(--bg);display:flex;flex-direction:column;overflow:hidden;transition:opacity .4s ease;font-family:'Pretendard Variable',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;}
+.ob-overlay{position:fixed;inset:0;z-index:9000;background:var(--bg);display:flex;flex-direction:column;overflow:hidden;transition:opacity .4s ease;font-family:'Pretendard Variable',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;touch-action:manipulation;-webkit-overflow-scrolling:touch;}
 .ob-overlay.hide{opacity:0;pointer-events:none;}
 .ob-inner{flex:1;overflow:hidden;position:relative;}
 .ob-slide{position:absolute;inset:0;display:flex;flex-direction:column;padding:0;opacity:0;transform:translateX(60px);transition:opacity .35s ease,transform .35s ease;pointer-events:none;overflow-y:auto;}
@@ -695,13 +695,13 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
 .ob-mood-lbl{font-size:9px;font-weight:600;color:var(--text3);}
 
 /* footer */
-.ob-footer{position:fixed;bottom:0;left:0;right:0;padding:16px 20px 36px;background:linear-gradient(to top,var(--bg) 70%,transparent);z-index:9001;}
+.ob-footer{position:fixed;bottom:0;left:0;right:0;padding:16px 20px calc(36px + env(safe-area-inset-bottom));background:linear-gradient(to top,var(--bg) 70%,transparent);z-index:9001;}
 .ob-dots-row{display:flex;justify-content:center;gap:6px;margin-bottom:14px;}
 .ob-dot{width:6px;height:6px;border-radius:50%;background:var(--border2);transition:all .25s;}
 .ob-dot.on{width:22px;border-radius:3px;background:var(--accent);}
-.ob-cta{width:100%;padding:16px;border-radius:16px;background:var(--accent);color:#fff;border:none;font-size:16px;font-weight:700;cursor:pointer;font-family:'Pretendard Variable',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;letter-spacing:-.01em;transition:opacity .15s;}
+.ob-cta{width:100%;padding:16px;border-radius:16px;background:var(--accent);color:#fff;border:none;font-size:16px;font-weight:700;cursor:pointer;font-family:'Pretendard Variable',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;letter-spacing:-.01em;transition:opacity .15s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
 .ob-cta:active{opacity:.85;}
-.ob-skip{display:block;width:100%;padding:10px;text-align:center;font-size:13px;font-weight:600;color:var(--text3);background:none;border:none;cursor:pointer;font-family:'Pretendard Variable',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;margin-top:6px;}
+.ob-skip{display:block;width:100%;padding:10px;text-align:center;font-size:13px;font-weight:600;color:var(--text3);background:none;border:none;cursor:pointer;font-family:'Pretendard Variable',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;margin-top:6px;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
 
 @media(min-width:681px){
   .ob-inner{display:flex;justify-content:center;}
@@ -3048,8 +3048,12 @@ function obStart(){
   if(!ov)return;
   if(localStorage.getItem('do_onboarded')==='1'){
     ov.style.display='none';
+  }else{
+    // 온보딩 중 body 스크롤 잠금 (iOS Safari 버튼 탭 오작동 방지)
+    document.body.style.overflow='hidden';
+    document.body.style.position='fixed';
+    document.body.style.width='100%';
   }
-  // 처음 방문이면 그대로 표시 (기본 display:flex)
 }
 
 function obNext(){
@@ -3087,6 +3091,10 @@ function obFinish(){
     saveDayData(curDateStr,d);
   }
   localStorage.setItem('do_onboarded','1');
+  // body 스크롤 잠금 해제
+  document.body.style.overflow='';
+  document.body.style.position='';
+  document.body.style.width='';
   const ov=document.getElementById('ob-overlay');
   if(ov){ov.classList.add('hide');setTimeout(()=>ov.style.display='none',400);}
   loadProfile();
