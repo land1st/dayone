@@ -759,7 +759,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   #mob-root{
     display:flex;flex-direction:column;
     position:fixed;inset:0;z-index:9999;
-    background:#EFEFF4;
+    background:var(--bg);
     font-family:'Pretendard Variable',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
     overflow:hidden;
   }
@@ -771,7 +771,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   .mob-page{
     display:none;flex-direction:column;
     position:absolute;inset:0;
-    background:#EFEFF4;
+    background:var(--bg);
     padding-top:env(safe-area-inset-top,44px);
   }
   .mob-page.mob-page-active{display:flex;}
@@ -780,7 +780,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   .mob-header{
     display:flex;align-items:flex-end;justify-content:space-between;
     padding:6px 20px 14px;flex-shrink:0;
-    background:#EFEFF4;
+    background:var(--bg);
   }
   .mob-date-kicker{
     font-size:13.5px;font-weight:650;color:#6667AB;
@@ -788,7 +788,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   }
   .mob-large-title{
     font-size:34px;font-weight:800;letter-spacing:-0.8px;
-    color:#1A1A1C;line-height:1;
+    color:var(--text);line-height:1;
   }
   .mob-avatar{
     width:40px;height:40px;border-radius:50%;
@@ -880,7 +880,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
 
   /* ── 그룹 카드 ── */
   .mob-group-card{
-    background:#fff;border-radius:22px;
+    background:var(--card);border-radius:22px;
     margin:0 16px;
     box-shadow:0 1px 1px rgba(0,0,0,0.03),0 6px 18px rgba(40,40,70,0.05);
     overflow:hidden;
@@ -1327,7 +1327,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   /* ── 바텀 시트 본체 ── */
   .mob-sheet{
     position:fixed;left:0;right:0;bottom:0;z-index:21001;
-    background:#fff;
+    background:var(--card);
     border-radius:24px 24px 0 0;
     box-shadow:0 -4px 24px rgba(40,40,70,0.13);
     transform:translateY(100%);
@@ -2423,9 +2423,11 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   <div class="mob-sheet-handle"></div>
   <div class="mob-sheet-inner">
     <div style="text-align:center;padding:10px 0 20px;">
-      <div style="font-size:48px;margin-bottom:10px;">✅</div>
-      <div style="font-size:22px;font-weight:800;color:#1A1A1C;letter-spacing:-0.5px;margin-bottom:6px;">Day One</div>
-      <div style="font-size:13px;color:rgba(60,60,67,0.55);font-weight:500;">v2.0 · 하루를 기록하는 가장 쉬운 방법</div>
+      <div style="width:72px;height:72px;border-radius:18px;background:#ECECF7;margin:0 auto 12px;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+        <img src="https://land1st.github.io/dayone/2_mark.png" alt="Day One" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='✅'">
+      </div>
+      <div style="font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.5px;margin-bottom:6px;">Day One</div>
+      <div style="font-size:13px;color:var(--text2);font-weight:500;">v2.0 · 하루를 기록하는 가장 쉬운 방법</div>
     </div>
     <div class="mob-about-list">
       <div class="mob-about-item">
@@ -4522,9 +4524,15 @@ function mobRenderSettings(){
   if(nameEl)nameEl.textContent=name||'이름을 입력하세요';
   if(bioEl)bioEl.textContent=bio||'한 줄 소개를 입력하세요';
 
-  // 동기화 상태
+  // 동기화 상태 — gAccessToken은 Google API 로드 후 설정되므로 setTimeout으로 재확인
   const syncLbl=document.getElementById('mob-set-sync-lbl');
-  if(syncLbl)syncLbl.textContent=gAccessToken?'LOGOUT':'LOGIN';
+  if(syncLbl){
+    syncLbl.textContent=gAccessToken?'LOGOUT':'LOGIN';
+    // 비동기 토큰 복원 후 재갱신
+    setTimeout(()=>{
+      if(syncLbl)syncLbl.textContent=gAccessToken?'LOGOUT':'LOGIN';
+    },600);
+  }
 
   // 다크모드 토글
   const isDark=document.body.classList.contains('dark');
@@ -4549,26 +4557,24 @@ function mobSetOpenProfile(){
   const img=localStorage.getItem('do_pf_img')||'';
   const name=localStorage.getItem('do_pf_name')||'';
   const bio=localStorage.getItem('do_pf_bio')||'';
-  // 아바타 미리보기
-  const sheetAv=document.getElementById('mob-profile-sheet-av');
-  if(sheetAv){
-    // badge 유지하면서 이미지/이모지 교체
-    const badge=sheetAv.querySelector('.mob-set-av-badge');
-    sheetAv.innerHTML='';
-    if(img){
-      const im=document.createElement('img');im.src=img;sheetAv.appendChild(im);
-    } else {
-      sheetAv.textContent=name?name.charAt(0):'🙂';
-    }
-    if(badge)sheetAv.appendChild(badge);
-  }
-  // 입력값
+  mobProfileSheetAvUpdate(img,name);
   const nameInp=document.getElementById('mob-pf-name-inp');
   const bioInp=document.getElementById('mob-pf-bio-inp');
   if(nameInp)nameInp.value=name;
   if(bioInp)bioInp.value=bio;
   document.getElementById('mob-profile-dim')?.classList.add('open');
   document.getElementById('mob-sheet-profile')?.classList.add('open');
+}
+
+// 시트 아바타 갱신 헬퍼
+function mobProfileSheetAvUpdate(img,name){
+  const sheetAv=document.getElementById('mob-profile-sheet-av');
+  if(!sheetAv)return;
+  if(img){
+    sheetAv.innerHTML=`<img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"><div class="mob-set-av-badge" style="width:28px;height:28px;bottom:0;right:0;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 4.5l3 3L9 18l-4 1 1-4 10.5-10.5z"/></svg></div>`;
+  } else {
+    sheetAv.innerHTML=`${name?name.charAt(0):'🙂'}<div class="mob-set-av-badge" style="width:28px;height:28px;bottom:0;right:0;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 4.5l3 3L9 18l-4 1 1-4 10.5-10.5z"/></svg></div>`;
+  }
 }
 function mobCloseProfile(){
   document.getElementById('mob-profile-dim')?.classList.remove('open');
@@ -4582,14 +4588,8 @@ function mobProfileImgChange(e){
   reader.onload=ev=>{
     const src=ev.target.result;
     localStorage.setItem('do_pf_img',src);
-    // 시트 아바타 미리보기 갱신
-    const sheetAv=document.getElementById('mob-profile-sheet-av');
-    if(sheetAv){
-      const badge=sheetAv.querySelector('.mob-set-av-badge');
-      sheetAv.innerHTML='';
-      const im=document.createElement('img');im.src=src;sheetAv.appendChild(im);
-      if(badge)sheetAv.appendChild(badge);
-    }
+    const name=localStorage.getItem('do_pf_name')||'';
+    mobProfileSheetAvUpdate(src,name);
   };
   reader.readAsDataURL(file);
 }
@@ -5051,6 +5051,9 @@ function updateSyncUI(connected){
     if(connected){mobBtn.classList.add('connected');mobBtn.textContent='LOGOUT';}
     else{mobBtn.classList.remove('connected');mobBtn.textContent='LOGIN';}
   }
+  // 모바일 설정탭 동기화 라벨
+  const setLbl=document.getElementById('mob-set-sync-lbl');
+  if(setLbl)setLbl.textContent=connected?'LOGOUT':'LOGIN';
 }
 
 // PC/모바일 공통: 로그인/로그아웃만
