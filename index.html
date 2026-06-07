@@ -458,7 +458,7 @@ body.dark .hero-card{box-shadow:0 8px 24px rgba(0,0,0,.4);}
 .form-textarea:focus{border-color:var(--accent);}
 
 /* ────── MODAL ────── */
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;z-index:1000;opacity:0;pointer-events:none;transition:opacity .15s;}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;z-index:20000;opacity:0;pointer-events:none;transition:opacity .15s;}
 .modal-bg.open{opacity:1;pointer-events:all;}
 .modal{background:var(--card);border-radius:14px;padding:24px 26px;width:440px;max-width:92vw;max-height:80vh;overflow-y:auto;box-shadow:0 8px 30px rgba(0,0,0,.15);transform:translateY(8px);transition:transform .15s;}
 .modal-bg.open .modal{transform:translateY(0);}
@@ -484,7 +484,7 @@ body.dark .hero-card{box-shadow:0 8px 24px rgba(0,0,0,.4);}
 .preview-study-cont{font-size:12px;color:var(--text2);margin-top:2px;}
 
 /* reader overlay */
-.reader-overlay{position:fixed;inset:0;z-index:500;background:var(--bg);transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;}
+.reader-overlay{position:fixed;inset:0;z-index:19000;background:var(--bg);transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;}
 .reader-overlay.open{transform:translateX(0);}
 .reader-panel{display:flex;flex-direction:column;height:100%;max-width:680px;margin:0 auto;width:100%;}
 .reader-topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid var(--border);background:var(--card);flex-shrink:0;}
@@ -980,6 +980,14 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
     background:#ECECF7;display:flex;align-items:center;justify-content:center;
     flex-shrink:0;
   }
+  .mob-meal-del{
+    width:26px;height:26px;border-radius:50%;
+    background:#F7F7FA;border:none;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;color:rgba(60,60,67,0.45);
+    -webkit-tap-highlight-color:transparent;
+  }
+  .mob-meal-del:active{background:#FFE9EE;color:#FF6482;}
 
   /* ── FAB ── */
   .mob-fab{
@@ -3324,12 +3332,16 @@ const MOB_HABIT_KEYWORD_MAP=[
   {keys:['취침','수면','잠','sleep','자기'],emoji:'🌙',bg:'#EEF0FA'},
   // 디지털/스마트폰/SNS
   {keys:['디지털','스마트폰','sns','핸드폰','폰','유튜브','인스타'],emoji:'📵',bg:'#F7F7FA'},
-  // 일기/기록/journal
-  {keys:['일기','기록','journal','write'],emoji:'✏️',bg:'#FFF3DF'},
+  // 적기/쓰기/노트 → 연필 아이콘
+  {keys:['적기','쓰기','쓰다','노트','메모','write','journal','일기','기록'],emoji:'✏️',bg:'#FFF3DF'},
+  // 움직이기/활동 → 운동 아이콘
+  {keys:['움직이기','움직','활동','activity'],emoji:'🏃',bg:'#E6F7EB'},
   // 스트레칭/유연성
   {keys:['스트레칭','스트레치','유연'],emoji:'🤸',bg:'#E6F7EB'},
-  // 아침/기상/모닝
-  {keys:['아침','기상','모닝','morning'],emoji:'🌅',bg:'#FFF3DF'},
+  // 기상/알람/일어나기 → 타이머 아이콘
+  {keys:['기상','알람','일어나','early','wake'],emoji:'⏰',bg:'#FFF3DF'},
+  // 아침/모닝
+  {keys:['아침','모닝','morning'],emoji:'🌅',bg:'#FFF3DF'},
   // 식단/다이어트/채소/과일
   {keys:['식단','다이어트','채소','과일','샐러드','건강식'],emoji:'🥗',bg:'#E6F7EB'},
   // 커피/카페인
@@ -3511,29 +3523,26 @@ function mobRenderMeals(d){
   const kcalEl=document.getElementById('mob-meal-kcal');
   if(!el)return;
   const meals=d.meals||[];
-  // 시간대 슬롯 매핑
   const slots=[
     {key:'아침',emoji:'🥣'},{key:'점심',emoji:'🍜'},{key:'저녁',emoji:'🍽️'}
   ];
-  // 슬롯별 최신 기록 매핑
-  const slotMap={};
-  meals.forEach(m=>{
-    const k=m.time;
-    if(!slotMap[k])slotMap[k]=m;
-  });
   const rows=slots.map((s,i)=>{
-    const rec=meals.find(m=>m.time===s.key);
-    const done=!!rec;
+    const recs=meals.filter(m=>m.time===s.key);
+    const done=recs.length>0;
     const isLast=i===slots.length-1;
-    return`<div class="mob-meal-row">
+    // 기록된 음식 목록
+    const foodList=recs.map(r=>r.food).join(', ');
+    return`<div class="mob-meal-row" onclick="mobOpenMeal('${s.key}')">
       <div class="mob-meal-emoji ${done?'done':'empty'}">${s.emoji}</div>
       <div class="mob-meal-info">
         <div class="mob-meal-slot">${s.key}</div>
-        <div class="mob-meal-name ${done?'done':'empty'}">${done?rec.food:'기록 안 함'}</div>
+        <div class="mob-meal-name ${done?'done':'empty'}">${done?foodList:'기록 안 함'}</div>
       </div>
       ${done
-        ?''
-        :`<div class="mob-meal-add" onclick="openModal('meal')">
+        ?`<button class="mob-meal-del" onclick="event.stopPropagation();mobDelMealSlot('${s.key}')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>`
+        :`<div class="mob-meal-add">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6667AB" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v12M6 12h12"/></svg>
           </div>`}
       ${!isLast?'<div class="mob-meal-sep"></div>':''}
@@ -3541,6 +3550,15 @@ function mobRenderMeals(d){
   }).join('');
   el.innerHTML=rows;
   if(kcalEl)kcalEl.textContent='';
+}
+
+// ── 식사 슬롯 삭제 ──
+function mobDelMealSlot(slot){
+  const d=getDayData(curDateStr);
+  if(!d.meals)return;
+  d.meals=d.meals.filter(m=>m.time!==slot);
+  saveDayData(curDateStr,d);
+  mobRenderMeals(d);
 }
 
 // ── 아바타 업데이트 ──
@@ -3556,7 +3574,23 @@ function mobUpdateAvatar(){
   }
 }
 
-// ── 탭 전환 (현재는 오늘만, 나머지는 기존 drawer로) ──
+// ── 식사 모달 열기 (슬롯 자동 선택) ──
+function mobOpenMeal(slot){
+  // 기존 PC 모달 재활용 — 시간대 자동 선택
+  const sel=document.getElementById('mm-time');
+  if(sel){
+    for(let i=0;i<sel.options.length;i++){
+      if(sel.options[i].value===slot||sel.options[i].text===slot){
+        sel.selectedIndex=i;break;
+      }
+    }
+  }
+  const food=document.getElementById('mm-food');
+  if(food)food.value='';
+  openModal('meal');
+  // 음식 입력창 자동 포커스
+  setTimeout(()=>{if(food)food.focus();},200);
+}
 function mobGoPage(page){
   document.querySelectorAll('.mob-tab').forEach(t=>t.classList.remove('active'));
   const tab=document.getElementById('mtab2-'+page);
@@ -3612,7 +3646,10 @@ function mobInit(){
   const _origSaveMeal=saveMeal;
   window.saveMeal=function(){
     _origSaveMeal();
-    if(window.innerWidth<=680)mobRender();
+    if(window.innerWidth<=680){
+      const d=getDayData(curDateStr);
+      mobRenderMeals(d);
+    }
   };
 }
 </script>
