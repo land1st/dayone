@@ -1162,6 +1162,156 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   .mob-stat-mood-em{font-size:22px;}
   .mob-stat-mood-cnt{font-size:12.5px;font-weight:700;color:#1A1A1C;}
 
+  /* ── 설정 섹션 라벨 ── */
+  .mob-set-section-lbl{
+    font-size:13px;font-weight:600;letter-spacing:0.2px;
+    color:rgba(60,60,67,0.62);text-transform:uppercase;
+    margin:22px 20px 7px;
+  }
+
+  /* ── 설정 행 ── */
+  .mob-set-row{
+    display:flex;align-items:center;gap:13px;
+    padding:11px 16px;min-height:50px;
+    cursor:pointer;position:relative;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .mob-set-row:active{background:#F7F7FA;}
+  .mob-set-sep{height:0.5px;background:rgba(60,60,67,0.12);margin-left:59px;}
+  .mob-set-icon{
+    width:30px;height:30px;border-radius:8px;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .mob-set-row-title{
+    flex:1;font-size:16px;font-weight:500;
+    color:#1A1A1C;letter-spacing:-0.3px;
+  }
+  .mob-set-row-detail{
+    font-size:14.5px;color:rgba(60,60,67,0.55);
+    margin-right:2px;white-space:nowrap;
+  }
+
+  /* ── iOS 토글 ── */
+  .mob-ios-toggle{
+    width:51px;height:31px;border-radius:16px;flex-shrink:0;
+    cursor:pointer;padding:2px;
+    background:rgba(120,120,128,0.2);
+    transition:background .25s;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .mob-ios-toggle.on{background:#6667AB;}
+  .mob-ios-toggle-thumb{
+    width:27px;height:27px;border-radius:50%;
+    background:#fff;box-shadow:0 2px 5px rgba(0,0,0,0.18);
+    transform:translateX(0);
+    transition:transform .25s cubic-bezier(.34,1.4,.5,1);
+  }
+  .mob-ios-toggle.on .mob-ios-toggle-thumb{transform:translateX(20px);}
+
+  /* ── 프로필 카드 ── */
+  .mob-set-profile-card{
+    display:flex;align-items:center;gap:14px;
+    padding:16px;margin-bottom:0;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .mob-set-profile-card:active{background:#F7F7FA;}
+  .mob-set-profile-av-wrap{position:relative;flex-shrink:0;}
+  .mob-set-profile-av{
+    width:60px;height:60px;border-radius:50%;
+    background:#ECECF7;display:flex;align-items:center;
+    justify-content:center;font-size:30px;overflow:hidden;
+  }
+  .mob-set-profile-av img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+  .mob-set-av-badge{
+    position:absolute;bottom:2px;right:2px;
+    width:22px;height:22px;border-radius:50%;
+    background:#6667AB;border:2px solid #fff;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .mob-set-profile-info{flex:1;min-width:0;}
+  .mob-set-profile-name{
+    font-size:19px;font-weight:750;color:#1A1A1C;
+    letter-spacing:-0.4px;white-space:nowrap;
+    overflow:hidden;text-overflow:ellipsis;
+  }
+  .mob-set-profile-sub{
+    font-size:13.5px;color:rgba(60,60,67,0.62);margin-top:2px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+
+  /* ── 프로필 시트 아바타 ── */
+  .mob-profile-sheet-av{
+    width:80px;height:80px;border-radius:50%;
+    background:#ECECF7;display:flex;align-items:center;
+    justify-content:center;font-size:40px;
+    position:relative;cursor:pointer;overflow:hidden;
+  }
+  .mob-profile-sheet-av img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+
+  /* ── 설정 입력 필드 ── */
+  .mob-set-field-lbl{
+    font-size:12.5px;font-weight:600;color:rgba(60,60,67,0.55);
+    margin-bottom:7px;letter-spacing:0.2px;
+  }
+  .mob-set-field-inp{
+    width:100%;padding:13px 14px;border-radius:12px;
+    border:1.5px solid rgba(60,60,67,0.15);
+    background:#F7F7FA;
+    font-family:'Pretendard Variable',-apple-system,system-ui,sans-serif;
+    font-size:15px;color:#1A1A1C;outline:none;
+    transition:border-color .15s;
+    box-sizing:border-box;
+  }
+  .mob-set-field-inp:focus{
+    border-color:#6667AB;background:#fff;
+  }
+
+  /* ── 습관 관리 ── */
+  .mob-habits-row{
+    display:flex;align-items:center;gap:12px;
+    padding:12px 0;border-bottom:0.5px solid rgba(60,60,67,0.10);
+  }
+  .mob-habits-row:last-child{border-bottom:none;}
+  .mob-habits-dot{
+    width:7px;height:7px;border-radius:50%;
+    background:#6667AB;flex-shrink:0;
+  }
+  .mob-habits-name{
+    flex:1;font-size:15px;font-weight:500;color:#1A1A1C;
+    letter-spacing:-0.2px;
+  }
+  .mob-habits-del{
+    background:none;border:none;cursor:pointer;
+    color:rgba(60,60,67,0.35);font-size:18px;
+    padding:2px 4px;line-height:1;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .mob-habits-del:active{color:#FF6482;}
+  .mob-set-add-row{display:flex;gap:10px;align-items:center;}
+  .mob-set-add-btn{
+    padding:13px 18px;border-radius:12px;
+    background:#6667AB;color:#fff;border:none;
+    font-family:'Pretendard Variable',-apple-system,system-ui,sans-serif;
+    font-size:14px;font-weight:650;cursor:pointer;
+    white-space:nowrap;flex-shrink:0;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .mob-set-add-btn:active{opacity:0.85;}
+
+  /* ── Day One 안내 팝업 ── */
+  .mob-about-list{display:flex;flex-direction:column;gap:0;}
+  .mob-about-item{
+    display:flex;align-items:flex-start;gap:14px;
+    padding:14px 0;
+    border-bottom:0.5px solid rgba(60,60,67,0.10);
+  }
+  .mob-about-icon{
+    width:40px;height:40px;border-radius:12px;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;font-size:20px;
+  }
+  .mob-about-title{font-size:15px;font-weight:650;color:#1A1A1C;margin-bottom:3px;letter-spacing:-0.2px;}
+  .mob-about-sub{font-size:13px;color:rgba(60,60,67,0.62);line-height:1.55;}
+
   /* ── 바텀 시트 딤 ── */
   .mob-sheet-dim{
     position:fixed;inset:0;z-index:21000;
@@ -2105,7 +2255,218 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   </div>
 </div><!-- /mob-page-stats -->
 
-<!-- ── 일기 바텀 시트 ── -->
+<!-- ── 페이지: 설정 ── -->
+<div id="mob-page-settings" class="mob-page">
+  <div class="mob-header">
+    <div class="mob-header-left">
+      <div class="mob-large-title">설정</div>
+    </div>
+  </div>
+  <div class="mob-scroll">
+
+    <!-- 프로필 카드 -->
+    <div class="mob-group-card mob-set-profile-card" id="mob-set-profile-card" onclick="mobSetOpenProfile()">
+      <div class="mob-set-profile-av-wrap">
+        <div class="mob-set-profile-av" id="mob-set-av">🙂</div>
+        <div class="mob-set-av-badge">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 4.5l3 3L9 18l-4 1 1-4 10.5-10.5z"/></svg>
+        </div>
+      </div>
+      <div class="mob-set-profile-info">
+        <div class="mob-set-profile-name" id="mob-set-name">이름을 입력하세요</div>
+        <div class="mob-set-profile-sub" id="mob-set-bio">한 줄 소개를 입력하세요</div>
+      </div>
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,0.3)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+    </div>
+
+    <!-- 계정·동기화 -->
+    <div class="mob-set-section-lbl">계정 · 동기화</div>
+    <div class="mob-group-card">
+      <div class="mob-set-row" onclick="handleSyncClick()">
+        <div class="mob-set-icon" style="background:#E5EFF9;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3E83C4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4 4 0 0 1-.5-8A5.5 5.5 0 0 1 17 9.5 3.75 3.75 0 0 1 17 18z"/></svg>
+        </div>
+        <span class="mob-set-row-title">Google Drive 동기화</span>
+        <span class="mob-set-row-detail" id="mob-set-sync-lbl">LOGIN</span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,0.3)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+
+    <!-- 환경설정 -->
+    <div class="mob-set-section-lbl">환경설정</div>
+    <div class="mob-group-card">
+      <!-- 다크모드 -->
+      <div class="mob-set-row">
+        <div class="mob-set-icon" style="background:#EEF0FA;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#6667AB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>
+        </div>
+        <span class="mob-set-row-title">다크 모드</span>
+        <div class="mob-ios-toggle" id="mob-dark-toggle" onclick="mobToggleDark()">
+          <div class="mob-ios-toggle-thumb"></div>
+        </div>
+      </div>
+      <div class="mob-set-sep"></div>
+      <!-- 습관 관리 -->
+      <div class="mob-set-row" onclick="mobSetOpenHabits()">
+        <div class="mob-set-icon" style="background:#E6F7EB;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#34C759" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 9v4l2.5 1.5"/><path d="M9 2h6M12 2v3"/></svg>
+        </div>
+        <span class="mob-set-row-title">습관 관리</span>
+        <span class="mob-set-row-detail" id="mob-set-habit-cnt"></span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,0.3)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+
+    <!-- 데이터 -->
+    <div class="mob-set-section-lbl">데이터</div>
+    <div class="mob-group-card">
+      <div class="mob-set-row" onclick="exportData()">
+        <div class="mob-set-icon" style="background:#ECECF7;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#6667AB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V4"/><path d="M4 20h16"/><rect x="7" y="12" width="2.6" height="5" rx="1" fill="#6667AB" stroke="none"/><rect x="11.7" y="8" width="2.6" height="9" rx="1" fill="#6667AB" stroke="none"/><rect x="16.4" y="14" width="2.6" height="3" rx="1" fill="#6667AB" stroke="none"/></svg>
+        </div>
+        <span class="mob-set-row-title">데이터 내보내기</span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,0.3)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+      </div>
+      <div class="mob-set-sep"></div>
+      <div class="mob-set-row" onclick="mobSetImportData()">
+        <div class="mob-set-icon" style="background:#E6F7EB;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#34C759" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 13l5 5 5-5"/><path d="M5 21h14"/></svg>
+        </div>
+        <span class="mob-set-row-title">데이터 가져오기</span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,0.3)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+      </div>
+      <div class="mob-set-sep"></div>
+      <div class="mob-set-row" onclick="mobSetClearData()">
+        <div class="mob-set-icon" style="background:#FFE9EE;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FF6482" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+        </div>
+        <span class="mob-set-row-title" style="color:#FF6482;">데이터 초기화</span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,0.3)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+
+    <!-- 정보 -->
+    <div class="mob-set-section-lbl">정보</div>
+    <div class="mob-group-card">
+      <div class="mob-set-row" onclick="mobSetOpenAbout()">
+        <div class="mob-set-icon" style="background:#FFF3DF;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FF9F0A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l1.4 4.6L18 10l-4.6 1.4L12 16l-1.4-4.6L6 10l4.6-1.4z"/></svg>
+        </div>
+        <span class="mob-set-row-title">Day One 안내</span>
+        <span class="mob-set-row-detail">v2.0</span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,0.3)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+      </div>
+    </div>
+
+    <div style="height:100px;"></div>
+  </div>
+</div><!-- /mob-page-settings -->
+
+<!-- 숨겨진 파일 입력 (데이터 가져오기) -->
+<input type="file" id="mob-import-inp" accept=".json" style="display:none;" onchange="mobDoImport(event)">
+
+<!-- ── 프로필 편집 바텀시트 ── -->
+<div class="mob-sheet-dim" id="mob-profile-dim" onclick="mobCloseProfile()"></div>
+<div class="mob-sheet" id="mob-sheet-profile">
+  <div class="mob-sheet-handle"></div>
+  <div class="mob-sheet-inner">
+    <div class="mob-sheet-head">
+      <div class="mob-sheet-date">프로필 편집</div>
+      <button class="mob-sheet-close" onclick="mobCloseProfile()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <!-- 아바타 -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:22px;">
+      <div class="mob-profile-sheet-av" id="mob-profile-sheet-av" onclick="document.getElementById('mob-pf-img-inp').click()">
+        <div class="mob-set-av-badge" style="width:28px;height:28px;bottom:0;right:0;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 4.5l3 3L9 18l-4 1 1-4 10.5-10.5z"/></svg>
+        </div>
+      </div>
+      <input type="file" id="mob-pf-img-inp" accept="image/*" style="display:none;" onchange="mobProfileImgChange(event)">
+      <span style="font-size:13px;color:#6667AB;font-weight:600;">사진 변경</span>
+    </div>
+    <!-- 이름 -->
+    <div class="mob-set-field-lbl">이름</div>
+    <input class="mob-set-field-inp" id="mob-pf-name-inp" type="text" maxlength="20" placeholder="이름을 입력하세요">
+    <!-- 소개 -->
+    <div class="mob-set-field-lbl" style="margin-top:14px;">한 줄 소개</div>
+    <input class="mob-set-field-inp" id="mob-pf-bio-inp" type="text" maxlength="40" placeholder="한 줄 소개를 입력하세요">
+    <!-- 저장 버튼 -->
+    <button class="mob-sheet-edit-btn" style="margin-top:22px;" onclick="mobSaveProfile()">저장</button>
+  </div>
+</div>
+
+<!-- ── 습관 관리 바텀시트 ── -->
+<div class="mob-sheet-dim" id="mob-habits-dim" onclick="mobCloseHabits()"></div>
+<div class="mob-sheet" id="mob-sheet-habits">
+  <div class="mob-sheet-handle"></div>
+  <div class="mob-sheet-inner">
+    <div class="mob-sheet-head">
+      <div class="mob-sheet-date">습관 관리</div>
+      <button class="mob-sheet-close" onclick="mobCloseHabits()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div id="mob-habits-list" style="margin-bottom:16px;"></div>
+    <!-- 추가 입력 -->
+    <div class="mob-set-add-row">
+      <input class="mob-set-field-inp" id="mob-habit-new-inp" type="text" maxlength="20" placeholder="새 습관 이름..." style="flex:1;margin-bottom:0;">
+      <button class="mob-set-add-btn" onclick="mobAddHabit()">추가</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Day One 안내 팝업 ── -->
+<div class="mob-sheet-dim" id="mob-about-dim" onclick="mobCloseAbout()"></div>
+<div class="mob-sheet" id="mob-sheet-about">
+  <div class="mob-sheet-handle"></div>
+  <div class="mob-sheet-inner">
+    <div style="text-align:center;padding:10px 0 20px;">
+      <div style="font-size:48px;margin-bottom:10px;">✅</div>
+      <div style="font-size:22px;font-weight:800;color:#1A1A1C;letter-spacing:-0.5px;margin-bottom:6px;">Day One</div>
+      <div style="font-size:13px;color:rgba(60,60,67,0.55);font-weight:500;">v2.0 · 하루를 기록하는 가장 쉬운 방법</div>
+    </div>
+    <div class="mob-about-list">
+      <div class="mob-about-item">
+        <div class="mob-about-icon" style="background:#ECECF7;">✅</div>
+        <div>
+          <div class="mob-about-title">습관 트래커</div>
+          <div class="mob-about-sub">매일 체크하고 연속 기록을 이어가세요. 불꽃🔥이 쌓일수록 동기부여가 됩니다.</div>
+        </div>
+      </div>
+      <div class="mob-about-item">
+        <div class="mob-about-icon" style="background:#FFF3DF;">📓</div>
+        <div>
+          <div class="mob-about-title">하루 일기</div>
+          <div class="mob-about-sub">기분·제목·태그와 함께 오늘을 기록하세요. 나중에 돌아보면 소중한 기억이 됩니다.</div>
+        </div>
+      </div>
+      <div class="mob-about-item">
+        <div class="mob-about-icon" style="background:#E5EFF9;">📊</div>
+        <div>
+          <div class="mob-about-title">통계 & 인사이트</div>
+          <div class="mob-about-sub">달성률·체중 추이·기분 분포로 나의 패턴을 한눈에 확인하세요.</div>
+        </div>
+      </div>
+      <div class="mob-about-item">
+        <div class="mob-about-icon" style="background:#E6F7EB;">☁️</div>
+        <div>
+          <div class="mob-about-title">Google Drive 동기화</div>
+          <div class="mob-about-sub">PC와 모바일 어디서든 데이터를 이어갈 수 있습니다.</div>
+        </div>
+      </div>
+      <div class="mob-about-item" style="border-bottom:none;">
+        <div class="mob-about-icon" style="background:#FFE9EE;">🍽️</div>
+        <div>
+          <div class="mob-about-title">식사·운동·공부·체중</div>
+          <div class="mob-about-sub">하루의 모든 활동을 한 곳에서 기록하고 관리하세요.</div>
+        </div>
+      </div>
+    </div>
+    <button class="mob-sheet-edit-btn" style="margin-top:20px;" onclick="mobCloseAbout()">확인</button>
+  </div>
+</div>
 <div class="mob-sheet-dim" id="mob-sheet-dim" onclick="mobCloseSheet()"></div>
 <div class="mob-sheet" id="mob-sheet-diary">
   <div class="mob-sheet-handle"></div>
@@ -3974,7 +4335,7 @@ function mobGoPage(page){
     mobRenderCalendar();
   }
   if(page==='stats') mobRenderStats();
-  if(page==='settings') toast('준비 중입니다');
+  if(page==='settings') mobRenderSettings();
 }
 
 // ── 캘린더 상태 ──
@@ -4143,7 +4504,200 @@ function mobDiaryTap(){
 }
 
 // ── drawer 열기 (기존 함수 연결) ──
-// ── 통계 렌더 ──
+// ══ 설정 탭 JS ══
+
+// ── 설정 화면 진입 시 렌더 ──
+function mobRenderSettings(){
+  // 프로필
+  const img=localStorage.getItem('do_pf_img')||'';
+  const name=localStorage.getItem('do_pf_name')||'';
+  const bio=localStorage.getItem('do_pf_bio')||'';
+  const avEl=document.getElementById('mob-set-av');
+  if(avEl){
+    if(img)avEl.innerHTML=`<img src="${img}" alt="">`;
+    else avEl.textContent=name?name.charAt(0):'🙂';
+  }
+  const nameEl=document.getElementById('mob-set-name');
+  const bioEl=document.getElementById('mob-set-bio');
+  if(nameEl)nameEl.textContent=name||'이름을 입력하세요';
+  if(bioEl)bioEl.textContent=bio||'한 줄 소개를 입력하세요';
+
+  // 동기화 상태
+  const syncLbl=document.getElementById('mob-set-sync-lbl');
+  if(syncLbl)syncLbl.textContent=gAccessToken?'LOGOUT':'LOGIN';
+
+  // 다크모드 토글
+  const isDark=document.body.classList.contains('dark');
+  const toggle=document.getElementById('mob-dark-toggle');
+  if(toggle)toggle.classList.toggle('on',isDark);
+
+  // 습관 개수
+  const habitCnt=document.getElementById('mob-set-habit-cnt');
+  if(habitCnt)habitCnt.textContent=getHabits().length+'개';
+}
+
+// ── 다크모드 토글 ──
+function mobToggleDark(){
+  toggleDark(); // 기존 함수 재사용
+  const isDark=document.body.classList.contains('dark');
+  const toggle=document.getElementById('mob-dark-toggle');
+  if(toggle)toggle.classList.toggle('on',isDark);
+}
+
+// ── 프로필 시트 열기 ──
+function mobSetOpenProfile(){
+  const img=localStorage.getItem('do_pf_img')||'';
+  const name=localStorage.getItem('do_pf_name')||'';
+  const bio=localStorage.getItem('do_pf_bio')||'';
+  // 아바타 미리보기
+  const sheetAv=document.getElementById('mob-profile-sheet-av');
+  if(sheetAv){
+    // badge 유지하면서 이미지/이모지 교체
+    const badge=sheetAv.querySelector('.mob-set-av-badge');
+    sheetAv.innerHTML='';
+    if(img){
+      const im=document.createElement('img');im.src=img;sheetAv.appendChild(im);
+    } else {
+      sheetAv.textContent=name?name.charAt(0):'🙂';
+    }
+    if(badge)sheetAv.appendChild(badge);
+  }
+  // 입력값
+  const nameInp=document.getElementById('mob-pf-name-inp');
+  const bioInp=document.getElementById('mob-pf-bio-inp');
+  if(nameInp)nameInp.value=name;
+  if(bioInp)bioInp.value=bio;
+  document.getElementById('mob-profile-dim')?.classList.add('open');
+  document.getElementById('mob-sheet-profile')?.classList.add('open');
+}
+function mobCloseProfile(){
+  document.getElementById('mob-profile-dim')?.classList.remove('open');
+  document.getElementById('mob-sheet-profile')?.classList.remove('open');
+}
+
+// ── 프로필 사진 변경 ──
+function mobProfileImgChange(e){
+  const file=e.target.files?.[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const src=ev.target.result;
+    localStorage.setItem('do_pf_img',src);
+    // 시트 아바타 미리보기 갱신
+    const sheetAv=document.getElementById('mob-profile-sheet-av');
+    if(sheetAv){
+      const badge=sheetAv.querySelector('.mob-set-av-badge');
+      sheetAv.innerHTML='';
+      const im=document.createElement('img');im.src=src;sheetAv.appendChild(im);
+      if(badge)sheetAv.appendChild(badge);
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── 프로필 저장 ──
+function mobSaveProfile(){
+  const name=document.getElementById('mob-pf-name-inp')?.value?.trim()||'';
+  const bio=document.getElementById('mob-pf-bio-inp')?.value?.trim()||'';
+  localStorage.setItem('do_pf_name',name);
+  localStorage.setItem('do_pf_bio',bio);
+  loadProfile();        // PC 사이드바도 동기화
+  mobRenderSettings();  // 설정 카드 갱신
+  mobUpdateAvatar();    // 오늘 탭 아바타 갱신
+  mobCloseProfile();
+  toast('프로필 저장됨 ✓');
+}
+
+// ── 습관 관리 시트 ──
+function mobSetOpenHabits(){
+  mobRenderHabitSheet();
+  document.getElementById('mob-habits-dim')?.classList.add('open');
+  document.getElementById('mob-sheet-habits')?.classList.add('open');
+}
+function mobCloseHabits(){
+  document.getElementById('mob-habits-dim')?.classList.remove('open');
+  document.getElementById('mob-sheet-habits')?.classList.remove('open');
+}
+function mobRenderHabitSheet(){
+  const habits=getHabits();
+  const el=document.getElementById('mob-habits-list');
+  if(!el)return;
+  if(!habits.length){
+    el.innerHTML='<div style="padding:12px 0;text-align:center;font-size:14px;color:rgba(60,60,67,0.35);">습관이 없습니다</div>';
+    return;
+  }
+  el.innerHTML=habits.map((h,i)=>`
+    <div class="mob-habits-row">
+      <div class="mob-habits-dot"></div>
+      <span class="mob-habits-name">${h}</span>
+      <button class="mob-habits-del" onclick="mobDelHabit(${i})">×</button>
+    </div>`).join('');
+  // 개수 갱신
+  const cnt=document.getElementById('mob-set-habit-cnt');
+  if(cnt)cnt.textContent=habits.length+'개';
+}
+function mobAddHabit(){
+  const inp=document.getElementById('mob-habit-new-inp');
+  const v=inp?.value?.trim();
+  if(!v){toast('습관 이름을 입력하세요');return;}
+  const habits=getHabits();
+  if(habits.includes(v)){toast('이미 있는 습관입니다');return;}
+  habits.push(v);saveHabits(habits);
+  inp.value='';
+  mobRenderHabitSheet();
+  loadDay(curDateStr); // 오늘 탭 습관 리스트 갱신
+  if(window.innerWidth<=680)mobRender();
+  toast('습관 추가됨');
+}
+function mobDelHabit(i){
+  if(!confirm('이 습관을 삭제할까요?'))return;
+  const habits=getHabits();habits.splice(i,1);saveHabits(habits);
+  mobRenderHabitSheet();
+  loadDay(curDateStr);
+  if(window.innerWidth<=680)mobRender();
+  toast('습관 삭제됨');
+}
+
+// ── 데이터 가져오기 ──
+function mobSetImportData(){
+  document.getElementById('mob-import-inp')?.click();
+}
+function mobDoImport(e){
+  const file=e.target.files?.[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try{
+      const parsed=JSON.parse(ev.target.result);
+      if(parsed.habits)saveHabits(parsed.habits);
+      if(parsed.records)saveAllData(parsed.records);
+      loadDay(curDateStr);
+      if(window.innerWidth<=680)mobRender();
+      toast('데이터를 불러왔습니다 ✓');
+    }catch(err){
+      toast('파일 형식이 올바르지 않습니다');
+    }
+  };
+  reader.readAsText(file);
+  e.target.value=''; // 같은 파일 재선택 허용
+}
+
+// ── 데이터 초기화 ──
+function mobSetClearData(){
+  if(!confirm('모든 데이터를 삭제할까요?\n이 작업은 되돌릴 수 없습니다.'))return;
+  localStorage.removeItem('do_data');
+  loadDay(curDateStr);
+  if(window.innerWidth<=680)mobRender();
+  toast('데이터 초기화 완료');
+}
+
+// ── Day One 안내 ──
+function mobSetOpenAbout(){
+  document.getElementById('mob-about-dim')?.classList.add('open');
+  document.getElementById('mob-sheet-about')?.classList.add('open');
+}
+function mobCloseAbout(){
+  document.getElementById('mob-about-dim')?.classList.remove('open');
+  document.getElementById('mob-sheet-about')?.classList.remove('open');
+}
 function mobRenderStats(){
   const all=getAllData();
   const habits=getHabits();
