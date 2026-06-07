@@ -2367,12 +2367,12 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
     <!-- 아바타 -->
     <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:22px;">
       <div class="mob-profile-sheet-av" id="mob-profile-sheet-av" onclick="document.getElementById('mob-pf-img-inp').click()">
-        <div class="mob-set-av-badge" style="width:28px;height:28px;bottom:0;right:0;">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 4.5l3 3L9 18l-4 1 1-4 10.5-10.5z"/></svg>
+        <div class="mob-set-av-badge" style="width:28px;height:28px;bottom:0;right:0;pointer-events:none;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="pointer-events:none;"><path d="M16.5 4.5l3 3L9 18l-4 1 1-4 10.5-10.5z"/></svg>
         </div>
       </div>
       <input type="file" id="mob-pf-img-inp" accept="image/*" style="display:none;" onchange="mobProfileImgChange(event)">
-      <span style="font-size:13px;color:#6667AB;font-weight:600;">사진 변경</span>
+      <span style="font-size:13px;color:#6667AB;font-weight:600;cursor:pointer;" onclick="document.getElementById('mob-pf-img-inp').click()">사진 변경</span>
     </div>
     <!-- 이름 -->
     <div class="mob-set-field-lbl">이름</div>
@@ -4279,10 +4279,10 @@ function mobDelMealSlot(slot){
 function mobUpdateAvatar(){
   const el=document.getElementById('mob-avatar');
   if(!el)return;
-  const img=localStorage.getItem('do_pf_img');
+  const img=localStorage.getItem('do_pf_img')||localStorage.getItem('do_pf_google_img')||'';
   const name=localStorage.getItem('do_pf_name')||'';
   if(img){
-    el.innerHTML=`<img src="${img}" alt="">`;
+    el.innerHTML=`<img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
   }else{
     el.textContent=name?name.charAt(0):'🙂';
   }
@@ -4499,12 +4499,12 @@ function mobDiaryTap(){
 // ── 설정 화면 진입 시 렌더 ──
 function mobRenderSettings(){
   // 프로필
-  const img=localStorage.getItem('do_pf_img')||'';
+  const img=localStorage.getItem('do_pf_img')||localStorage.getItem('do_pf_google_img')||'';
   const name=localStorage.getItem('do_pf_name')||'';
   const bio=localStorage.getItem('do_pf_bio')||'';
   const avEl=document.getElementById('mob-set-av');
   if(avEl){
-    if(img)avEl.innerHTML=`<img src="${img}" alt="">`;
+    if(img)avEl.innerHTML=`<img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
     else avEl.textContent=name?name.charAt(0):'🙂';
   }
   const nameEl=document.getElementById('mob-set-name');
@@ -4512,9 +4512,10 @@ function mobRenderSettings(){
   if(nameEl)nameEl.textContent=name||'이름을 입력하세요';
   if(bioEl)bioEl.textContent=bio||'한 줄 소개를 입력하세요';
 
-  // 동기화 상태 — updateSyncUI() 호출 시 자동 갱신됨
+  // 동기화 상태 — localStorage 토큰으로 직접 판단 (gAccessToken 비동기 로드 무관)
   const syncLbl=document.getElementById('mob-set-sync-lbl');
-  if(syncLbl)syncLbl.textContent=gAccessToken?'LOGOUT':'LOGIN';
+  const hasToken=!!(gAccessToken||localStorage.getItem('g_token'));
+  if(syncLbl)syncLbl.textContent=hasToken?'LOGOUT':'LOGIN';
 
   // 습관 개수
   const habitCnt=document.getElementById('mob-set-habit-cnt');
@@ -4523,7 +4524,7 @@ function mobRenderSettings(){
 
 // ── 프로필 시트 열기 ──
 function mobSetOpenProfile(){
-  const img=localStorage.getItem('do_pf_img')||'';
+  const img=localStorage.getItem('do_pf_img')||localStorage.getItem('do_pf_google_img')||'';
   const name=localStorage.getItem('do_pf_name')||'';
   const bio=localStorage.getItem('do_pf_bio')||'';
   mobProfileSheetAvUpdate(img,name);
@@ -4974,13 +4975,15 @@ function loadGoogleAPI(){
       clearInterval(waitGsi);
       gTokenClient=google.accounts.oauth2.initTokenClient({
         client_id:G_CLIENT_ID,
-        scope:G_SCOPES,
+        scope:G_SCOPES+' https://www.googleapis.com/auth/userinfo.profile',
         callback:(resp)=>{
           if(resp.error){toast('Google 연동 실패: '+resp.error);return;}
           gAccessToken=resp.access_token;
           localStorage.setItem('g_token',resp.access_token);
           updateSyncUI(true);
           toast('Google 로그인 완료 — Drive에서 데이터를 불러옵니다...');
+          // 구글 프로필 사진·이름 가져오기
+          fetchGoogleProfile(resp.access_token);
           // 로그인 즉시 Drive에서 불러오기
           syncFromDrive();
         }
@@ -5042,7 +5045,10 @@ function handleSyncClick(){
       syncToDrive().then(()=>{
         gAccessToken=null;
         localStorage.removeItem('g_token');
+        localStorage.removeItem('do_pf_google_img');
         updateSyncUI(false);
+        mobUpdateAvatar();
+        mobRenderSettings();
         toast('로그아웃됨');
       });
     }
@@ -5055,6 +5061,30 @@ function handleSyncClick(){
 
 function handleMobGoogleClick(){
   handleSyncClick();
+}
+
+// 구글 프로필 사진·이름 가져오기
+async function fetchGoogleProfile(token){
+  try{
+    const res=await fetch('https://www.googleapis.com/oauth2/v3/userinfo',{
+      headers:{'Authorization':'Bearer '+token}
+    });
+    const info=await res.json();
+    // 이름: 기존 프로필 이름이 없을 때만 덮어씀
+    if(info.name&&!localStorage.getItem('do_pf_name')){
+      localStorage.setItem('do_pf_name',info.name);
+    }
+    // 프로필 사진: 구글 사진 URL 저장 (로컬 사진 없을 때만)
+    if(info.picture&&!localStorage.getItem('do_pf_img')){
+      localStorage.setItem('do_pf_google_img',info.picture);
+    }
+    // UI 갱신
+    loadProfile();
+    mobUpdateAvatar();
+    mobRenderSettings();
+  }catch(e){
+    console.log('fetchGoogleProfile error',e);
+  }
 }
 
 // Drive에 저장
