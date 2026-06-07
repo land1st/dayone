@@ -775,7 +775,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   }
   .mob-date-kicker{
     font-size:13.5px;font-weight:650;color:#6667AB;
-    letter-spacing:0.2px;margin-bottom:3px;
+    letter-spacing:0.2px;margin-bottom:8px;
   }
   .mob-large-title{
     font-size:34px;font-weight:800;letter-spacing:-0.8px;
@@ -860,8 +860,8 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
     padding:0 4px 7px;margin:0 20px;
   }
   .mob-section-title{
-    font-size:13px;font-weight:600;letter-spacing:0.2px;
-    color:rgba(60,60,67,0.62);text-transform:uppercase;
+    font-size:16px;font-weight:700;letter-spacing:-0.2px;
+    color:#1A1A1C;text-transform:none;
   }
   .mob-section-action{
     font-size:13px;font-weight:650;color:rgba(60,60,67,0.62);
@@ -3308,14 +3308,57 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 <!-- ══════ MOB JS : 모바일 전용 로직 — PC 함수 건드리지 않음 ══════ -->
 <script>
-// ── 습관별 이모지/컬러 매핑 ──
-const MOB_HABIT_STYLES=[
-  {emoji:'💧',bg:'#E5EFF9'},{emoji:'🏃',bg:'#E6F7EB'},{emoji:'📖',bg:'#FFF3DF'},
-  {emoji:'💊',bg:'#FFE9EE'},{emoji:'🧘',bg:'#ECECF7'},{emoji:'🌙',bg:'#EEF0FA'},
-  {emoji:'📵',bg:'#F7F7FA'},{emoji:'✅',bg:'#E6F7EB'},{emoji:'🎯',bg:'#ECECF7'},
-  {emoji:'⭐',bg:'#FFF3DF'},{emoji:'🔥',bg:'#FFE9EE'},{emoji:'💪',bg:'#E6F7EB'},
+// ── 습관 이름 → 연관 이모지/컬러 매핑 ──
+const MOB_HABIT_KEYWORD_MAP=[
+  // 물/수분
+  {keys:['물','수분','음수','hydrat'],emoji:'💧',bg:'#E5EFF9'},
+  // 운동/달리기/걷기/헬스
+  {keys:['운동','달리기','걷기','헬스','러닝','조깅','스쿼트','플랭크','수영'],emoji:'🏃',bg:'#E6F7EB'},
+  // 독서/책/읽기
+  {keys:['독서','책','읽기','read'],emoji:'📖',bg:'#FFF3DF'},
+  // 영양제/비타민/약
+  {keys:['영양제','비타민','약','supplement'],emoji:'💊',bg:'#FFE9EE'},
+  // 명상/마음챙김/요가
+  {keys:['명상','마음','요가','breath','meditation'],emoji:'🧘',bg:'#ECECF7'},
+  // 취침/수면/잠
+  {keys:['취침','수면','잠','sleep','자기'],emoji:'🌙',bg:'#EEF0FA'},
+  // 디지털/스마트폰/SNS
+  {keys:['디지털','스마트폰','sns','핸드폰','폰','유튜브','인스타'],emoji:'📵',bg:'#F7F7FA'},
+  // 일기/기록/journal
+  {keys:['일기','기록','journal','write'],emoji:'✏️',bg:'#FFF3DF'},
+  // 스트레칭/유연성
+  {keys:['스트레칭','스트레치','유연'],emoji:'🤸',bg:'#E6F7EB'},
+  // 아침/기상/모닝
+  {keys:['아침','기상','모닝','morning'],emoji:'🌅',bg:'#FFF3DF'},
+  // 식단/다이어트/채소/과일
+  {keys:['식단','다이어트','채소','과일','샐러드','건강식'],emoji:'🥗',bg:'#E6F7EB'},
+  // 커피/카페인
+  {keys:['커피','카페인','coffee'],emoji:'☕',bg:'#FFF3DF'},
+  // 공부/학습/영어
+  {keys:['공부','학습','영어','어학','강의','수업'],emoji:'📚',bg:'#E5EFF9'},
+  // 청소/정리
+  {keys:['청소','정리','clean'],emoji:'🧹',bg:'#F0F7FF'},
+  // 감사/긍정
+  {keys:['감사','긍정','gratitude'],emoji:'🙏',bg:'#ECECF7'},
+  // 목표/계획
+  {keys:['목표','계획','plan','goal'],emoji:'🎯',bg:'#ECECF7'},
+  // 금연/금주
+  {keys:['금연','담배','금주','술'],emoji:'🚭',bg:'#FFE9EE'},
+  // 체중/몸무게
+  {keys:['체중','몸무게','weight','저울'],emoji:'⚖️',bg:'#F7F7FA'},
 ];
-function mobHabitStyle(idx){return MOB_HABIT_STYLES[idx%MOB_HABIT_STYLES.length];}
+const MOB_HABIT_DEFAULT=[
+  {emoji:'✅',bg:'#E6F7EB'},{emoji:'⭐',bg:'#FFF3DF'},{emoji:'🔥',bg:'#FFE9EE'},
+  {emoji:'💪',bg:'#E6F7EB'},{emoji:'🎯',bg:'#ECECF7'},{emoji:'📌',bg:'#F7F7FA'},
+];
+
+function mobHabitStyle(idx,habitName){
+  const name=(habitName||'').toLowerCase();
+  for(const item of MOB_HABIT_KEYWORD_MAP){
+    if(item.keys.some(k=>name.includes(k)))return{emoji:item.emoji,bg:item.bg};
+  }
+  return MOB_HABIT_DEFAULT[idx%MOB_HABIT_DEFAULT.length];
+}
 
 // ── 날짜 키커 포맷 ──
 function mobDateKicker(str){
@@ -3378,7 +3421,7 @@ function mobRenderHabits(d,habits){
   }
   el.innerHTML=habits.map((h,i)=>{
     const on=!!(d.habits&&d.habits[h]);
-    const st=mobHabitStyle(i);
+    const st=mobHabitStyle(i,h);
     // streak 계산: 오늘 포함 연속일수
     let streak=0;
     if(on){
