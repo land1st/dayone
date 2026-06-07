@@ -740,6 +740,290 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   .do-card{border-radius:16px;padding:14px 14px 12px;}
   .do-card-head{margin-bottom:10px;}
   .weight-graph-wrap{display:none;}
+
+  /* ── 모바일에서 기존 PC 구조 완전 숨김 ── */
+  #pc-root{display:none !important;}
+  .mobile-topbar{display:none !important;}
+  .mobile-tab-bar{display:none !important;}
+  .drawer-overlay{display:none !important;}
+}
+
+/* ════════════════════════════════════════════
+   MOB-ROOT 전용 스타일 — 모든 클래스 mob- 접두사
+   PC(681px+)에서는 mob-root 자체를 숨김
+   ════════════════════════════════════════════ */
+@media(min-width:681px){
+  #mob-root{display:none !important;}
+}
+@media(max-width:680px){
+  #mob-root{
+    display:flex;flex-direction:column;
+    position:fixed;inset:0;z-index:9999;
+    background:#EFEFF4;
+    font-family:'Pretendard Variable',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    overflow:hidden;
+  }
+
+  /* 상태바 여백 */
+  .mob-statusbar{height:env(safe-area-inset-top,44px);flex-shrink:0;}
+
+  /* 헤더 */
+  .mob-header{
+    display:flex;align-items:flex-end;justify-content:space-between;
+    padding:6px 20px 14px;flex-shrink:0;
+    background:#EFEFF4;
+  }
+  .mob-date-kicker{
+    font-size:13.5px;font-weight:650;color:#6667AB;
+    letter-spacing:0.2px;margin-bottom:3px;
+  }
+  .mob-large-title{
+    font-size:34px;font-weight:800;letter-spacing:-0.8px;
+    color:#1A1A1C;line-height:1;
+  }
+  .mob-avatar{
+    width:40px;height:40px;border-radius:50%;
+    background:#fff;
+    box-shadow:0 2px 8px rgba(40,40,70,0.12);
+    display:flex;align-items:center;justify-content:center;
+    font-size:21px;flex-shrink:0;cursor:pointer;
+    overflow:hidden;
+  }
+  .mob-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+
+  /* 스크롤 영역 */
+  .mob-scroll{
+    flex:1;overflow-y:auto;
+    padding-top:4px;
+    -webkit-overflow-scrolling:touch;
+    padding-bottom:env(safe-area-inset-bottom,20px);
+  }
+  .mob-scroll::-webkit-scrollbar{display:none;}
+
+  /* ── 히어로 카드 ── */
+  .mob-hero{
+    margin:0 16px 22px;border-radius:26px;
+    padding:20px 18px 16px;
+    background:linear-gradient(150deg,#6667AB 0%,#54549A 62%,#46467F 100%);
+    box-shadow:0 10px 26px rgba(102,103,171,0.34);
+    position:relative;overflow:hidden;
+  }
+  .mob-hero-deco{position:absolute;border-radius:50%;pointer-events:none;}
+  .mob-hero-deco1{width:170px;height:170px;right:-50px;top:-50px;background:rgba(255,255,255,0.08);}
+  .mob-hero-deco2{width:150px;height:150px;left:-30px;bottom:-60px;background:rgba(255,255,255,0.05);}
+  .mob-hero-top{display:flex;align-items:center;gap:16px;position:relative;}
+
+  /* 링 */
+  .mob-ring-wrap{position:relative;width:84px;height:84px;flex-shrink:0;}
+  .mob-ring-svg{width:84px;height:84px;transform:rotate(-90deg);}
+  .mob-ring-track{fill:none;stroke:rgba(255,255,255,0.22);stroke-width:9;}
+  .mob-ring-fill{
+    fill:none;stroke:#fff;stroke-width:9;stroke-linecap:round;
+    stroke-dasharray:235.6;stroke-dashoffset:235.6;
+    transition:stroke-dashoffset .6s cubic-bezier(.34,1.3,.5,1);
+  }
+  .mob-ring-label{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-size:18px;font-weight:800;color:#fff;letter-spacing:-0.5px;
+  }
+
+  /* 히어로 텍스트 */
+  .mob-hero-info{flex:1;}
+  .mob-hero-eyebrow{
+    font-size:12.5px;font-weight:600;color:rgba(255,255,255,0.7);
+    letter-spacing:0.4px;text-transform:uppercase;margin-bottom:4px;
+  }
+  .mob-hero-count{display:flex;align-items:baseline;gap:4px;}
+  .mob-hero-done{font-size:40px;font-weight:820;color:#fff;letter-spacing:-1.5px;line-height:1;}
+  .mob-hero-total{font-size:19px;font-weight:650;color:rgba(255,255,255,0.6);}
+  .mob-hero-sub{font-size:13px;font-weight:550;color:rgba(255,255,255,0.8);margin-top:5px;}
+
+  /* 히어로 타일 */
+  .mob-hero-tiles{display:flex;gap:8px;margin-top:16px;position:relative;}
+  .mob-hero-tile{
+    flex:1;background:rgba(255,255,255,0.14);border-radius:15px;
+    padding:11px 8px 10px;display:flex;flex-direction:column;
+    align-items:center;gap:5px;
+    border:0.5px solid rgba(255,255,255,0.18);
+  }
+  .mob-tile-icon{width:19px;height:19px;flex-shrink:0;}
+  .mob-tile-val{
+    display:flex;align-items:baseline;gap:2px;white-space:nowrap;
+    font-size:17px;font-weight:750;color:#fff;letter-spacing:-0.3px;
+  }
+  .mob-tile-unit{font-size:10.5px;font-weight:600;color:rgba(255,255,255,0.7);}
+  .mob-tile-lbl{font-size:11px;font-weight:500;color:rgba(255,255,255,0.62);white-space:nowrap;}
+
+  /* ── 섹션 라벨 ── */
+  .mob-section-label{
+    display:flex;align-items:flex-end;justify-content:space-between;
+    padding:0 4px 7px;margin:0 20px;
+  }
+  .mob-section-title{
+    font-size:13px;font-weight:600;letter-spacing:0.2px;
+    color:rgba(60,60,67,0.62);text-transform:uppercase;
+  }
+  .mob-section-action{
+    font-size:13px;font-weight:650;color:rgba(60,60,67,0.62);
+    display:flex;align-items:center;
+  }
+  .mob-action-tint{color:#6667AB;}
+
+  /* ── 그룹 카드 ── */
+  .mob-group-card{
+    background:#fff;border-radius:22px;
+    margin:0 16px;
+    box-shadow:0 1px 1px rgba(0,0,0,0.03),0 6px 18px rgba(40,40,70,0.05);
+    overflow:hidden;
+  }
+
+  /* ── 습관 행 ── */
+  .mob-habit-row{
+    display:flex;align-items:center;gap:13px;
+    padding:13px 16px;cursor:pointer;
+    position:relative;user-select:none;
+    -webkit-tap-highlight-color:transparent;
+    background:#fff;
+  }
+  .mob-habit-row:active{background:#F7F7FA;}
+  .mob-habit-sep{
+    position:absolute;left:63px;right:0;bottom:0;
+    height:0.5px;background:rgba(60,60,67,0.13);
+  }
+  .mob-habit-emoji{
+    width:34px;height:34px;border-radius:10px;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;font-size:18px;
+  }
+  .mob-habit-text{flex:1;min-width:0;}
+  .mob-habit-name{
+    font-size:16px;font-weight:550;letter-spacing:-0.3px;
+    color:#1A1A1C;transition:color .2s;
+    display:block;
+  }
+  .mob-habit-name.done{
+    color:rgba(60,60,67,0.34);
+    text-decoration:line-through;
+    text-decoration-color:rgba(60,60,67,0.34);
+  }
+  .mob-habit-streak{
+    display:flex;align-items:center;gap:3px;margin-top:2px;
+  }
+  .mob-streak-txt{font-size:11.5px;font-weight:600;color:#FF9F0A;}
+  .mob-ios-check{
+    width:27px;height:27px;border-radius:50%;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    transition:all .22s cubic-bezier(.34,1.4,.5,1);
+  }
+  .mob-ios-check.off{border:2px solid rgba(60,60,67,0.22);background:transparent;}
+  .mob-ios-check.on{border:1px solid #6667AB;background:#6667AB;}
+  .mob-ios-check.on svg{animation:mobCheckPop .3s cubic-bezier(.34,1.5,.5,1);}
+  @keyframes mobCheckPop{from{transform:scale(0.6);}to{transform:scale(1);}}
+
+  /* ── 일기 카드 ── */
+  .mob-diary-card{padding:16px;cursor:pointer;}
+  .mob-diary-card:active{background:#F7F7FA;}
+  .mob-diary-head{display:flex;align-items:center;gap:11px;margin-bottom:11px;}
+  .mob-diary-emoji-chip{
+    width:42px;height:42px;border-radius:13px;
+    background:#FFF3DF;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;font-size:23px;
+  }
+  .mob-diary-meta{flex:1;}
+  .mob-diary-title-txt{font-size:16px;font-weight:650;color:#1A1A1C;letter-spacing:-0.3px;}
+  .mob-diary-sub{font-size:12.5px;font-weight:500;color:rgba(60,60,67,0.62);margin-top:1px;}
+  .mob-diary-time{font-size:11.5px;font-weight:600;color:rgba(60,60,67,0.34);}
+  .mob-diary-body{
+    font-size:14.5px;line-height:1.62;color:rgba(60,60,67,0.62);
+    letter-spacing:-0.2px;
+    /* 3줄 clamp */
+    display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+  }
+  .mob-diary-tags{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;}
+  .mob-diary-tag{
+    font-size:12px;font-weight:600;color:#6667AB;
+    background:#ECECF7;padding:4px 10px;border-radius:8px;
+  }
+  .mob-diary-empty{
+    padding:28px 16px;text-align:center;
+    font-size:14px;color:rgba(60,60,67,0.34);
+  }
+  .mob-diary-empty-icon{font-size:28px;margin-bottom:8px;}
+  .mob-diary-empty-cta{
+    display:inline-flex;align-items:center;gap:5px;
+    margin-top:10px;padding:8px 18px;border-radius:12px;
+    background:#ECECF7;color:#6667AB;
+    font-size:13px;font-weight:650;cursor:pointer;
+  }
+
+  /* ── 식사 행 ── */
+  .mob-meal-row{
+    display:flex;align-items:center;gap:13px;
+    padding:13px 16px;position:relative;
+  }
+  .mob-meal-sep{
+    position:absolute;left:63px;right:0;bottom:0;
+    height:0.5px;background:rgba(60,60,67,0.13);
+  }
+  .mob-meal-emoji{
+    width:34px;height:34px;border-radius:10px;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;font-size:18px;
+  }
+  .mob-meal-emoji.done{background:#FFF3DF;}
+  .mob-meal-emoji.empty{background:#F7F7FA;filter:grayscale(1);opacity:.5;}
+  .mob-meal-info{flex:1;min-width:0;}
+  .mob-meal-slot{font-size:12px;font-weight:600;color:rgba(60,60,67,0.62);margin-bottom:1px;}
+  .mob-meal-name{font-size:15.5px;font-weight:550;letter-spacing:-0.3px;}
+  .mob-meal-name.done{color:#1A1A1C;}
+  .mob-meal-name.empty{color:rgba(60,60,67,0.34);}
+  .mob-meal-add{
+    width:26px;height:26px;border-radius:50%;
+    background:#ECECF7;display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+
+  /* ── FAB ── */
+  .mob-fab{
+    position:fixed;right:18px;
+    bottom:calc(86px + env(safe-area-inset-bottom,0px) + 14px);
+    z-index:10001;
+    width:56px;height:56px;border-radius:19px;
+    background:linear-gradient(150deg,#6667AB,#54549A);
+    box-shadow:0 8px 20px rgba(102,103,171,0.42),inset 0 1px 1px rgba(255,255,255,0.25);
+    display:flex;align-items:center;justify-content:center;
+    border:none;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+    transition:transform .18s cubic-bezier(.34,1.4,.5,1);
+  }
+  .mob-fab:active{transform:scale(0.92);}
+
+  /* ── 탭바 ── */
+  .mob-tabbar{
+    position:fixed;left:0;right:0;bottom:0;
+    height:calc(64px + env(safe-area-inset-bottom,0px));
+    z-index:10000;flex-shrink:0;
+  }
+  .mob-tabbar-glass{
+    position:absolute;inset:0;
+    backdrop-filter:blur(22px) saturate(180%);
+    -webkit-backdrop-filter:blur(22px) saturate(180%);
+    background:rgba(248,248,252,0.82);
+    border-top:0.5px solid rgba(60,60,67,0.14);
+  }
+  .mob-tabs{
+    position:relative;display:flex;width:100%;
+    padding:9px 6px 0;
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  .mob-tab{
+    flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;
+    cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;
+    color:rgba(60,60,67,0.45);
+  }
+  .mob-tab svg{stroke:currentColor;transition:stroke .15s;}
+  .mob-tab span{font-size:10.5px;font-weight:550;letter-spacing:-0.1px;white-space:nowrap;}
+  .mob-tab.active{color:#6667AB;}
+  .mob-tab.active svg{stroke-width:2.1;}
+  .mob-tab.active span{font-weight:700;}
 }
 </style>
 </head>
@@ -854,7 +1138,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
 </div>
 
 <!-- ══════ SIDEBAR ══════ -->
-<div class="pc-wrap">
+<div class="pc-wrap" id="pc-root">
 <div class="sidebar" id="sidebar">
   <div class="logo-wrap" onclick="goPage('dashboard')">
     <div class="logo">DAY ONE</div>
@@ -1379,6 +1663,123 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   </div>
 </div><!-- /main -->
 </div><!-- /pc-wrap -->
+
+<!-- ══════════════════════════════════════════
+     MOB-ROOT : 모바일 전용 (≤680px) — PC 코드와 완전 분리
+     모든 클래스는 mob- 접두사로 네임스페이스 격리
+     ══════════════════════════════════════════ -->
+<div id="mob-root">
+
+<!-- ── 모바일 상태바 여백 ── -->
+<div class="mob-statusbar"></div>
+
+<!-- ── 헤더: 날짜 + 타이틀 + 아바타 ── -->
+<div class="mob-header" id="mob-header">
+  <div class="mob-header-left">
+    <div class="mob-date-kicker" id="mob-kicker"></div>
+    <div class="mob-large-title">오늘</div>
+  </div>
+  <div class="mob-avatar" id="mob-avatar" onclick="mobOpenDrawer()">🙂</div>
+</div>
+
+<!-- ── 스크롤 영역 ── -->
+<div class="mob-scroll" id="mob-scroll">
+
+  <!-- 히어로 카드 -->
+  <div class="mob-hero" id="mob-hero">
+    <div class="mob-hero-deco mob-hero-deco1"></div>
+    <div class="mob-hero-deco mob-hero-deco2"></div>
+    <div class="mob-hero-top">
+      <div class="mob-ring-wrap" id="mob-ring-wrap">
+        <svg class="mob-ring-svg" viewBox="0 0 84 84">
+          <circle class="mob-ring-track" cx="42" cy="42" r="37.5"/>
+          <circle class="mob-ring-fill" id="mob-ring-fill" cx="42" cy="42" r="37.5"/>
+        </svg>
+        <div class="mob-ring-label" id="mob-ring-pct">0%</div>
+      </div>
+      <div class="mob-hero-info">
+        <div class="mob-hero-eyebrow">오늘의 완료</div>
+        <div class="mob-hero-count">
+          <span class="mob-hero-done" id="mob-hero-done">0</span>
+          <span class="mob-hero-total" id="mob-hero-total">/ 0</span>
+        </div>
+        <div class="mob-hero-sub" id="mob-hero-sub">기록을 시작하세요</div>
+      </div>
+    </div>
+    <div class="mob-hero-tiles">
+      <div class="mob-hero-tile" id="mob-tile-ex">
+        <svg class="mob-tile-icon" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.92)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 8v8M4 9.5v5M17.5 8v8M20 9.5v5M6.5 12h11"/></svg>
+        <div class="mob-tile-val"><span id="mob-tile-ex-val">0</span><span class="mob-tile-unit">분</span></div>
+        <div class="mob-tile-lbl">운동</div>
+      </div>
+      <div class="mob-hero-tile" id="mob-tile-study">
+        <svg class="mob-tile-icon" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.92)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10.5 5 8 4.5 4.5 5v12.5C8 17 10.5 17.5 12 19M12 6.5C13.5 5 16 4.5 19.5 5v12.5C16 17 13.5 17.5 12 19M12 6.5V19"/></svg>
+        <div class="mob-tile-val"><span id="mob-tile-study-val">0</span><span class="mob-tile-unit">분</span></div>
+        <div class="mob-tile-lbl">공부</div>
+      </div>
+      <div class="mob-hero-tile" id="mob-tile-wt">
+        <svg class="mob-tile-icon" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.92)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v3"/><circle cx="12" cy="4" r="1.1" fill="rgba(255,255,255,0.92)" stroke="none"/><rect x="4" y="7" width="16" height="13" rx="3"/><path d="M9 13a3 3 0 0 1 6 0"/></svg>
+        <div class="mob-tile-val"><span id="mob-tile-wt-val">--</span><span class="mob-tile-unit" id="mob-tile-wt-unit">kg</span></div>
+        <div class="mob-tile-lbl">체중</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 습관 섹션 -->
+  <div class="mob-section-label">
+    <span class="mob-section-title">습관 체크</span>
+    <span class="mob-section-action" id="mob-habit-count"></span>
+  </div>
+  <div class="mob-group-card" id="mob-habit-list"></div>
+
+  <!-- 일기 섹션 -->
+  <div class="mob-section-label" style="margin-top:22px;">
+    <span class="mob-section-title">오늘의 일기</span>
+    <span class="mob-section-action mob-action-tint" onclick="openDiaryEditor()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 4.5l3 3L9 18l-4 1 1-4 10.5-10.5z"/></svg>
+    </span>
+  </div>
+  <div class="mob-group-card mob-diary-card" id="mob-diary-preview" onclick="mobDiaryTap()"></div>
+
+  <!-- 식사 섹션 -->
+  <div class="mob-section-label" style="margin-top:22px;">
+    <span class="mob-section-title">식사 기록</span>
+    <span class="mob-section-action" id="mob-meal-kcal"></span>
+  </div>
+  <div class="mob-group-card" id="mob-meal-list"></div>
+
+  <div style="height:100px;"></div>
+</div><!-- /mob-scroll -->
+
+<!-- ── FAB ── -->
+<button class="mob-fab" id="mob-fab" onclick="openModal('meal')">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v12M6 12h12"/></svg>
+</button>
+
+<!-- ── 탭바 ── -->
+<div class="mob-tabbar">
+  <div class="mob-tabbar-glass"></div>
+  <div class="mob-tabs">
+    <div class="mob-tab active" id="mtab2-today" onclick="mobGoPage('today')">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 1.5"/><path d="M9 2h6M12 2v3"/></svg>
+      <span>오늘</span>
+    </div>
+    <div class="mob-tab" id="mtab2-calendar" onclick="mobGoPage('calendar')">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="3.2"/><path d="M3.5 9.5h17M8 3v3.5M16 3v3.5"/></svg>
+      <span>캘린더</span>
+    </div>
+    <div class="mob-tab" id="mtab2-stats" onclick="mobGoPage('stats')">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V4"/><path d="M4 20h16"/><rect x="7" y="12" width="2.6" height="5" rx="1" fill="currentColor" stroke="none"/><rect x="11.7" y="8" width="2.6" height="9" rx="1" fill="currentColor" stroke="none"/><rect x="16.4" y="14" width="2.6" height="3" rx="1" fill="currentColor" stroke="none"/></svg>
+      <span>통계</span>
+    </div>
+    <div class="mob-tab" id="mtab2-settings" onclick="mobGoPage('settings')">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5l1.3 2.1 2.4-.5.4 2.4 2.2 1-.9 2.3 1.6 1.8-1.6 1.8.9 2.3-2.2 1-.4 2.4-2.4-.5L12 21.5l-1.3-2.1-2.4.5-.4-2.4-2.2-1 .9-2.3L3 12l1.6-1.8-.9-2.3 2.2-1 .4-2.4 2.4.5z"/></svg>
+      <span>설정</span>
+    </div>
+  </div>
+</div>
+
+</div><!-- /mob-root -->
 
 <!-- MODALS -->
 <div class="modal-bg" id="modal-study">
@@ -2899,7 +3300,278 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   // Google API 초기화
   loadGoogleAPI();
+
+  // 모바일 전용 초기화
+  if(window.innerWidth<=680){mobInit();}
 });
+</script>
+
+<!-- ══════ MOB JS : 모바일 전용 로직 — PC 함수 건드리지 않음 ══════ -->
+<script>
+// ── 습관별 이모지/컬러 매핑 ──
+const MOB_HABIT_STYLES=[
+  {emoji:'💧',bg:'#E5EFF9'},{emoji:'🏃',bg:'#E6F7EB'},{emoji:'📖',bg:'#FFF3DF'},
+  {emoji:'💊',bg:'#FFE9EE'},{emoji:'🧘',bg:'#ECECF7'},{emoji:'🌙',bg:'#EEF0FA'},
+  {emoji:'📵',bg:'#F7F7FA'},{emoji:'✅',bg:'#E6F7EB'},{emoji:'🎯',bg:'#ECECF7'},
+  {emoji:'⭐',bg:'#FFF3DF'},{emoji:'🔥',bg:'#FFE9EE'},{emoji:'💪',bg:'#E6F7EB'},
+];
+function mobHabitStyle(idx){return MOB_HABIT_STYLES[idx%MOB_HABIT_STYLES.length];}
+
+// ── 날짜 키커 포맷 ──
+function mobDateKicker(str){
+  const d=new Date(str+'T00:00:00');
+  const dn=['일','월','화','수','목','금','토'];
+  return (d.getMonth()+1)+'월 '+d.getDate()+'일 '+dn[d.getDay()]+'요일';
+}
+
+// ── 링 채우기 ──
+function mobSetRing(pct){
+  const c=2*Math.PI*37.5; // r=37.5
+  const fill=document.getElementById('mob-ring-fill');
+  if(fill)fill.style.strokeDashoffset=(c-(c*Math.min(pct,100)/100)).toFixed(2);
+  const lbl=document.getElementById('mob-ring-pct');
+  if(lbl)lbl.textContent=pct+'%';
+}
+
+// ── 히어로 카드 렌더 ──
+function mobRenderHero(d,habits){
+  const done=habits.filter(h=>d.habits&&d.habits[h]).length;
+  const total=habits.length;
+  const pct=total?Math.round(done/total*100):0;
+  mobSetRing(pct);
+  const doneEl=document.getElementById('mob-hero-done');
+  const totalEl=document.getElementById('mob-hero-total');
+  const subEl=document.getElementById('mob-hero-sub');
+  if(doneEl)doneEl.textContent=done;
+  if(totalEl)totalEl.textContent='/ '+total;
+  if(subEl){
+    if(total===0)subEl.textContent='설정에서 습관을 추가하세요';
+    else if(pct>=100)subEl.textContent='오늘 목표 완료! 🎉';
+    else subEl.textContent=(total-done)+'개만 더 하면 완벽한 하루';
+  }
+  // 운동
+  const exSessions=d.exercises||(d.exercise?[d.exercise]:[]);
+  const exMin=exSessions.reduce((s,x)=>s+(x.dur||0),0);
+  const exEl=document.getElementById('mob-tile-ex-val');
+  if(exEl)exEl.textContent=exMin||0;
+  // 공부
+  const studyMin=(d.study||[]).reduce((s,x)=>s+(x.dur||0),0);
+  const stEl=document.getElementById('mob-tile-study-val');
+  if(stEl)stEl.textContent=studyMin||0;
+  // 체중
+  const wtEl=document.getElementById('mob-tile-wt-val');
+  const wtUnit=document.getElementById('mob-tile-wt-unit');
+  if(wtEl)wtEl.textContent=d.weight||'--';
+  if(wtUnit)wtUnit.textContent=d.weight?'kg':'';
+}
+
+// ── 습관 리스트 렌더 ──
+function mobRenderHabits(d,habits){
+  const el=document.getElementById('mob-habit-list');
+  const cntEl=document.getElementById('mob-habit-count');
+  if(!el)return;
+  const done=habits.filter(h=>d.habits&&d.habits[h]).length;
+  if(cntEl)cntEl.textContent=done+'/'+habits.length+' 완료';
+  if(!habits.length){
+    el.innerHTML='<div style="padding:24px 16px;text-align:center;font-size:14px;color:rgba(60,60,67,0.34);">설정에서 습관을 추가하세요</div>';
+    return;
+  }
+  el.innerHTML=habits.map((h,i)=>{
+    const on=!!(d.habits&&d.habits[h]);
+    const st=mobHabitStyle(i);
+    // streak 계산: 오늘 포함 연속일수
+    let streak=0;
+    if(on){
+      const all=getAllData();
+      let chk=new Date(curDateStr+'T00:00:00');
+      for(let s=0;s<365;s++){
+        const ds=chk.getFullYear()+'-'+pad(chk.getMonth()+1)+'-'+pad(chk.getDate());
+        const dd=all[ds]||{};
+        if(dd.habits&&dd.habits[h])streak++;
+        else break;
+        chk.setDate(chk.getDate()-1);
+      }
+    }
+    const isLast=i===habits.length-1;
+    return`<div class="mob-habit-row" onclick="mobToggleHabit(${i})" data-idx="${i}">
+      <div class="mob-habit-emoji" style="background:${st.bg};">${st.emoji}</div>
+      <div class="mob-habit-text">
+        <span class="mob-habit-name${on?' done':''}">${h}</span>
+        ${streak>0?`<div class="mob-habit-streak">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="#FF9F0A" stroke="none"><path d="M12 3c1.5 3 4.5 4.2 4.5 8.2A4.5 4.5 0 0 1 12 16a4.5 4.5 0 0 1-4.5-4.8C7.5 9 9 8 9 6c1 .7 1.7 1.4 2 2 .4-2 .5-3.4 1-5z"/></svg>
+          <span class="mob-streak-txt">${streak}일 연속</span>
+        </div>`:''}
+      </div>
+      <div class="mob-ios-check ${on?'on':'off'}">
+        ${on?`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>`:''}
+      </div>
+      ${!isLast?'<div class="mob-habit-sep"></div>':''}
+    </div>`;
+  }).join('');
+}
+
+// ── 습관 토글 ──
+function mobToggleHabit(idx){
+  const d=getDayData(curDateStr);
+  const habits=getHabits();
+  if(!d.habits)d.habits={};
+  d.habits[habits[idx]]=!d.habits[habits[idx]];
+  saveDayData(curDateStr,d);
+  mobRenderHabits(d,habits);
+  mobRenderHero(d,habits);
+  // 기존 PC 히어로도 업데이트 (공유 데이터)
+  updateHero(d,habits);
+}
+
+// ── 일기 프리뷰 렌더 ──
+function mobRenderDiary(d){
+  const el=document.getElementById('mob-diary-preview');
+  if(!el)return;
+  const MOODS_MOB=['','😔','😐','🙂','😊','😄'];
+  const MOOD_LABELS_MOB=['','울적함','보통','차분함','아주 좋음','활기참'];
+  const hasDiary=!!(d.diary||d.diaryTitle);
+  if(!hasDiary){
+    el.innerHTML=`<div class="mob-diary-empty">
+      <div class="mob-diary-empty-icon">📓</div>
+      <div style="font-size:14px;color:rgba(60,60,67,0.45);">오늘 일기를 작성해보세요</div>
+      <div class="mob-diary-empty-cta" onclick="openDiaryEditor()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v12M6 12h12"/></svg>
+        일기 쓰기
+      </div>
+    </div>`;
+    el.onclick=null;
+    return;
+  }
+  el.onclick=openDiaryReader;
+  const moodEmoji=d.diaryMood?MOODS_MOB[d.diaryMood]:'📓';
+  const moodLabel=d.diaryMood?MOOD_LABELS_MOB[d.diaryMood]:'';
+  // 본문 글자수 제한 (80자)
+  const bodyText=d.diary||'';
+  const clampedBody=bodyText.length>80?bodyText.slice(0,80)+'…':bodyText;
+  const tags=d.diaryTags||[];
+  el.innerHTML=`
+    <div class="mob-diary-head">
+      <div class="mob-diary-emoji-chip">${moodEmoji}</div>
+      <div class="mob-diary-meta">
+        <div class="mob-diary-title-txt">${d.diaryTitle||'오늘의 일기'}</div>
+        ${moodLabel?`<div class="mob-diary-sub">기분 · ${moodLabel}</div>`:''}
+      </div>
+    </div>
+    ${clampedBody?`<div class="mob-diary-body">${clampedBody}</div>`:''}
+    ${tags.length?`<div class="mob-diary-tags">${tags.map(t=>`<span class="mob-diary-tag">#${t}</span>`).join('')}</div>`:''}
+  `;
+}
+
+// ── 식사 리스트 렌더 ──
+function mobRenderMeals(d){
+  const el=document.getElementById('mob-meal-list');
+  const kcalEl=document.getElementById('mob-meal-kcal');
+  if(!el)return;
+  const meals=d.meals||[];
+  // 시간대 슬롯 매핑
+  const slots=[
+    {key:'아침',emoji:'🥣'},{key:'점심',emoji:'🍜'},{key:'저녁',emoji:'🍽️'}
+  ];
+  // 슬롯별 최신 기록 매핑
+  const slotMap={};
+  meals.forEach(m=>{
+    const k=m.time;
+    if(!slotMap[k])slotMap[k]=m;
+  });
+  const rows=slots.map((s,i)=>{
+    const rec=meals.find(m=>m.time===s.key);
+    const done=!!rec;
+    const isLast=i===slots.length-1;
+    return`<div class="mob-meal-row">
+      <div class="mob-meal-emoji ${done?'done':'empty'}">${s.emoji}</div>
+      <div class="mob-meal-info">
+        <div class="mob-meal-slot">${s.key}</div>
+        <div class="mob-meal-name ${done?'done':'empty'}">${done?rec.food:'기록 안 함'}</div>
+      </div>
+      ${done
+        ?''
+        :`<div class="mob-meal-add" onclick="openModal('meal')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6667AB" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v12M6 12h12"/></svg>
+          </div>`}
+      ${!isLast?'<div class="mob-meal-sep"></div>':''}
+    </div>`;
+  }).join('');
+  el.innerHTML=rows;
+  if(kcalEl)kcalEl.textContent='';
+}
+
+// ── 아바타 업데이트 ──
+function mobUpdateAvatar(){
+  const el=document.getElementById('mob-avatar');
+  if(!el)return;
+  const img=localStorage.getItem('do_pf_img');
+  const name=localStorage.getItem('do_pf_name')||'';
+  if(img){
+    el.innerHTML=`<img src="${img}" alt="">`;
+  }else{
+    el.textContent=name?name.charAt(0):'🙂';
+  }
+}
+
+// ── 탭 전환 (현재는 오늘만, 나머지는 기존 drawer로) ──
+function mobGoPage(page){
+  document.querySelectorAll('.mob-tab').forEach(t=>t.classList.remove('active'));
+  const tab=document.getElementById('mtab2-'+page);
+  if(tab)tab.classList.add('active');
+  if(page==='today'){
+    // 이미 오늘 화면
+    return;
+  }
+  // 나머지는 기존 drawer 메뉴 안내 (추후 구현)
+  toast('준비 중입니다');
+}
+
+// ── 일기 탭 ──
+function mobDiaryTap(){
+  const d=getDayData(curDateStr);
+  if(d.diary||d.diaryTitle)openDiaryReader();
+  else openDiaryEditor();
+}
+
+// ── drawer 열기 (기존 함수 연결) ──
+function mobOpenDrawer(){openDrawer();}
+
+// ── 전체 렌더 ──
+function mobRender(){
+  const d=getDayData(curDateStr);
+  const habits=getHabits();
+  // 키커
+  const kicker=document.getElementById('mob-kicker');
+  if(kicker)kicker.textContent=mobDateKicker(curDateStr);
+  mobRenderHero(d,habits);
+  mobRenderHabits(d,habits);
+  mobRenderDiary(d);
+  mobRenderMeals(d);
+  mobUpdateAvatar();
+}
+
+// ── 초기화 ──
+function mobInit(){
+  mobRender();
+  // curDateStr 변경 감지 — 기존 loadDay 패치
+  const _origLoadDay=loadDay;
+  window.loadDay=function(str){
+    _origLoadDay(str);
+    if(window.innerWidth<=680)mobRender();
+  };
+  // 일기 저장 후 리렌더
+  const _origSaveDiaryEditor=saveDiaryEditor;
+  window.saveDiaryEditor=function(){
+    _origSaveDiaryEditor();
+    if(window.innerWidth<=680)mobRender();
+  };
+  // 식사 저장 후 리렌더
+  const _origSaveMeal=saveMeal;
+  window.saveMeal=function(){
+    _origSaveMeal();
+    if(window.innerWidth<=680)mobRender();
+  };
+}
 </script>
 
 <!-- Google API -->
