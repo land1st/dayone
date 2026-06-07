@@ -1088,6 +1088,80 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   .mob-cal-legend-dot{width:13px;height:13px;border-radius:50%;}
   .mob-cal-legend-txt{font-size:11.5px;font-weight:500;color:rgba(60,60,67,0.34);}
 
+  /* ── 통계 상단 3카드 ── */
+  .mob-stat-top-row{
+    display:flex;gap:10px;margin:0 16px;
+  }
+  .mob-stat-top-card{
+    flex:1;background:#fff;border-radius:20px;
+    padding:15px 10px 13px;text-align:center;
+    box-shadow:0 1px 1px rgba(0,0,0,0.03),0 6px 18px rgba(40,40,70,0.05);
+  }
+  .mob-stat-top-emoji{font-size:19px;margin-bottom:4px;}
+  .mob-stat-top-val{
+    display:flex;align-items:baseline;justify-content:center;gap:1px;
+  }
+  .mob-stat-top-num{font-size:24px;font-weight:800;color:#1A1A1C;letter-spacing:-0.8px;}
+  .mob-stat-top-unit{font-size:12px;font-weight:650;color:rgba(60,60,67,0.62);}
+  .mob-stat-top-lbl{font-size:11.5px;font-weight:550;color:rgba(60,60,67,0.62);margin-top:2px;}
+
+  /* ── 습관 달성률 바 ── */
+  .mob-stat-habit-row{
+    display:flex;align-items:center;gap:11px;
+    padding:11px 16px;position:relative;
+  }
+  .mob-stat-habit-emoji{font-size:17px;width:22px;text-align:center;flex-shrink:0;}
+  .mob-stat-habit-info{flex:1;min-width:0;}
+  .mob-stat-habit-top{
+    display:flex;justify-content:space-between;
+    align-items:baseline;margin-bottom:5px;
+  }
+  .mob-stat-habit-name{
+    font-size:14.5px;font-weight:550;color:#1A1A1C;
+    letter-spacing:-0.3px;white-space:nowrap;
+    overflow:hidden;text-overflow:ellipsis;max-width:60%;
+  }
+  .mob-stat-habit-pct{font-size:13px;font-weight:700;}
+  .mob-stat-habit-track{
+    height:7px;border-radius:4px;
+    background:#F7F7FA;overflow:hidden;
+  }
+  .mob-stat-habit-fill{
+    height:100%;border-radius:4px;
+    transition:width .6s cubic-bezier(.34,1.2,.5,1);
+  }
+  .mob-stat-habit-sep{
+    position:absolute;left:16px;right:0;bottom:0;
+    height:0.5px;background:rgba(60,60,67,0.10);
+  }
+
+  /* ── 체중 그래프 ── */
+  .mob-stat-wt-current{
+    display:flex;align-items:baseline;gap:5px;padding-left:2px;margin-bottom:2px;
+  }
+  .mob-stat-wt-num{font-size:28px;font-weight:800;color:#1A1A1C;letter-spacing:-0.8px;}
+  .mob-stat-wt-kg{font-size:14px;font-weight:600;color:rgba(60,60,67,0.62);}
+  .mob-stat-wt-labels{
+    display:flex;justify-content:space-between;
+    padding:0 2px;margin-top:2px;
+  }
+  .mob-stat-wt-lbl{font-size:11px;font-weight:500;color:rgba(60,60,67,0.34);}
+
+  /* ── 기분 분포 ── */
+  .mob-stat-mood-bar-wrap{
+    height:12px;border-radius:6px;overflow:hidden;
+    display:flex;margin-bottom:16px;
+  }
+  .mob-stat-mood-seg{height:100%;}
+  .mob-stat-mood-counts{
+    display:flex;justify-content:space-between;
+  }
+  .mob-stat-mood-item{
+    display:flex;flex-direction:column;align-items:center;gap:3px;
+  }
+  .mob-stat-mood-em{font-size:22px;}
+  .mob-stat-mood-cnt{font-size:12.5px;font-weight:700;color:#1A1A1C;}
+
   /* ── 바텀 시트 딤 ── */
   .mob-sheet-dim{
     position:fixed;inset:0;z-index:21000;
@@ -1984,6 +2058,52 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
 </div>
 
 </div><!-- /mob-page-calendar -->
+
+<!-- ── 페이지: 통계 ── -->
+<div id="mob-page-stats" class="mob-page">
+  <div class="mob-header">
+    <div class="mob-header-left">
+      <div class="mob-date-kicker">최근 30일</div>
+      <div class="mob-large-title">통계</div>
+    </div>
+  </div>
+  <div class="mob-scroll">
+
+    <!-- 상단 3카드 -->
+    <div class="mob-stat-top-row" id="mob-stat-top-row"></div>
+
+    <!-- 습관 달성률 -->
+    <div class="mob-section-label" style="margin-top:22px;">
+      <span class="mob-section-title">습관 달성률</span>
+    </div>
+    <div class="mob-group-card" id="mob-stat-habit-bars" style="padding:6px 0;"></div>
+
+    <!-- 체중 추이 -->
+    <div class="mob-section-label" style="margin-top:22px;">
+      <span class="mob-section-title">체중 추이</span>
+      <span class="mob-section-action" id="mob-stat-wt-diff" style="font-size:13px;font-weight:700;"></span>
+    </div>
+    <div class="mob-group-card" style="padding:16px 14px 14px;" id="mob-stat-wt-card">
+      <div class="mob-stat-wt-current">
+        <span id="mob-stat-wt-val" class="mob-stat-wt-num">--</span>
+        <span class="mob-stat-wt-kg">kg</span>
+      </div>
+      <svg id="mob-stat-wt-svg" width="100%" viewBox="0 0 300 108" style="display:block;margin:8px 0 4px;"></svg>
+      <div class="mob-stat-wt-labels" id="mob-stat-wt-labels"></div>
+    </div>
+
+    <!-- 기분 분포 -->
+    <div class="mob-section-label" style="margin-top:22px;">
+      <span class="mob-section-title">기분 분포</span>
+    </div>
+    <div class="mob-group-card" style="padding:16px 16px 14px;" id="mob-stat-mood-card">
+      <div class="mob-stat-mood-bar-wrap" id="mob-stat-mood-bar"></div>
+      <div class="mob-stat-mood-counts" id="mob-stat-mood-counts"></div>
+    </div>
+
+    <div style="height:100px;"></div>
+  </div>
+</div><!-- /mob-page-stats -->
 
 <!-- ── 일기 바텀 시트 ── -->
 <div class="mob-sheet-dim" id="mob-sheet-dim" onclick="mobCloseSheet()"></div>
@@ -3853,7 +3973,8 @@ function mobGoPage(page){
     mobCalMonth=mobCalMonth!=null?mobCalMonth:new Date().getMonth();
     mobRenderCalendar();
   }
-  if(page==='stats'||page==='settings') toast('준비 중입니다');
+  if(page==='stats') mobRenderStats();
+  if(page==='settings') toast('준비 중입니다');
 }
 
 // ── 캘린더 상태 ──
@@ -4022,7 +4143,150 @@ function mobDiaryTap(){
 }
 
 // ── drawer 열기 (기존 함수 연결) ──
-function mobOpenDrawer(){openDrawer();}
+// ── 통계 렌더 ──
+function mobRenderStats(){
+  const all=getAllData();
+  const habits=getHabits();
+  const today=new Date();
+
+  // 30일 데이터 수집
+  let diaryDays=0,hDone=0,hTotal=0;
+  const wData=[],moodCounts=[0,0,0,0,0];
+  let maxStreak=0,curStreak=0;
+
+  for(let i=29;i>=0;i--){
+    const d=new Date(today);d.setDate(d.getDate()-i);
+    const ds=localDateStr(d);
+    const dd=all[ds]||{};
+    if(dd.diary||dd.diaryTitle)diaryDays++;
+    habits.forEach(h=>{hTotal++;if(dd.habits&&dd.habits[h])hDone++;});
+    if(dd.weight!=null)wData.push({ds,v:dd.weight,label:(d.getMonth()+1)+'/'+(d.getDate())});
+    if(dd.mood>=1&&dd.mood<=5)moodCounts[dd.mood-1]++;
+    const anyHabit=habits.some(h=>dd.habits&&dd.habits[h]);
+    if(anyHabit){curStreak++;maxStreak=Math.max(maxStreak,curStreak);}
+    else curStreak=0;
+  }
+  const avgPct=hTotal?Math.round(hDone/hTotal*100):0;
+
+  // 상단 3카드
+  const topEl=document.getElementById('mob-stat-top-row');
+  if(topEl){
+    topEl.innerHTML=[
+      {emoji:'🔥',num:maxStreak,unit:'일',lbl:'최장 연속'},
+      {emoji:'🎯',num:avgPct,unit:'%',lbl:'평균 달성률'},
+      {emoji:'📓',num:diaryDays,unit:'편',lbl:'이번 달 일기'},
+    ].map(s=>`
+      <div class="mob-stat-top-card">
+        <div class="mob-stat-top-emoji">${s.emoji}</div>
+        <div class="mob-stat-top-val">
+          <span class="mob-stat-top-num">${s.num}</span>
+          <span class="mob-stat-top-unit">${s.unit}</span>
+        </div>
+        <div class="mob-stat-top-lbl">${s.lbl}</div>
+      </div>`).join('');
+  }
+
+  // 습관 달성률 바
+  const HABIT_COLORS=['#3E83C4','#FF9F0A','#34C759','#FF6482','#6667AB','#FF9F0A','#34C759'];
+  const barsEl=document.getElementById('mob-stat-habit-bars');
+  if(barsEl){
+    if(!habits.length){
+      barsEl.innerHTML='<div style="padding:20px 16px;text-align:center;font-size:14px;color:rgba(60,60,67,0.34);">설정에서 습관을 추가하세요</div>';
+    } else {
+      barsEl.innerHTML=habits.map((h,idx)=>{
+        let cnt=0;
+        for(let i=0;i<30;i++){
+          const d=new Date(today);d.setDate(d.getDate()-i);
+          const dd=all[localDateStr(d)]||{};
+          if(dd.habits&&dd.habits[h])cnt++;
+        }
+        const pct=Math.round(cnt/30*100);
+        const st=mobHabitStyle(idx,h);
+        const color=HABIT_COLORS[idx%HABIT_COLORS.length];
+        const isLast=idx===habits.length-1;
+        return`<div class="mob-stat-habit-row">
+          <div class="mob-stat-habit-emoji">${st.emoji}</div>
+          <div class="mob-stat-habit-info">
+            <div class="mob-stat-habit-top">
+              <span class="mob-stat-habit-name">${h}</span>
+              <span class="mob-stat-habit-pct" style="color:${color};">${pct}%</span>
+            </div>
+            <div class="mob-stat-habit-track">
+              <div class="mob-stat-habit-fill" style="width:${pct}%;background:${color};"></div>
+            </div>
+          </div>
+          ${!isLast?'<div class="mob-stat-habit-sep"></div>':''}
+        </div>`;
+      }).join('');
+    }
+  }
+
+  // 체중 그래프
+  const wtDiffEl=document.getElementById('mob-stat-wt-diff');
+  const wtValEl=document.getElementById('mob-stat-wt-val');
+  const wtSvg=document.getElementById('mob-stat-wt-svg');
+  const wtLabelsEl=document.getElementById('mob-stat-wt-labels');
+  if(wData.length>=2){
+    const first=wData[0].v,last=wData[wData.length-1].v;
+    const diff=(last-first).toFixed(1);
+    const diffNum=parseFloat(diff);
+    if(wtDiffEl){wtDiffEl.textContent=(diffNum>0?'+':'')+diff+'kg';wtDiffEl.style.color=diffNum<=0?'#34C759':'#FF6482';}
+    if(wtValEl)wtValEl.textContent=last;
+  } else {
+    if(wtDiffEl)wtDiffEl.textContent='';
+    if(wtValEl)wtValEl.textContent=wData.length?wData[wData.length-1].v:'--';
+  }
+  if(wtSvg&&wData.length>=2){
+    const vals=wData.map(w=>w.v);
+    const mn=Math.min(...vals),mx=Math.max(...vals);
+    const range=mx-mn||1;
+    const yMin=mn-range*0.3,yMax=mx+range*0.3;
+    const PW=300,PH=90,PD=6;
+    const toX=i=>PD+(i/(wData.length-1))*(PW-PD*2);
+    const toY=v=>PH-PD-((v-yMin)/(yMax-yMin))*(PH-PD*2);
+    const pts=wData.map((w,i)=>[toX(i),toY(w.v)]);
+    const pathD=pts.map((p,i)=>(i===0?'M':'L')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+    const areaD=pathD+` L${pts[pts.length-1][0].toFixed(1)} ${PH} L${pts[0][0].toFixed(1)} ${PH} Z`;
+    wtSvg.innerHTML=`
+      <defs>
+        <linearGradient id="mobWG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#6667AB" stop-opacity="0.22"/>
+          <stop offset="100%" stop-color="#6667AB" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <path d="${areaD}" fill="url(#mobWG)"/>
+      <path d="${pathD}" fill="none" stroke="#6667AB" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      ${pts.map((p,i)=>`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${i===pts.length-1?4:2.4}" fill="${i===pts.length-1?'#6667AB':'#fff'}" stroke="#6667AB" stroke-width="1.8"/>`).join('')}`;
+    if(wtLabelsEl){
+      const mid=Math.floor((wData.length-1)/2);
+      wtLabelsEl.innerHTML=[0,mid,wData.length-1].map(i=>`<span class="mob-stat-wt-lbl">${wData[i].label}</span>`).join('');
+    }
+  } else if(wtSvg){
+    wtSvg.innerHTML='<text x="150" y="54" text-anchor="middle" font-size="13" fill="rgba(60,60,67,0.34)" font-family="Pretendard Variable,sans-serif">체중 기록이 없습니다</text>';
+    if(wtLabelsEl)wtLabelsEl.innerHTML='';
+  }
+
+  // 기분 분포
+  const MOOD_COLORS=['#3E83C4','#6667AB','rgba(60,60,67,0.25)','#FF9F0A','#34C759'];
+  const MOOD_EMOJIS=['😔','😐','🙂','😊','😄'];
+  const moodTotal=moodCounts.reduce((a,b)=>a+b,0);
+  const moodBarEl=document.getElementById('mob-stat-mood-bar');
+  const moodCntEl=document.getElementById('mob-stat-mood-counts');
+  if(moodBarEl){
+    moodBarEl.innerHTML=moodTotal===0
+      ?'<div style="width:100%;height:100%;background:#F7F7FA;border-radius:6px;"></div>'
+      :moodCounts.map((cnt,i)=>cnt>0?`<div class="mob-stat-mood-seg" style="width:${(cnt/moodTotal*100).toFixed(1)}%;background:${MOOD_COLORS[i]};"></div>`:'').join('');
+  }
+  if(moodCntEl){
+    moodCntEl.innerHTML=MOOD_EMOJIS.map((em,i)=>`
+      <div class="mob-stat-mood-item">
+        <span class="mob-stat-mood-em">${em}</span>
+        <span class="mob-stat-mood-cnt">${moodCounts[i]}</span>
+      </div>`).join('');
+  }
+}
+
+// ── drawer 열기 (기존 함수 연결) ──
 let mobSheetDate=null;
 function mobOpenSheet(ds){
   mobSheetDate=ds;
