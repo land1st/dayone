@@ -413,7 +413,8 @@ body.dark .hero-card{box-shadow:0 8px 24px rgba(0,0,0,.4);}
 .cal-summary{margin-top:14px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;}
 .cal-sum-date{font-size:14px;font-weight:600;color:var(--text);margin-bottom:10px;}
 .cal-sum-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
-.cal-sum-item{text-align:center;padding:10px 6px;background:var(--surface2);border-radius:9px;}
+.cal-sum-item{text-align:center;padding:10px 6px;background:var(--surface2);border-radius:9px;transition:background .12s;}
+.cal-sum-item[onclick]:hover{background:var(--accent-light);}
 .cal-sum-val{font-size:14px;font-weight:600;color:var(--accent);}
 .cal-sum-lbl{font-size:10px;color:var(--text3);margin-top:3px;}
 
@@ -3601,6 +3602,10 @@ function renderCalendar(){
 function calMove(dir){calMonth+=dir;if(calMonth>11){calMonth=0;calYear++;}else if(calMonth<0){calMonth=11;calYear--;}renderCalendar();}
 function calSelectDay(str){
   document.querySelectorAll('.cal-cell.selected').forEach(c=>c.classList.remove('selected'));
+  // 선택된 셀에 selected 클래스 추가
+  document.querySelectorAll('.cal-cell').forEach(c=>{
+    if(c.getAttribute('onclick')==="calSelectDay('"+str+"')")c.classList.add('selected');
+  });
   const all=getAllData();const d=all[str]||{};
   const sum=document.getElementById('cal-summary');
   const sdate=document.getElementById('cal-sum-date');
@@ -3610,12 +3615,31 @@ function calSelectDay(str){
   if(sdate)sdate.textContent=formatDate(str);
   const habits=getHabits();
   const dh=habits.filter(h=>d.habits&&d.habits[h]).length;
+  // 일기: 기분 이모지 또는 📓, 없으면 —. 클릭 시 해당 날짜 일기 리더 열기
+  const hasDiary=!!(d.diary||d.diaryTitle);
+  const diaryEmoji=hasDiary?(d.diaryMood?MOODS[d.diaryMood]:'📓'):'—';
+  const diaryStyle=hasDiary?'cursor:pointer;':'';
+  const diaryClick=hasDiary?`onclick="calOpenDiary('${str}')" title="일기 보기"`:'' ;
   if(sgrid)sgrid.innerHTML=[
-    {l:'기분',v:d.mood?MOODS[d.mood]:'—'},
-    {l:'습관',v:habits.length?dh+'/'+habits.length:'—'},
-    {l:'체중',v:d.weight?d.weight+'kg':'—'},
-    {l:'수면',v:d.sleep!=null?d.sleep+'h':'—'},
-  ].map(s=>`<div class="cal-sum-item"><div class="cal-sum-val">${s.v}</div><div class="cal-sum-lbl">${s.l}</div></div>`).join('');
+    {l:'기분',v:d.mood?MOODS[d.mood]:'—',style:'',click:''},
+    {l:'습관',v:habits.length?dh+'/'+habits.length:'—',style:'',click:''},
+    {l:'체중',v:d.weight?d.weight+'kg':'—',style:'',click:''},
+    {l:'일기',v:diaryEmoji,style:diaryStyle,click:diaryClick},
+  ].map(s=>`<div class="cal-sum-item" style="${s.style}" ${s.click}><div class="cal-sum-val">${s.v}</div><div class="cal-sum-lbl">${s.l}</div></div>`).join('');
+}
+
+// PC 캘린더 날짜별 일기 리더 열기
+function calOpenDiary(str){
+  const prev=curDateStr;
+  curDateStr=str;
+  openDiaryReader();
+  // 리더 닫을 때 curDateStr 복원
+  const rdEl=document.getElementById('reader-diary');
+  function onClose(){
+    curDateStr=prev;
+    rdEl.removeEventListener('transitionend',onClose);
+  }
+  if(rdEl)rdEl.addEventListener('transitionend',onClose,{once:true});
 }
 
 // ── STATS ──
