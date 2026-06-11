@@ -2606,6 +2606,28 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   </div>
 </div>
 
+<!-- CAL DIARY VIEW MODAL (PC 캘린더 일기 보기) -->
+<div class="modal-bg" id="modal-cal-diary">
+  <div class="modal" style="width:560px;max-height:75vh;" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal('modal-cal-diary')">×</button>
+    <!-- 날짜 -->
+    <div id="cal-diary-date" style="font-size:12px;color:var(--text3);margin-bottom:4px;"></div>
+    <!-- 기분 행 -->
+    <div id="cal-diary-mood-row" style="display:flex;gap:8px;margin-bottom:16px;"></div>
+    <!-- 제목 -->
+    <div id="cal-diary-title" style="font-size:20px;font-weight:700;color:var(--text);letter-spacing:-.02em;margin-bottom:12px;display:none;"></div>
+    <!-- 본문 -->
+    <div id="cal-diary-body" style="font-size:14px;color:var(--text2);line-height:1.85;white-space:pre-wrap;word-break:break-word;margin-bottom:16px;max-height:300px;overflow-y:auto;"></div>
+    <!-- 태그 -->
+    <div id="cal-diary-tags" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;"></div>
+    <!-- 버튼 -->
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('modal-cal-diary')">닫기</button>
+      <button class="btn-save" id="cal-diary-edit-btn" onclick="calDiaryEdit()">편집</button>
+    </div>
+  </div>
+</div>
+
 <!-- DIARY EDITOR MODAL -->
 <div class="modal-bg" id="modal-diary-editor">
   <div class="modal" style="width:580px;" onclick="event.stopPropagation()">
@@ -3628,18 +3650,76 @@ function calSelectDay(str){
   ].map(s=>`<div class="cal-sum-item" style="${s.style}" ${s.click}><div class="cal-sum-val">${s.v}</div><div class="cal-sum-lbl">${s.l}</div></div>`).join('');
 }
 
-// PC 캘린더 날짜별 일기 리더 열기
+// PC 캘린더 날짜별 일기 모달 열기
+let _calDiaryStr=null;
 function calOpenDiary(str){
-  const prev=curDateStr;
-  curDateStr=str;
-  openDiaryReader();
-  // 리더 닫을 때 curDateStr 복원
-  const rdEl=document.getElementById('reader-diary');
-  function onClose(){
-    curDateStr=prev;
-    rdEl.removeEventListener('transitionend',onClose);
+  _calDiaryStr=str;
+  const d=getDayData(str);
+  const MOOD_LABELS=['','울적함','보통','차분함','아주 좋음','활기참'];
+
+  // 날짜
+  const dateEl=document.getElementById('cal-diary-date');
+  if(dateEl)dateEl.textContent=formatDate(str);
+
+  // 기분 타일
+  const moodRow=document.getElementById('cal-diary-mood-row');
+  if(moodRow){
+    if(d.diaryMood){
+      moodRow.style.display='flex';
+      moodRow.innerHTML=`
+        <div style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--surface2);border-radius:12px;">
+          <span style="font-size:24px;">${MOODS[d.diaryMood]}</span>
+          <span style="font-size:13px;font-weight:600;color:var(--text2);">${MOOD_LABELS[d.diaryMood]}</span>
+        </div>`;
+    } else {
+      moodRow.style.display='none';
+      moodRow.innerHTML='';
+    }
   }
-  if(rdEl)rdEl.addEventListener('transitionend',onClose,{once:true});
+
+  // 제목
+  const titleEl=document.getElementById('cal-diary-title');
+  if(titleEl){
+    titleEl.textContent=d.diaryTitle||'';
+    titleEl.style.display=d.diaryTitle?'block':'none';
+  }
+
+  // 본문
+  const bodyEl=document.getElementById('cal-diary-body');
+  if(bodyEl){
+    if(d.diary){
+      bodyEl.textContent=d.diary;
+      bodyEl.style.color='';
+    } else {
+      bodyEl.innerHTML='<span style="color:var(--text3);font-style:italic;">내용이 없습니다</span>';
+    }
+  }
+
+  // 태그
+  const tagsEl=document.getElementById('cal-diary-tags');
+  if(tagsEl){
+    const tags=d.diaryTags||[];
+    tagsEl.innerHTML=tags.map(t=>`<span style="padding:5px 14px;border-radius:999px;background:var(--accent-light);color:var(--accent);font-size:13px;font-weight:600;">#${t}</span>`).join('');
+    tagsEl.style.display=tags.length?'flex':'none';
+  }
+
+  document.getElementById('modal-cal-diary')?.classList.add('open');
+}
+
+// 캘린더 일기 모달에서 편집 버튼
+function calDiaryEdit(){
+  if(!_calDiaryStr)return;
+  closeModal('modal-cal-diary');
+  const prev=curDateStr;
+  curDateStr=_calDiaryStr;
+  openDiaryEditor();
+  // 저장 후 curDateStr 복원 & 모달 내용 갱신
+  const _orig=window.saveDiaryEditor;
+  window.saveDiaryEditor=function(){
+    _orig();
+    curDateStr=prev;
+    window.saveDiaryEditor=_orig;
+  };
 }
 
 // ── STATS ──
