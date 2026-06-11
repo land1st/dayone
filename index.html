@@ -893,7 +893,9 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
     position:relative;user-select:none;
     -webkit-tap-highlight-color:transparent;
     background:#fff;
+    transition:background .2s;
   }
+  .mob-habit-row.done{background:#F7F7FA;}
   .mob-habit-row:active{background:#F7F7FA;}
   .mob-habit-sep{
     position:absolute;left:63px;right:0;bottom:0;
@@ -911,8 +913,6 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   }
   .mob-habit-name.done{
     color:rgba(60,60,67,0.34);
-    text-decoration:line-through;
-    text-decoration-color:rgba(60,60,67,0.34);
   }
   .mob-habit-streak{
     display:flex;align-items:center;gap:3px;margin-top:2px;
@@ -4189,7 +4189,7 @@ function mobRenderHabits(d,habits){
       }
     }
     const isLast=i===habits.length-1;
-    return`<div class="mob-habit-row" onclick="mobToggleHabit(${i})" data-idx="${i}">
+    return`<div class="mob-habit-row${on?' done':''}" onclick="mobToggleHabit(${i})" data-idx="${i}">
       <div class="mob-habit-emoji" style="background:${st.bg};">${st.emoji}</div>
       <div class="mob-habit-text">
         <span class="mob-habit-name${on?' done':''}">${h}</span>
@@ -5009,11 +5009,11 @@ function mobRenderTodos(d){
   }
   el.innerHTML=todos.map((t,i)=>{
     const isLast=i===todos.length-1;
-    return`<div class="mob-habit-row" onclick="mobToggleTodo(${i})" style="background:${t.done?'#FAFAFA':'#fff'};">
+    return`<div class="mob-habit-row${t.done?' done':''}" onclick="mobToggleTodo(${i})">
       <div class="mob-ios-check ${t.done?'on':'off'}">
         ${t.done?`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>`:''}
       </div>
-      <span style="flex:1;font-size:16px;font-weight:500;color:${t.done?'rgba(60,60,67,0.34)':'#1A1A1C'};letter-spacing:-0.3px;${t.done?'text-decoration:line-through;text-decoration-color:rgba(60,60,67,0.25);':''}">${t.text}</span>
+      <span style="flex:1;font-size:16px;font-weight:500;color:${t.done?'rgba(60,60,67,0.34)':'#1A1A1C'};letter-spacing:-0.3px;">${t.text}</span>
       <button onclick="event.stopPropagation();mobDelTodo(${i})" style="background:none;border:none;cursor:pointer;color:rgba(60,60,67,0.28);font-size:18px;line-height:1;padding:2px 6px;-webkit-tap-highlight-color:transparent;">×</button>
       ${!isLast?'<div class="mob-habit-sep"></div>':''}
     </div>`;
