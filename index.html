@@ -5358,7 +5358,9 @@ function loadGoogleAPI(){
   // 초기 UI는 항상 LOGIN — 토큰 검증 완료 후에만 LOGOUT으로 변경
   updateSyncUI(false);
 
+  let elapsed=0;
   const waitGsi=setInterval(()=>{
+    elapsed+=300;
     if(window.google&&window.google.accounts){
       clearInterval(waitGsi);
       gTokenClient=google.accounts.oauth2.initTokenClient({
@@ -5383,12 +5385,10 @@ function loadGoogleAPI(){
           .then(r=>r.json())
           .then(info=>{
             if(info.error||info.error_description){
-              // 만료 또는 무효 토큰 — 완전히 정리
               gAccessToken=null;
               localStorage.removeItem('g_token');
               updateSyncUI(false);
             } else {
-              // 유효한 토큰 — 이 시점에서 처음으로 LOGOUT 표시
               gAccessToken=saved;
               updateSyncUI(true);
               checkGoogleReady();
@@ -5400,6 +5400,10 @@ function loadGoogleAPI(){
             updateSyncUI(false);
           });
       }
+    } else if(elapsed>=15000){
+      // 15초 이상 로드 안 되면 포기 — 버튼 클릭 시 페이지 새로고침 안내
+      clearInterval(waitGsi);
+      console.warn('Google GSI 스크립트 로드 타임아웃');
     }
   },300);
 }
@@ -5445,7 +5449,12 @@ function handleSyncClick(){
     }
   }else{
     // 로그인
-    if(!gTokenClient){toast('Google API 로드 중입니다. 잠시 후 다시 시도하세요.');return;}
+    if(!gTokenClient){
+      if(confirm('Google 로그인 준비 중입니다.\n페이지를 새로고침 후 다시 시도할까요?')){
+        location.reload();
+      }
+      return;
+    }
     gTokenClient.requestAccessToken({prompt:'consent'});
   }
 }
