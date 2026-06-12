@@ -4640,10 +4640,9 @@ function mobRenderSettings(){
   if(nameEl)nameEl.textContent=name||'이름을 입력하세요';
   if(bioEl)bioEl.textContent=bio||'한 줄 소개를 입력하세요';
 
-  // 동기화 상태 — localStorage 토큰으로 직접 판단 (gAccessToken 비동기 로드 무관)
+  // 동기화 상태 — 검증된 gAccessToken 변수만 기준으로 판단
   const syncLbl=document.getElementById('mob-set-sync-lbl');
-  const hasToken=!!(gAccessToken||localStorage.getItem('g_token'));
-  if(syncLbl)syncLbl.textContent=hasToken?'LOGOUT':'LOGIN';
+  if(syncLbl)syncLbl.textContent=gAccessToken?'LOGOUT':'LOGIN';
 
   // 습관 개수
   const habitCnt=document.getElementById('mob-set-habit-cnt');
@@ -5233,7 +5232,9 @@ function gapiLoaded(){
 }
 
 function loadGoogleAPI(){
-  // GSI 토큰 클라이언트 초기화 (gsi 스크립트 로드 후)
+  // 초기 UI는 항상 LOGIN — 토큰 검증 완료 후에만 LOGOUT으로 변경
+  updateSyncUI(false);
+
   const waitGsi=setInterval(()=>{
     if(window.google&&window.google.accounts){
       clearInterval(waitGsi);
@@ -5246,29 +5247,32 @@ function loadGoogleAPI(){
           localStorage.setItem('g_token',resp.access_token);
           updateSyncUI(true);
           toast('Google 로그인 완료 — Drive에서 데이터를 불러옵니다...');
-          // 구글 프로필 사진·이름 가져오기
           fetchGoogleProfile(resp.access_token);
-          // 로그인 즉시 Drive에서 불러오기
           syncFromDrive();
         }
       });
       gsiReady=true;
       checkGoogleReady();
-      // 저장된 토큰 복원 — 유효성 검증 후 UI 업데이트
+      // 저장된 토큰 — 유효성 검증 후에만 UI를 LOGOUT으로 변경
       const saved=localStorage.getItem('g_token');
       if(saved){
         fetch('https://www.googleapis.com/oauth2/v3/tokeninfo?access_token='+saved)
           .then(r=>r.json())
           .then(info=>{
-            if(info.error){
+            if(info.error||info.error_description){
+              // 만료 또는 무효 토큰 — 완전히 정리
+              gAccessToken=null;
               localStorage.removeItem('g_token');
               updateSyncUI(false);
             } else {
+              // 유효한 토큰 — 이 시점에서 처음으로 LOGOUT 표시
               gAccessToken=saved;
               updateSyncUI(true);
+              checkGoogleReady();
             }
           })
           .catch(()=>{
+            gAccessToken=null;
             localStorage.removeItem('g_token');
             updateSyncUI(false);
           });
