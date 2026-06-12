@@ -1771,7 +1771,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
 
         <div class="do-card pc-col-1 mob-half" id="card-exercise">
           <div class="do-card-head">
-            <div class="do-card-left"><span class="do-eyebrow">운동</span><span class="badge badge-green" id="exercise-badge">0분</span></div>
+            <div class="do-card-left"><span class="do-eyebrow" id="pc-ex-label">운동</span><span class="badge badge-green" id="exercise-badge">0분</span></div>
             <div style="display:flex;gap:6px;">
               <button class="icon-btn" onclick="openModal('exercise')">+</button>
               <button class="collapse-btn" onclick="toggleCard('card-exercise')">▾</button>
@@ -1800,7 +1800,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
 
         <div class="do-card pc-col-1 mob-half" id="card-study">
           <div class="do-card-head">
-            <div class="do-card-left"><span class="do-eyebrow">공부</span><span class="badge badge-blue" id="study-badge">0h</span></div>
+            <div class="do-card-left"><span class="do-eyebrow" id="pc-study-label">공부</span><span class="badge badge-blue" id="study-badge">0h</span></div>
             <div style="display:flex;gap:6px;">
               <button class="icon-btn" onclick="openModal('study')">+</button>
               <button class="collapse-btn" onclick="toggleCard('card-study')">▾</button>
@@ -2004,6 +2004,30 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
             <button class="settings-btn weather-city-btn" data-lat="33.4996" data-lon="126.5312" data-name="제주" onclick="setWeatherCity(this)">제주</button>
           </div>
           <div class="settings-note">선택한 지역의 실시간 날씨를 표시합니다.</div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-head">트래커 이름 변경</div>
+        <div class="settings-body">
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="width:32px;height:32px;border-radius:8px;background:#E5EFF9;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3E83C4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 8v8M4 9.5v5M17.5 8v8M20 9.5v5M6.5 12h11"/></svg>
+              </div>
+              <input class="form-input" id="pc-tracker-ex-inp" type="text" maxlength="10" placeholder="운동" style="flex:1;max-width:200px;">
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="width:32px;height:32px;border-radius:8px;background:#ECECF7;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6667AB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10.5 5 8 4.5 4.5 5v12.5C8 17 10.5 17.5 12 19M12 6.5C13.5 5 16 4.5 19.5 5v12.5C16 17 13.5 17.5 12 19M12 6.5V19"/></svg>
+              </div>
+              <input class="form-input" id="pc-tracker-study-inp" type="text" maxlength="10" placeholder="공부" style="flex:1;max-width:200px;">
+            </div>
+          </div>
+          <div style="margin-top:12px;">
+            <button class="settings-btn primary" onclick="saveTrackerNames()">저장</button>
+          </div>
+          <div class="settings-note">변경한 이름은 대시보드 카드와 모달 제목에 반영됩니다.</div>
         </div>
       </div>
 
@@ -2317,6 +2341,15 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
         <span class="mob-set-row-detail" id="mob-set-habit-cnt"></span>
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,0.3)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
       </div>
+      <div class="mob-set-sep"></div>
+      <!-- 트래커 이름 -->
+      <div class="mob-set-row" onclick="mobSetOpenTrackers()">
+        <div class="mob-set-icon" style="background:#ECECF7;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#6667AB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <span class="mob-set-row-title">트래커 이름 변경</span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,0.3)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+      </div>
     </div>
 
     <!-- 데이터 -->
@@ -2416,6 +2449,35 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
       <input class="mob-set-field-inp" id="mob-habit-new-inp" type="text" maxlength="20" placeholder="새 습관 이름..." style="flex:1;margin-bottom:0;">
       <button class="mob-set-add-btn" onclick="mobAddHabit()">추가</button>
     </div>
+  </div>
+</div>
+
+<!-- ── 트래커 이름 변경 바텀시트 ── -->
+<div class="mob-sheet-dim" id="mob-trackers-dim" onclick="mobCloseTrackers()"></div>
+<div class="mob-sheet" id="mob-sheet-trackers">
+  <div class="mob-sheet-handle"></div>
+  <div class="mob-sheet-inner">
+    <div class="mob-sheet-head">
+      <div class="mob-sheet-date">트래커 이름 변경</div>
+      <button class="mob-sheet-close" onclick="mobCloseTrackers()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <!-- 운동 -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+      <div style="width:36px;height:36px;border-radius:10px;background:#E5EFF9;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3E83C4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 8v8M4 9.5v5M17.5 8v8M20 9.5v5M6.5 12h11"/></svg>
+      </div>
+      <input class="mob-set-field-inp" id="mob-tracker-ex-inp" type="text" maxlength="10" placeholder="운동" style="flex:1;margin-bottom:0;">
+    </div>
+    <!-- 공부 -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+      <div style="width:36px;height:36px;border-radius:10px;background:#ECECF7;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#6667AB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10.5 5 8 4.5 4.5 5v12.5C8 17 10.5 17.5 12 19M12 6.5C13.5 5 16 4.5 19.5 5v12.5C16 17 13.5 17.5 12 19M12 6.5V19"/></svg>
+      </div>
+      <input class="mob-set-field-inp" id="mob-tracker-study-inp" type="text" maxlength="10" placeholder="공부" style="flex:1;margin-bottom:0;">
+    </div>
+    <button onclick="saveTrackerNames();mobCloseTrackers();" style="width:100%;padding:14px;border-radius:14px;background:#6667AB;color:#fff;border:none;font-size:15px;font-weight:600;font-family:'Pretendard Variable',-apple-system,system-ui,sans-serif;cursor:pointer;">저장</button>
   </div>
 </div>
 
@@ -2535,8 +2597,8 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
 <div class="modal-bg" id="modal-study">
   <div class="modal" onclick="event.stopPropagation()">
     <button class="modal-close" onclick="closeModal('modal-study')">×</button>
-    <div class="modal-title">공부 기록 추가</div>
-    <div class="form-row"><label class="form-lbl">과목/주제</label><input class="form-input" id="ms-subj" type="text" placeholder="예: 영어, 수학"></div>
+    <div class="modal-title" id="modal-study-title">공부 기록 추가</div>
+    <div class="form-row"><label class="form-lbl">항목</label><input class="form-input" id="ms-subj" type="text" placeholder="예: 영어, 수학"></div>
     <div class="form-row"><label class="form-lbl">내용</label><textarea class="form-textarea" id="ms-cont" placeholder="공부한 내용"></textarea></div>
     <div class="form-row"><label class="form-lbl">시간 (분)</label><input class="form-input" id="ms-dur" type="number" min="0" placeholder="예: 60" style="max-width:120px;"></div>
     <div class="modal-btns"><button class="btn-cancel" onclick="closeModal('modal-study')">취소</button><button class="btn-save" onclick="saveStudy()">저장</button></div>
@@ -2558,8 +2620,8 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
 <div class="modal-bg" id="modal-exercise">
   <div class="modal" onclick="event.stopPropagation()">
     <button class="modal-close" onclick="closeModal('modal-exercise')">×</button>
-    <div class="modal-title">운동 기록</div>
-    <div class="form-row"><label class="form-lbl">운동 종류</label><input class="form-input" id="me-type" type="text" placeholder="예: 달리기, 스쿼트"></div>
+    <div class="modal-title" id="modal-ex-title">운동 기록</div>
+    <div class="form-row"><label class="form-lbl">항목</label><input class="form-input" id="me-type" type="text" placeholder="예: 달리기, 스쿼트"></div>
     <div class="form-row"><label class="form-lbl">시간 (분)</label><input class="form-input" id="me-dur" type="number" min="0" placeholder="예: 45" style="max-width:120px;"></div>
     <div class="form-row"><label class="form-lbl">메모</label><input class="form-input" id="me-note" type="text" placeholder="예: 5km 완주"></div>
     <div class="modal-btns"><button class="btn-cancel" onclick="closeModal('modal-exercise')">취소</button><button class="btn-save" onclick="saveExercise()">저장</button></div>
@@ -2693,7 +2755,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
     </div>
     <div class="reader-content">
       <div class="reader-meta-top" id="rs-date"></div>
-      <h1 class="reader-page-title">공부 기록</h1>
+      <h1 class="reader-page-title" id="reader-study-title">공부 기록</h1>
       <div class="reader-study-total" id="rs-total"></div>
       <div id="rs-list"></div>
     </div>
@@ -2706,7 +2768,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
     <button class="modal-close" onclick="closeModal('modal-study-edit')">×</button>
     <div class="modal-title">공부 기록 수정</div>
     <input type="hidden" id="se-idx">
-    <div class="form-row"><label class="form-lbl">과목/주제</label><input class="form-input" id="se-subj" type="text"></div>
+    <div class="form-row"><label class="form-lbl">항목</label><input class="form-input" id="se-subj" type="text"></div>
     <div class="form-row"><label class="form-lbl">내용</label><textarea class="form-textarea" id="se-cont"></textarea></div>
     <div class="form-row"><label class="form-lbl">시간 (분)</label><input class="form-input" id="se-dur" type="number" min="0" style="max-width:120px;"></div>
     <div class="modal-btns"><button class="btn-cancel" onclick="closeModal('modal-study-edit')">취소</button><button class="btn-save" onclick="saveStudyEdit()">저장</button></div>
@@ -3134,7 +3196,7 @@ function renderStudyPreview(sessions){
   if(!sessions||!sessions.length){el.innerHTML='<div class="empty">기록이 없습니다</div>';return;}
   el.innerHTML=sessions.map(s=>`
     <div class="study-prev-row">
-      <span class="study-prev-subj">${s.subject||'(과목 없음)'}</span>
+      <span class="study-prev-subj">${s.subject||'(항목 없음)'}</span>
       <span class="study-prev-dur">${s.dur?s.dur+'분':''}</span>
     </div>`).join('');
 }
@@ -3221,7 +3283,7 @@ function saveStudyEdit(){
   const subj=document.getElementById('se-subj')?.value?.trim();
   const cont=document.getElementById('se-cont')?.value?.trim();
   const dur=parseInt(document.getElementById('se-dur')?.value)||0;
-  if(!subj&&!cont){toast('과목 또는 내용을 입력하세요');return;}
+  if(!subj&&!cont){toast('항목 또는 내용을 입력하세요');return;}
   const d=getDayData(curDateStr);
   if(d.study&&d.study[i]){
     d.study[i]={subject:subj,content:cont,dur:dur||undefined};
@@ -3248,7 +3310,7 @@ function openStudyReader(){
       listEl.innerHTML=sessions.map((s,i)=>`
         <div class="rs-card">
           <div class="rs-card-head">
-            <div class="rs-card-subj">${s.subject||'(과목 없음)'}</div>
+            <div class="rs-card-subj">${s.subject||'(항목 없음)'}</div>
             <div class="rs-card-actions">
               <button class="rs-card-btn" onclick="closeReader('reader-study');openStudyEdit(${i})">수정</button>
               <button class="rs-card-btn del" onclick="delStudyFromReader(${i})">삭제</button>
@@ -3393,7 +3455,7 @@ function saveStudy(){
   const subj=document.getElementById('ms-subj')?.value?.trim();
   const cont=document.getElementById('ms-cont')?.value?.trim();
   const dur=parseInt(document.getElementById('ms-dur')?.value)||0;
-  if(!subj&&!cont){toast('과목 또는 내용을 입력하세요');return;}
+  if(!subj&&!cont){toast('항목 또는 내용을 입력하세요');return;}
   const d=getDayData(curDateStr);
   if(!d.study)d.study=[];
   d.study.push({subject:subj,content:cont,dur:dur||undefined});
@@ -3472,7 +3534,7 @@ function saveExercise(){
   const type=document.getElementById('me-type')?.value?.trim();
   const dur=parseInt(document.getElementById('me-dur')?.value)||0;
   const note=document.getElementById('me-note')?.value?.trim();
-  if(!type){toast('운동 종류를 입력하세요');return;}
+  if(!type){toast('항목을 입력하세요');return;}
   const d=getDayData(curDateStr);
   // 배열로 전환 (구버전 호환)
   if(!d.exercises)d.exercises=[];
@@ -4135,6 +4197,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   initDark();
   loadProfile();
+  applyTrackerNames();
   updateDateLabel();
   loadDay(curDateStr);
   renderTodayWidget();
@@ -5213,7 +5276,67 @@ function mobInit(){
 <script src="https://accounts.google.com/gsi/client" async></script>
 <script src="https://apis.google.com/js/api.js" async onload="gapiLoaded()"></script>
 <script>
-const G_CLIENT_ID='368952825871-b13n0f8707r34v26l7495710f0e3mhnk.apps.googleusercontent.com';
+// ── 트래커 이름 관리 ──
+function getTrackerNames(){
+  return {
+    exercise: localStorage.getItem('tracker_ex_name')||'운동',
+    study:    localStorage.getItem('tracker_study_name')||'공부'
+  };
+}
+
+function applyTrackerNames(){
+  const {exercise,study}=getTrackerNames();
+  // PC 대시보드
+  const pcEx=document.getElementById('pc-ex-label');
+  const pcSt=document.getElementById('pc-study-label');
+  if(pcEx)pcEx.textContent=exercise;
+  if(pcSt)pcSt.textContent=study;
+  // 모달 제목
+  const mEx=document.getElementById('modal-ex-title');
+  const mSt=document.getElementById('modal-study-title');
+  if(mEx)mEx.textContent=exercise+' 기록';
+  if(mSt)mSt.textContent=study+' 기록 추가';
+  // 공부 리더 제목
+  const rSt=document.getElementById('reader-study-title');
+  if(rSt)rSt.textContent=study+' 기록';
+  // PC 설정 입력값 동기화
+  const pcExInp=document.getElementById('pc-tracker-ex-inp');
+  const pcStInp=document.getElementById('pc-tracker-study-inp');
+  if(pcExInp)pcExInp.value=exercise;
+  if(pcStInp)pcStInp.value=study;
+  // 모바일 바텀시트 입력값 동기화
+  const mobExInp=document.getElementById('mob-tracker-ex-inp');
+  const mobStInp=document.getElementById('mob-tracker-study-inp');
+  if(mobExInp)mobExInp.value=exercise;
+  if(mobStInp)mobStInp.value=study;
+}
+
+function saveTrackerNames(){
+  const pcExInp=document.getElementById('pc-tracker-ex-inp');
+  const pcStInp=document.getElementById('pc-tracker-study-inp');
+  const mobExInp=document.getElementById('mob-tracker-ex-inp');
+  const mobStInp=document.getElementById('mob-tracker-study-inp');
+  // 활성 입력창(값이 있는 쪽) 우선
+  const exVal=(pcExInp?.value.trim()||mobExInp?.value.trim()||'운동');
+  const stVal=(pcStInp?.value.trim()||mobStInp?.value.trim()||'공부');
+  localStorage.setItem('tracker_ex_name',exVal);
+  localStorage.setItem('tracker_study_name',stVal);
+  applyTrackerNames();
+  toast('트래커 이름이 저장됐습니다');
+}
+
+// 모바일 트래커 바텀시트 열기/닫기
+function mobSetOpenTrackers(){
+  applyTrackerNames(); // 입력값 최신화
+  document.getElementById('mob-trackers-dim')?.classList.add('open');
+  document.getElementById('mob-sheet-trackers')?.classList.add('open');
+}
+function mobCloseTrackers(){
+  document.getElementById('mob-trackers-dim')?.classList.remove('open');
+  document.getElementById('mob-sheet-trackers')?.classList.remove('open');
+}
+
+// ── Google API ──
 const G_SCOPES='https://www.googleapis.com/auth/drive.appdata';
 const G_FILE_NAME='dayone_backup.json';
 
