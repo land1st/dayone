@@ -5564,14 +5564,13 @@ const QUOTES=[
 ];
 
 function loadQuote(force){
-  const todayKey=localDateStr();
+  const todayKey=localDateStr(new Date());
   const saved=localStorage.getItem('quote_date');
   const savedIdx=parseInt(localStorage.getItem('quote_idx')||'0');
   let idx;
   if(!force && saved===todayKey){
     idx=savedIdx;
   } else {
-    // force(새로고침)면 현재와 다른 랜덤 인덱스
     do{ idx=Math.floor(Math.random()*QUOTES.length); }while(idx===savedIdx && QUOTES.length>1);
     localStorage.setItem('quote_date',todayKey);
     localStorage.setItem('quote_idx',String(idx));
@@ -5579,7 +5578,7 @@ function loadQuote(force){
   const q=QUOTES[idx];
   const textEl=document.getElementById('quote-text');
   const authorEl=document.getElementById('quote-author');
-  if(textEl)  textEl.textContent='"'+q.text+'"';
+  if(textEl)  textEl.textContent='\u201c'+q.text+'\u201d';
   if(authorEl)authorEl.textContent='— '+q.author;
 }
 
