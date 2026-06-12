@@ -5273,7 +5273,7 @@ function mobInit(){
 </script>
 
 <!-- Google API -->
-<script src="https://accounts.google.com/gsi/client" async></script>
+<script src="https://accounts.google.com/gsi/client" async onload="gsiLoaded()"></script>
 <script src="https://apis.google.com/js/api.js" async onload="gapiLoaded()"></script>
 <script>
 // ── 트래커 이름 관리 ──
@@ -5337,6 +5337,7 @@ function mobCloseTrackers(){
 }
 
 // ── Google API ──
+const G_CLIENT_ID='368952825871-b13n0f8707r34v26l7495710f0e3mhnk.apps.googleusercontent.com';
 const G_SCOPES='https://www.googleapis.com/auth/drive.appdata';
 const G_FILE_NAME='dayone_backup.json';
 
@@ -5345,6 +5346,7 @@ let gAccessToken=null;
 let gapiReady=false;
 let gsiReady=false;
 
+// gapi.js onload 콜백
 function gapiLoaded(){
   gapi.load('client',async()=>{
     await gapi.client.init({});
@@ -5354,62 +5356,54 @@ function gapiLoaded(){
   });
 }
 
-function loadGoogleAPI(){
-  // 초기 UI는 항상 LOGIN — 토큰 검증 완료 후에만 LOGOUT으로 변경
-  updateSyncUI(false);
-
-  let elapsed=0;
-  const waitGsi=setInterval(()=>{
-    elapsed+=300;
-    if(window.google&&window.google.accounts){
-      clearInterval(waitGsi);
-      gTokenClient=google.accounts.oauth2.initTokenClient({
-        client_id:G_CLIENT_ID,
-        scope:G_SCOPES+' https://www.googleapis.com/auth/userinfo.profile',
-        callback:(resp)=>{
-          if(resp.error){toast('Google 연동 실패: '+resp.error);return;}
-          gAccessToken=resp.access_token;
-          localStorage.setItem('g_token',resp.access_token);
-          updateSyncUI(true);
-          toast('Google 로그인 완료 — Drive에서 데이터를 불러옵니다...');
-          fetchGoogleProfile(resp.access_token);
-          syncFromDrive();
-        }
-      });
-      gsiReady=true;
-      checkGoogleReady();
-      // 저장된 토큰 — 유효성 검증 후에만 UI를 LOGOUT으로 변경
-      const saved=localStorage.getItem('g_token');
-      if(saved){
-        fetch('https://www.googleapis.com/oauth2/v3/tokeninfo?access_token='+saved)
-          .then(r=>r.json())
-          .then(info=>{
-            if(info.error||info.error_description){
-              gAccessToken=null;
-              localStorage.removeItem('g_token');
-              updateSyncUI(false);
-            } else {
-              gAccessToken=saved;
-              updateSyncUI(true);
-              checkGoogleReady();
-            }
-          })
-          .catch(()=>{
-            gAccessToken=null;
-            localStorage.removeItem('g_token');
-            updateSyncUI(false);
-          });
-      }
-    } else if(elapsed>=15000){
-      // 15초 이상 로드 안 되면 포기 — 버튼 클릭 시 페이지 새로고침 안내
-      clearInterval(waitGsi);
-      console.warn('Google GSI 스크립트 로드 타임아웃');
+// gsi/client onload 콜백 — 폴링 없이 로드 즉시 실행
+function gsiLoaded(){
+  gTokenClient=google.accounts.oauth2.initTokenClient({
+    client_id:G_CLIENT_ID,
+    scope:G_SCOPES+' https://www.googleapis.com/auth/userinfo.profile',
+    callback:(resp)=>{
+      if(resp.error){toast('Google 연동 실패: '+resp.error);return;}
+      gAccessToken=resp.access_token;
+      localStorage.setItem('g_token',resp.access_token);
+      updateSyncUI(true);
+      toast('Google 로그인 완료 — Drive에서 데이터를 불러옵니다...');
+      fetchGoogleProfile(resp.access_token);
+      syncFromDrive();
     }
-  },300);
+  });
+  gsiReady=true;
+  checkGoogleReady();
+  // 저장된 토큰 유효성 검증 — 유효하면 LOGOUT으로 변경
+  const saved=localStorage.getItem('g_token');
+  if(saved){
+    fetch('https://www.googleapis.com/oauth2/v3/tokeninfo?access_token='+saved)
+      .then(r=>r.json())
+      .then(info=>{
+        if(info.error||info.error_description){
+          gAccessToken=null;
+          localStorage.removeItem('g_token');
+          updateSyncUI(false);
+        } else {
+          gAccessToken=saved;
+          updateSyncUI(true);
+          checkGoogleReady();
+        }
+      })
+      .catch(()=>{
+        gAccessToken=null;
+        localStorage.removeItem('g_token');
+        updateSyncUI(false);
+      });
+  }
+}
+
+// DOMContentLoaded 에서 호출 — UI 초기화만 담당
+function loadGoogleAPI(){
+  updateSyncUI(false);
+  // gsiLoaded(), gapiLoaded() 는 각 스크립트의 onload 로 자동 실행됨
 }
 
 function checkGoogleReady(){
-  // 둘 다 준비되면 자동 복원 시도
   if(gapiReady&&gsiReady&&gAccessToken){
     gapi.client.setToken({access_token:gAccessToken});
   }
@@ -5449,13 +5443,8 @@ function handleSyncClick(){
     }
   }else{
     // 로그인
-    if(!gTokenClient){
-      if(confirm('Google 로그인 준비 중입니다.\n페이지를 새로고침 후 다시 시도할까요?')){
-        location.reload();
-      }
-      return;
-    }
-    gTokenClient.requestAccessToken({prompt:'consent'});
+    if(!gTokenClient){toast('Google API 로드 중입니다. 잠시 후 다시 시도하세요.');return;}
+    gTokenClient.requestAccessToken({prompt:'select_account'});
   }
 }
 
