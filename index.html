@@ -5786,6 +5786,7 @@ let gTokenClient=null;
 let gAccessToken=null;
 let gapiReady=false;
 let gsiReady=false;
+let gSyncedOnLoad=false;
 
 // gapi.js onload 콜백
 function gapiLoaded(){
@@ -5806,6 +5807,7 @@ function gsiLoaded(){
       if(resp.error){toast('Google 연동 실패: '+resp.error);return;}
       gAccessToken=resp.access_token;
       localStorage.setItem('g_token',resp.access_token);
+      gSyncedOnLoad=true;
       updateSyncUI(true);
       toast('Google 로그인 완료 — Drive에서 데이터를 불러옵니다...');
       fetchGoogleProfile(resp.access_token);
@@ -5847,6 +5849,11 @@ function loadGoogleAPI(){
 function checkGoogleReady(){
   if(gapiReady&&gsiReady&&gAccessToken){
     gapi.client.setToken({access_token:gAccessToken});
+    // 양쪽 모두 준비됐을 때 한 번만 동기화
+    if(!gSyncedOnLoad){
+      gSyncedOnLoad=true;
+      syncFromDrive();
+    }
   }
 }
 
