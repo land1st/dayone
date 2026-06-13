@@ -2487,13 +2487,12 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
     <!-- 계정·동기화 -->
     <div class="mob-set-section-lbl">계정 · 동기화</div>
     <div class="mob-group-card">
-      <div class="mob-set-row" onclick="handleSyncClick()">
+      <div class="mob-set-row" style="cursor:default;">
         <div class="mob-set-icon" style="background:#E5EFF9;">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3E83C4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4 4 0 0 1-.5-8A5.5 5.5 0 0 1 17 9.5 3.75 3.75 0 0 1 17 18z"/></svg>
         </div>
         <span class="mob-set-row-title">Google Drive 동기화</span>
-        <span class="mob-set-row-detail" id="mob-set-sync-lbl">LOGIN</span>
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,0.3)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+        <button id="mob-set-sync-btn" onclick="handleSyncClick()" style="margin-left:auto;height:28px;padding:0 12px;border-radius:7px;border:1.5px solid var(--accent);background:transparent;color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.05em;cursor:pointer;font-family:inherit;flex-shrink:0;">LOGIN</button>
       </div>
     </div>
 
@@ -4941,8 +4940,18 @@ function mobRenderSettings(){
   if(bioEl)bioEl.textContent=bio||'한 줄 소개를 입력하세요';
 
   // 동기화 상태 — 검증된 gAccessToken 변수만 기준으로 판단
-  const syncLbl=document.getElementById('mob-set-sync-lbl');
-  if(syncLbl)syncLbl.textContent=gAccessToken?'LOGOUT':'LOGIN';
+  const setBtn=document.getElementById('mob-set-sync-btn');
+  if(setBtn){
+    if(gAccessToken){
+      setBtn.textContent='LOGOUT';
+      setBtn.style.borderColor='var(--green,#34C759)';
+      setBtn.style.color='var(--green,#34C759)';
+    }else{
+      setBtn.textContent='LOGIN';
+      setBtn.style.borderColor='var(--accent)';
+      setBtn.style.color='var(--accent)';
+    }
+  }
 
   // 습관 개수
   const habitCnt=document.getElementById('mob-set-habit-cnt');
@@ -5861,6 +5870,7 @@ function updateSyncUI(connected){
   const btn=document.getElementById('sync-btn');
   const lbl=document.getElementById('sync-label');
   const mobBtn=document.getElementById('mob-sync-btn');
+  const setBtn=document.getElementById('mob-set-sync-btn');
   if(btn&&lbl){
     if(connected){btn.classList.add('connected');lbl.textContent='LOGOUT';}
     else{btn.classList.remove('connected');lbl.textContent='LOGIN';}
@@ -5869,9 +5879,17 @@ function updateSyncUI(connected){
     if(connected){mobBtn.classList.add('connected');mobBtn.textContent='LOGOUT';}
     else{mobBtn.classList.remove('connected');mobBtn.textContent='LOGIN';}
   }
-  // 모바일 설정탭 동기화 라벨
-  const setLbl=document.getElementById('mob-set-sync-lbl');
-  if(setLbl)setLbl.textContent=connected?'LOGOUT':'LOGIN';
+  if(setBtn){
+    if(connected){
+      setBtn.textContent='LOGOUT';
+      setBtn.style.borderColor='var(--green,#34C759)';
+      setBtn.style.color='var(--green,#34C759)';
+    }else{
+      setBtn.textContent='LOGIN';
+      setBtn.style.borderColor='var(--accent)';
+      setBtn.style.color='var(--accent)';
+    }
+  }
 }
 
 // PC/모바일 공통: 로그인/로그아웃만
