@@ -3347,6 +3347,8 @@ function toggleHabit(name){
   const habits=getHabits();
   renderHabits(d,habits);
   updateHero(d,habits);
+  // 로그인 상태면 Drive에 자동 저장
+  if(gAccessToken)syncToDrive();
 }
 
 // ── PREVIEW RENDERERS ──
@@ -4617,6 +4619,8 @@ function mobToggleHabit(idx){
   mobRenderHero(d,habits);
   // 기존 PC 히어로도 업데이트 (공유 데이터)
   updateHero(d,habits);
+  // 로그인 상태면 Drive에 자동 저장
+  if(gAccessToken)syncToDrive();
 }
 
 // ── 일기 프리뷰 렌더 ──
@@ -6002,6 +6006,10 @@ async function syncFromDrive(){
     renderTodayWidget();
     renderMiniCal();
     renderWeightGraph();
+    mobRender();
+    mobRenderCalendar();
+    mobRenderStats();
+    mobRenderSettings();
     toast('Drive에서 불러왔습니다 ✓');
   }catch(e){
     console.error('syncFromDrive',e);
