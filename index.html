@@ -482,6 +482,13 @@ body.dark .hero-card{box-shadow:0 8px 24px rgba(0,0,0,.4);}
 .habit-edit-name{flex:1;font-size:13px;color:var(--text);}
 .habit-del-btn{font-size:12px;color:var(--text3);cursor:pointer;background:none;border:none;padding:2px 6px;border-radius:5px;transition:all .12s;}
 .habit-del-btn:hover{background:#fdf0f0;color:var(--red);}
+.habit-edit-btn{font-size:12px;color:var(--text3);cursor:pointer;background:none;border:none;padding:2px 6px;border-radius:5px;transition:all .12s;}
+.habit-edit-btn:hover{background:var(--accent-light);color:var(--accent);}
+.habit-inline-inp{flex:1;font-size:13px;padding:3px 8px;border-radius:6px;border:1.5px solid var(--accent);background:var(--accent-light);color:var(--text);outline:none;font-family:inherit;}
+.habit-confirm-btn{font-size:12px;color:var(--accent);font-weight:650;cursor:pointer;background:none;border:none;padding:2px 6px;border-radius:5px;transition:all .12s;white-space:nowrap;}
+.habit-confirm-btn:hover{background:var(--accent-light);}
+.habit-cancel-btn{font-size:12px;color:var(--text3);cursor:pointer;background:none;border:none;padding:2px 6px;border-radius:5px;transition:all .12s;}
+.habit-cancel-btn:hover{background:var(--surface2);}
 .new-habit-row{display:flex;gap:8px;margin-top:10px;}
 .form-input{width:100%;font-size:13px;padding:8px 11px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text);outline:none;transition:border-color .12s;}
 .form-input:focus{border-color:var(--accent);}
@@ -4188,11 +4195,53 @@ function renderHabitSettings(){
   const el=document.getElementById('habit-edit-list');if(!el)return;
   if(!habits.length){el.innerHTML='<div class="empty">습관이 없습니다</div>';return;}
   el.innerHTML=habits.map((h,i)=>`
-    <div class="habit-edit-row">
+    <div class="habit-edit-row" id="pc-habit-row-${i}">
       <div style="width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;"></div>
       <span class="habit-edit-name">${h}</span>
+      <button class="habit-edit-btn" onclick="pcEditHabitStart(${i})">수정</button>
       <button class="habit-del-btn" onclick="delHabit(${i})">삭제</button>
     </div>`).join('');
+}
+function pcEditHabitStart(i){
+  const row=document.getElementById('pc-habit-row-'+i);
+  if(!row)return;
+  const habits=getHabits();
+  const cur=habits[i]||'';
+  row.innerHTML=`
+    <div style="width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;"></div>
+    <input class="habit-inline-inp" id="pc-habit-edit-inp-${i}" type="text" maxlength="20" value="${cur}">
+    <button class="habit-confirm-btn" onclick="pcEditHabitSave(${i})">완료</button>
+    <button class="habit-cancel-btn" onclick="renderHabitSettings()">취소</button>
+  `;
+  const inp=document.getElementById('pc-habit-edit-inp-'+i);
+  if(inp){inp.focus();inp.select();}
+  inp?.addEventListener('keydown',e=>{if(e.key==='Enter')pcEditHabitSave(i);if(e.key==='Escape')renderHabitSettings();});
+}
+function pcEditHabitSave(i){
+  const inp=document.getElementById('pc-habit-edit-inp-'+i);
+  const v=inp?.value?.trim();
+  if(!v){toast('습관 이름을 입력하세요');inp?.focus();return;}
+  const habits=getHabits();
+  if(habits[i]===v){renderHabitSettings();return;}
+  if(habits.some((h,idx)=>h===v&&idx!==i)){toast('이미 있는 습관입니다');inp?.focus();return;}
+  const oldName=habits[i];
+  habits[i]=v;
+  saveHabits(habits);
+  // 과거 데이터 키 마이그레이션
+  try{
+    const prefix='dayone_day_';
+    Object.keys(localStorage).filter(k=>k.startsWith(prefix)).forEach(k=>{
+      const d=JSON.parse(localStorage.getItem(k)||'{}');
+      if(d.habits&&d.habits[oldName]!==undefined){
+        d.habits[v]=d.habits[oldName];
+        delete d.habits[oldName];
+        localStorage.setItem(k,JSON.stringify(d));
+      }
+    });
+  }catch(e){}
+  renderHabitSettings();
+  loadDay(curDateStr);
+  toast('습관 이름 변경됨');
 }
 function addHabit(){
   const inp=document.getElementById('new-habit-inp');const v=inp?.value?.trim();
