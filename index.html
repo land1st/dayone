@@ -1649,6 +1649,15 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   </div>
 
   <div class="sidebar-widgets">
+    <div class="mini-cal">
+      <div class="mini-cal-header">
+        <button class="mini-cal-nav" onclick="mcMove(-1)">‹</button>
+        <span class="mini-cal-title" id="mc-title"></span>
+        <button class="mini-cal-nav" onclick="mcMove(1)">›</button>
+      </div>
+      <div class="mini-cal-grid" id="mc-grid"></div>
+    </div>
+
     <div class="clock-widget" id="widget-clock">
       <div class="analog-clock">
         <div class="clock-hand hand-h" id="hand-h"></div>
@@ -1674,15 +1683,6 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
         <span>습도 <strong id="w-hum">--</strong>%</span>
         <span>바람 <strong id="w-wind">--</strong>m/s</span>
       </div>
-    </div>
-
-    <div class="mini-cal">
-      <div class="mini-cal-header">
-        <button class="mini-cal-nav" onclick="mcMove(-1)">‹</button>
-        <span class="mini-cal-title" id="mc-title"></span>
-        <button class="mini-cal-nav" onclick="mcMove(1)">›</button>
-      </div>
-      <div class="mini-cal-grid" id="mc-grid"></div>
     </div>
 
     <!-- D-Day 위젯 -->
