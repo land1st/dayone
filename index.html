@@ -49,7 +49,7 @@ input,textarea,button,select{font-family:inherit;}
 @media(min-width:681px){
   body{justify-content:center;}
   body > .sidebar{flex-shrink:0;}
-  .main{max-width:1600px;}
+  .main{max-width:1000px;}
 }
 
 .pc-wrap{display:contents;}
@@ -196,7 +196,7 @@ body.dark .toggle-thumb{transform:translateX(13px);}
 /* ────── MAIN ────── */
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
 @media(min-width:681px){
-  .main{max-width:1600px;}
+  .main{max-width:1000px;}
 }
 .topbar{background:var(--card);border-bottom:1px solid var(--border);padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
 .topbar-left{display:flex;align-items:center;gap:14px;}
@@ -218,7 +218,7 @@ body.dark .toggle-thumb{transform:translateX(13px);}
 @keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
 
 /* content */
-.content{flex:1;overflow-y:auto;padding:20px 24px;max-width:1600px;margin:0 auto;width:100%;}
+.content{flex:1;overflow-y:auto;padding:20px 24px;max-width:1000px;margin:0 auto;width:100%;}
 .content::-webkit-scrollbar{width:5px;}
 .content::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
 .page{display:none;}
@@ -1649,15 +1649,6 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   </div>
 
   <div class="sidebar-widgets">
-    <div class="mini-cal">
-      <div class="mini-cal-header">
-        <button class="mini-cal-nav" onclick="mcMove(-1)">‹</button>
-        <span class="mini-cal-title" id="mc-title"></span>
-        <button class="mini-cal-nav" onclick="mcMove(1)">›</button>
-      </div>
-      <div class="mini-cal-grid" id="mc-grid"></div>
-    </div>
-
     <div class="clock-widget" id="widget-clock">
       <div class="analog-clock">
         <div class="clock-hand hand-h" id="hand-h"></div>
@@ -1683,6 +1674,15 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
         <span>습도 <strong id="w-hum">--</strong>%</span>
         <span>바람 <strong id="w-wind">--</strong>m/s</span>
       </div>
+    </div>
+
+    <div class="mini-cal">
+      <div class="mini-cal-header">
+        <button class="mini-cal-nav" onclick="mcMove(-1)">‹</button>
+        <span class="mini-cal-title" id="mc-title"></span>
+        <button class="mini-cal-nav" onclick="mcMove(1)">›</button>
+      </div>
+      <div class="mini-cal-grid" id="mc-grid"></div>
     </div>
 
     <!-- D-Day 위젯 -->
@@ -2487,12 +2487,13 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
     <!-- 계정·동기화 -->
     <div class="mob-set-section-lbl">계정 · 동기화</div>
     <div class="mob-group-card">
-      <div class="mob-set-row" style="cursor:default;">
+      <div class="mob-set-row" onclick="handleSyncClick()">
         <div class="mob-set-icon" style="background:#E5EFF9;">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3E83C4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4 4 0 0 1-.5-8A5.5 5.5 0 0 1 17 9.5 3.75 3.75 0 0 1 17 18z"/></svg>
         </div>
         <span class="mob-set-row-title">Google Drive 동기화</span>
-        <button id="mob-set-sync-btn" onclick="handleSyncClick()" style="margin-left:auto;height:28px;padding:0 12px;border-radius:7px;border:1.5px solid var(--accent);background:transparent;color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.05em;cursor:pointer;font-family:inherit;flex-shrink:0;">LOGIN</button>
+        <span class="mob-set-row-detail" id="mob-set-sync-lbl">LOGIN</span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,0.3)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
       </div>
     </div>
 
@@ -3346,8 +3347,6 @@ function toggleHabit(name){
   const habits=getHabits();
   renderHabits(d,habits);
   updateHero(d,habits);
-  // 로그인 상태면 Drive에 자동 저장
-  if(gAccessToken)syncToDrive();
 }
 
 // ── PREVIEW RENDERERS ──
@@ -4618,8 +4617,6 @@ function mobToggleHabit(idx){
   mobRenderHero(d,habits);
   // 기존 PC 히어로도 업데이트 (공유 데이터)
   updateHero(d,habits);
-  // 로그인 상태면 Drive에 자동 저장
-  if(gAccessToken)syncToDrive();
 }
 
 // ── 일기 프리뷰 렌더 ──
@@ -4940,18 +4937,8 @@ function mobRenderSettings(){
   if(bioEl)bioEl.textContent=bio||'한 줄 소개를 입력하세요';
 
   // 동기화 상태 — 검증된 gAccessToken 변수만 기준으로 판단
-  const setBtn=document.getElementById('mob-set-sync-btn');
-  if(setBtn){
-    if(gAccessToken){
-      setBtn.textContent='LOGOUT';
-      setBtn.style.borderColor='var(--green,#34C759)';
-      setBtn.style.color='var(--green,#34C759)';
-    }else{
-      setBtn.textContent='LOGIN';
-      setBtn.style.borderColor='var(--accent)';
-      setBtn.style.color='var(--accent)';
-    }
-  }
+  const syncLbl=document.getElementById('mob-set-sync-lbl');
+  if(syncLbl)syncLbl.textContent=gAccessToken?'LOGOUT':'LOGIN';
 
   // 습관 개수
   const habitCnt=document.getElementById('mob-set-habit-cnt');
@@ -5795,7 +5782,6 @@ let gTokenClient=null;
 let gAccessToken=null;
 let gapiReady=false;
 let gsiReady=false;
-let gSyncedOnLoad=false;
 
 // gapi.js onload 콜백
 function gapiLoaded(){
@@ -5816,7 +5802,6 @@ function gsiLoaded(){
       if(resp.error){toast('Google 연동 실패: '+resp.error);return;}
       gAccessToken=resp.access_token;
       localStorage.setItem('g_token',resp.access_token);
-      gSyncedOnLoad=true;
       updateSyncUI(true);
       toast('Google 로그인 완료 — Drive에서 데이터를 불러옵니다...');
       fetchGoogleProfile(resp.access_token);
@@ -5858,11 +5843,6 @@ function loadGoogleAPI(){
 function checkGoogleReady(){
   if(gapiReady&&gsiReady&&gAccessToken){
     gapi.client.setToken({access_token:gAccessToken});
-    // 양쪽 모두 준비됐을 때 한 번만 동기화
-    if(!gSyncedOnLoad){
-      gSyncedOnLoad=true;
-      syncFromDrive();
-    }
   }
 }
 
@@ -5870,7 +5850,6 @@ function updateSyncUI(connected){
   const btn=document.getElementById('sync-btn');
   const lbl=document.getElementById('sync-label');
   const mobBtn=document.getElementById('mob-sync-btn');
-  const setBtn=document.getElementById('mob-set-sync-btn');
   if(btn&&lbl){
     if(connected){btn.classList.add('connected');lbl.textContent='LOGOUT';}
     else{btn.classList.remove('connected');lbl.textContent='LOGIN';}
@@ -5879,17 +5858,9 @@ function updateSyncUI(connected){
     if(connected){mobBtn.classList.add('connected');mobBtn.textContent='LOGOUT';}
     else{mobBtn.classList.remove('connected');mobBtn.textContent='LOGIN';}
   }
-  if(setBtn){
-    if(connected){
-      setBtn.textContent='LOGOUT';
-      setBtn.style.borderColor='var(--green,#34C759)';
-      setBtn.style.color='var(--green,#34C759)';
-    }else{
-      setBtn.textContent='LOGIN';
-      setBtn.style.borderColor='var(--accent)';
-      setBtn.style.color='var(--accent)';
-    }
-  }
+  // 모바일 설정탭 동기화 라벨
+  const setLbl=document.getElementById('mob-set-sync-lbl');
+  if(setLbl)setLbl.textContent=connected?'LOGOUT':'LOGIN';
 }
 
 // PC/모바일 공통: 로그인/로그아웃만
@@ -6031,10 +6002,6 @@ async function syncFromDrive(){
     renderTodayWidget();
     renderMiniCal();
     renderWeightGraph();
-    mobRender();
-    mobRenderCalendar();
-    mobRenderStats();
-    mobRenderSettings();
     toast('Drive에서 불러왔습니다 ✓');
   }catch(e){
     console.error('syncFromDrive',e);
