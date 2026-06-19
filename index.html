@@ -658,6 +658,54 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   .m-weight-stats{grid-template-columns:repeat(2,1fr);}
 }
 
+/* ────── WEEKLY SCHEDULER (PC) ────── */
+.sched-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;}
+.sched-title{font-size:15px;font-weight:600;color:var(--text);}
+.sched-range{font-size:11px;color:var(--text3);margin-top:2px;}
+.sched-controls{display:flex;align-items:center;gap:6px;}
+.sched-nav-btn{width:26px;height:26px;border-radius:6px;border:1px solid var(--border);background:none;cursor:pointer;color:var(--text2);display:flex;align-items:center;justify-content:center;transition:all .12s;font-size:13px;}
+.sched-nav-btn:hover{background:var(--accent-light);border-color:var(--accent);color:var(--accent);}
+.sched-today-btn{font-size:11px;padding:5px 10px;border-radius:6px;border:1px solid var(--border);background:none;cursor:pointer;color:var(--text3);transition:all .12s;}
+.sched-today-btn:hover{color:var(--accent);border-color:var(--accent);}
+.sched-add-btn{display:flex;align-items:center;gap:5px;padding:7px 14px;border-radius:8px;border:none;background:var(--accent);color:#fff;font-size:12px;font-weight:500;cursor:pointer;margin-left:4px;transition:background .12s;}
+.sched-add-btn:hover{background:var(--accent-hover);}
+
+.sched-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--card-shadow);}
+.sched-legend{display:flex;align-items:center;gap:14px;padding:10px 16px;border-bottom:1px solid var(--border);}
+.sched-legend-lbl{font-size:10px;color:var(--text3);letter-spacing:.4px;}
+.sched-legend-item{display:flex;align-items:center;gap:5px;font-size:11px;}
+.sched-legend-dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+.sched-legend-item.high{color:#A32D2D;}
+.sched-legend-item.high .sched-legend-dot{background:#C0392B;}
+.sched-legend-item.medium{color:var(--amber);}
+.sched-legend-item.medium .sched-legend-dot{background:var(--amber);}
+.sched-legend-item.low{color:var(--blue);}
+.sched-legend-item.low .sched-legend-dot{background:var(--blue);}
+
+.sched-scroll{overflow-y:auto;max-height:calc(100vh - 280px);}
+.sched-grid{display:grid;grid-template-columns:54px repeat(7,1fr);}
+.sched-corner{position:sticky;top:0;z-index:3;grid-column:1;grid-row:1;background:var(--surface2);border-bottom:1px solid var(--border);border-right:1px solid var(--border);}
+.sched-col-head{position:sticky;top:0;z-index:2;padding:7px 0;text-align:center;font-size:11px;font-weight:600;color:var(--text2);background:var(--surface2);border-bottom:1px solid var(--border);line-height:1.5;}
+.sched-col-head.today{background:var(--accent-light);color:var(--accent);}
+.sched-col-head.sat{color:var(--blue);}
+.sched-col-head.sun{color:#C0392B;}
+.sched-time-lbl{font-size:9.5px;color:var(--text3);padding:2px 0 0 6px;border-right:1px solid var(--border);box-sizing:border-box;}
+.sched-cell{border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s;box-sizing:border-box;}
+.sched-cell:hover{background:var(--accent-light);}
+.sched-event{border-radius:7px;padding:3px 4px;font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;overflow:hidden;margin:1px 2px;}
+.sched-event.high{background:#FCEBEB;color:#A32D2D;}
+.sched-event.medium{background:var(--amber-bg);color:var(--amber);}
+.sched-event.low{background:var(--blue-bg);color:var(--blue);}
+
+.sched-prio-btn{flex:1;padding:7px 0;border-radius:8px;border:1px solid var(--border);background:none;font-size:12px;cursor:pointer;color:var(--text2);transition:all .12s;}
+#sched-prio-high.active{background:#FCEBEB;border-color:#C0392B;color:#A32D2D;}
+#sched-prio-medium.active{background:var(--amber-bg);border-color:var(--amber);color:var(--amber);}
+#sched-prio-low.active{background:var(--blue-bg);border-color:var(--blue);color:var(--blue);}
+
+@media(max-width:680px){
+  .page#page-schedule{display:none !important;}
+}
+
 /* scrollbar */
 ::-webkit-scrollbar{width:5px;}
 ::-webkit-scrollbar-track{background:transparent;}
@@ -1644,6 +1692,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
     <div class="nav-item" id="nav-calendar" onclick="goPage('calendar')"><div class="nav-dot"></div>캘린더</div>
     <div class="nav-item" id="nav-stats" onclick="goPage('stats')"><div class="nav-dot"></div>통계</div>
     <div class="nav-item" id="nav-monthly" onclick="goPage('monthly')"><div class="nav-dot"></div>월간 리포트</div>
+    <div class="nav-item" id="nav-schedule" onclick="goPage('schedule')"><div class="nav-dot"></div>주간 스케줄러</div>
     <span class="nav-lbl">관리</span>
     <div class="nav-item" id="nav-settings" onclick="goPage('settings')"><div class="nav-dot"></div>설정</div>
   </div>
@@ -2079,6 +2128,36 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
           <span class="m-diary-bar-lbl" id="monthly-diary-lbl"></span>
         </div>
         <div class="m-day-dots" id="monthly-day-dots"></div>
+      </div>
+    </div>
+
+    <!-- WEEKLY SCHEDULER -->
+    <div class="page" id="page-schedule">
+      <div class="sched-header">
+        <div>
+          <div class="sched-title">주간 스케줄러</div>
+          <div class="sched-range" id="sched-range-lbl"></div>
+        </div>
+        <div class="sched-controls">
+          <button class="sched-nav-btn" onclick="schedMove(-1)">‹</button>
+          <button class="sched-today-btn" onclick="schedGoToday()">오늘</button>
+          <button class="sched-nav-btn" onclick="schedMove(1)">›</button>
+          <button class="sched-add-btn" onclick="openScheduleModal()">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            일정 추가
+          </button>
+        </div>
+      </div>
+      <div class="sched-card">
+        <div class="sched-legend">
+          <span class="sched-legend-lbl">우선순위</span>
+          <span class="sched-legend-item high"><span class="sched-legend-dot"></span>높음</span>
+          <span class="sched-legend-item medium"><span class="sched-legend-dot"></span>보통</span>
+          <span class="sched-legend-item low"><span class="sched-legend-dot"></span>낮음</span>
+        </div>
+        <div class="sched-scroll">
+          <div class="sched-grid" id="sched-grid"></div>
+        </div>
       </div>
     </div>
 
@@ -2855,6 +2934,45 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   </div>
 </div>
 
+<!-- WEEKLY SCHEDULE EVENT 모달 -->
+<div class="modal-bg" id="modal-schedule" onclick="closeModal('modal-schedule')">
+  <div class="modal" style="width:380px;" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal('modal-schedule')">×</button>
+    <div class="modal-title" id="sched-modal-title">일정 추가</div>
+    <div class="form-row">
+      <label class="form-lbl">제목</label>
+      <input class="form-input" id="sched-inp-title" type="text" maxlength="30" placeholder="예: 생물학 수업">
+    </div>
+    <div class="form-row">
+      <label class="form-lbl">날짜</label>
+      <input class="form-input" id="sched-inp-date" type="date">
+    </div>
+    <div class="form-row" style="display:flex;gap:10px;">
+      <div style="flex:1;">
+        <label class="form-lbl">시작 시간</label>
+        <input class="form-input" id="sched-inp-start" type="time" step="1800">
+      </div>
+      <div style="flex:1;">
+        <label class="form-lbl">종료 시간</label>
+        <input class="form-input" id="sched-inp-end" type="time" step="1800">
+      </div>
+    </div>
+    <div class="form-row">
+      <label class="form-lbl">우선순위</label>
+      <div style="display:flex;gap:8px;">
+        <button class="sched-prio-btn" id="sched-prio-high" onclick="schedSetPriority('high')">높음</button>
+        <button class="sched-prio-btn" id="sched-prio-medium" onclick="schedSetPriority('medium')">보통</button>
+        <button class="sched-prio-btn" id="sched-prio-low" onclick="schedSetPriority('low')">낮음</button>
+      </div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" id="sched-btn-delete" style="display:none;border-color:#C0392B;color:#C0392B;" onclick="schedDeleteCurrent()">삭제</button>
+      <button class="btn-cancel" onclick="closeModal('modal-schedule')">취소</button>
+      <button class="btn-save" onclick="schedSave()">저장</button>
+    </div>
+  </div>
+</div>
+
 <!-- CAL DIARY VIEW MODAL (PC 캘린더 일기 보기) -->
 <div class="modal-bg" id="modal-cal-diary">
   <div class="modal" style="width:560px;max-height:75vh;" onclick="event.stopPropagation()">
@@ -3215,7 +3333,7 @@ function goPage(page){
   const pe=document.getElementById('page-'+page);
   if(pe)pe.classList.add('active');
 
-  ['dashboard','calendar','stats','settings','monthly'].forEach(p=>{
+  ['dashboard','calendar','stats','settings','monthly','schedule'].forEach(p=>{
     const n=document.getElementById('nav-'+p);
     const dn=document.getElementById('dnav-'+p);
     const mn=document.getElementById('mtab-'+p);
@@ -3224,13 +3342,14 @@ function goPage(page){
     if(mn)mn.classList.toggle('active',p===page);
   });
 
-  const titles={dashboard:'대시보드',calendar:'캘린더',stats:'통계',settings:'설정',monthly:'월간 리포트'};
+  const titles={dashboard:'대시보드',calendar:'캘린더',stats:'통계',settings:'설정',monthly:'월간 리포트',schedule:'주간 스케줄러'};
   document.getElementById('topbar-title').textContent=titles[page]||page;
   document.getElementById('date-nav-wrap').style.display=page==='dashboard'?'flex':'none';
 
   if(page==='calendar')renderCalendar();
   if(page==='stats')renderStats();
   if(page==='monthly')renderMonthly();
+  if(page==='schedule')renderSchedule();
   if(page==='settings'){renderHabitSettings();initWeatherCityUI();}
 }
 
@@ -4338,7 +4457,7 @@ function closeDrawerOnDim(e){if(e.target===document.getElementById('drawer-overl
 
 // ── DATA OPS ──
 function exportData(){
-  const data={habits:getHabits(),records:getAllData()};
+  const data={habits:getHabits(),records:getAllData(),schedule:getScheduleEvents()};
   const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);const a=document.createElement('a');
   a.href=url;a.download='dayone_backup.json';a.click();URL.revokeObjectURL(url);toast('내보내기 완료');
@@ -5688,6 +5807,181 @@ function deleteDday(idx){
   renderDdayList();
 }
 
+// ── 주간 스케줄러 (PC 전용) ──
+const SCHED_START_HOUR=4;   // 04:00 부터
+const SCHED_END_HOUR=24;    // 24:00 까지
+let schedWeekStart=null;    // 현재 표시중인 주의 월요일 (Date)
+let schedEditingId=null;    // 수정중인 일정 id (null이면 신규 추가)
+let schedCurrentPriority='medium';
+
+function getScheduleEvents(){try{return JSON.parse(localStorage.getItem('do_schedule')||'[]');}catch(e){return [];}}
+function saveScheduleEvents(arr){localStorage.setItem('do_schedule',JSON.stringify(arr));}
+
+function schedGetMonday(d){
+  const day=d.getDay();
+  const diff=(day===0?-6:1-day);
+  const m=new Date(d);
+  m.setDate(d.getDate()+diff);
+  m.setHours(0,0,0,0);
+  return m;
+}
+
+function schedSlots(){
+  const slots=[];
+  for(let h=SCHED_START_HOUR;h<SCHED_END_HOUR;h++){
+    slots.push(pad(h)+':00');
+    slots.push(pad(h)+':30');
+  }
+  return slots;
+}
+
+function schedTimeToSlotIdx(t){
+  const p=t.split(':');
+  const hh=parseInt(p[0]),mm=parseInt(p[1]);
+  return (hh-SCHED_START_HOUR)*2+(mm>=30?1:0);
+}
+
+function schedAddMinutes(t,min){
+  const p=t.split(':');
+  let hh=parseInt(p[0]),mm=parseInt(p[1])+min;
+  if(mm>=60){hh+=Math.floor(mm/60);mm=mm%60;}
+  if(hh>23){hh=23;mm=59;}
+  return pad(hh)+':'+pad(mm);
+}
+
+function schedMove(dir){
+  if(!schedWeekStart)schedWeekStart=schedGetMonday(new Date());
+  schedWeekStart.setDate(schedWeekStart.getDate()+dir*7);
+  renderSchedule();
+}
+function schedGoToday(){
+  schedWeekStart=schedGetMonday(new Date());
+  renderSchedule();
+}
+
+function renderSchedule(){
+  const grid=document.getElementById('sched-grid');
+  if(!grid)return;
+  if(!schedWeekStart)schedWeekStart=schedGetMonday(new Date());
+
+  const slots=schedSlots();
+  const dowNames=['월','화','수','목','금','토','일'];
+  const days=[];
+  for(let i=0;i<7;i++){
+    const d=new Date(schedWeekStart);
+    d.setDate(schedWeekStart.getDate()+i);
+    days.push(d);
+  }
+  const todayKey=localDateStr(new Date());
+
+  const rangeLbl=document.getElementById('sched-range-lbl');
+  if(rangeLbl){
+    rangeLbl.textContent=days[0].getFullYear()+'.'+pad(days[0].getMonth()+1)+'.'+pad(days[0].getDate())+
+      ' ('+dowNames[0]+') - '+pad(days[6].getMonth()+1)+'.'+pad(days[6].getDate())+' ('+dowNames[6]+')';
+  }
+
+  let html='<div class="sched-corner"></div>';
+  days.forEach((d,i)=>{
+    const ds=localDateStr(d);
+    let cls='sched-col-head';
+    if(ds===todayKey)cls+=' today';
+    else if(i===5)cls+=' sat';
+    else if(i===6)cls+=' sun';
+    html+='<div class="'+cls+'">'+dowNames[i]+'<br><span style="font-weight:400;font-size:9.5px;opacity:.75;">'+pad(d.getMonth()+1)+'/'+pad(d.getDate())+'</span></div>';
+  });
+
+  slots.forEach((t,si)=>{
+    html+='<div class="sched-time-lbl" style="grid-column:1;grid-row:'+(si+2)+';">'+(t.endsWith(':00')?t:'')+'</div>';
+  });
+
+  days.forEach((d,di)=>{
+    const ds=localDateStr(d);
+    slots.forEach((t,si)=>{
+      html+='<div class="sched-cell" style="grid-column:'+(di+2)+';grid-row:'+(si+2)+';" onclick="openScheduleModal(\''+ds+'\',\''+t+'\')"></div>';
+    });
+  });
+
+  const events=getScheduleEvents();
+  days.forEach((d,di)=>{
+    const ds=localDateStr(d);
+    events.filter(e=>e.date===ds).forEach(e=>{
+      const startIdx=schedTimeToSlotIdx(e.start);
+      let endIdx=schedTimeToSlotIdx(e.end);
+      if(endIdx<=startIdx)endIdx=startIdx+1;
+      const span=endIdx-startIdx;
+      html+='<div class="sched-event '+e.priority+'" style="grid-column:'+(di+2)+';grid-row:'+(startIdx+2)+' / span '+span+';" onclick="event.stopPropagation();editScheduleEvent(\''+e.id+'\')">'+e.title+'</div>';
+    });
+  });
+
+  grid.innerHTML=html;
+  grid.style.gridTemplateRows='34px repeat('+slots.length+',27px)';
+}
+
+function schedSetPriority(p){
+  schedCurrentPriority=p;
+  ['high','medium','low'].forEach(k=>{
+    const b=document.getElementById('sched-prio-'+k);
+    if(b)b.classList.toggle('active',k===p);
+  });
+}
+
+function openScheduleModal(dateStr,timeStr){
+  schedEditingId=null;
+  document.getElementById('sched-modal-title').textContent='일정 추가';
+  document.getElementById('sched-inp-title').value='';
+  document.getElementById('sched-inp-date').value=dateStr||localDateStr(new Date());
+  const startVal=timeStr||'09:00';
+  document.getElementById('sched-inp-start').value=startVal;
+  document.getElementById('sched-inp-end').value=schedAddMinutes(startVal,30);
+  schedSetPriority('medium');
+  document.getElementById('sched-btn-delete').style.display='none';
+  document.getElementById('modal-schedule').classList.add('open');
+}
+
+function editScheduleEvent(id){
+  const ev=getScheduleEvents().find(e=>e.id===id);
+  if(!ev)return;
+  schedEditingId=id;
+  document.getElementById('sched-modal-title').textContent='일정 수정';
+  document.getElementById('sched-inp-title').value=ev.title;
+  document.getElementById('sched-inp-date').value=ev.date;
+  document.getElementById('sched-inp-start').value=ev.start;
+  document.getElementById('sched-inp-end').value=ev.end;
+  schedSetPriority(ev.priority);
+  document.getElementById('sched-btn-delete').style.display='inline-block';
+  document.getElementById('modal-schedule').classList.add('open');
+}
+
+function schedSave(){
+  const title=document.getElementById('sched-inp-title').value.trim();
+  const date=document.getElementById('sched-inp-date').value;
+  const start=document.getElementById('sched-inp-start').value;
+  const end=document.getElementById('sched-inp-end').value;
+  if(!title){toast('제목을 입력하세요');return;}
+  if(!date){toast('날짜를 선택하세요');return;}
+  if(!start||!end){toast('시간을 입력하세요');return;}
+  if(end<=start){toast('종료 시간은 시작 시간보다 늦어야 합니다');return;}
+  const events=getScheduleEvents();
+  if(schedEditingId){
+    const idx=events.findIndex(e=>e.id===schedEditingId);
+    if(idx>-1)events[idx]={id:schedEditingId,title,date,start,end,priority:schedCurrentPriority};
+  }else{
+    events.push({id:'sch_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),title,date,start,end,priority:schedCurrentPriority});
+  }
+  saveScheduleEvents(events);
+  closeModal('modal-schedule');
+  renderSchedule();
+  toast('일정이 저장됐습니다');
+}
+
+function schedDeleteCurrent(){
+  if(!schedEditingId)return;
+  saveScheduleEvents(getScheduleEvents().filter(e=>e.id!==schedEditingId));
+  closeModal('modal-schedule');
+  renderSchedule();
+  toast('일정이 삭제됐습니다');
+}
+
 // ── 오늘의 명언 ──
 const QUOTES=[
   {text:'시작이 반이다.',author:'아리스토텔레스'},
@@ -5954,6 +6248,7 @@ async function syncToDrive(){
     const data=JSON.stringify({
       habits:getHabits(),
       records:getAllData(),
+      schedule:getScheduleEvents(),
       profile:{
         name:localStorage.getItem('do_pf_name')||'',
         bio:localStorage.getItem('do_pf_bio')||'',
@@ -6025,12 +6320,21 @@ async function syncFromDrive(){
       if(remote.profile.bio)localStorage.setItem('do_pf_bio',remote.profile.bio);
       if(remote.profile.img)localStorage.setItem('do_pf_img',remote.profile.img);
     }
+    if(remote.schedule){
+      // Drive 데이터 우선, 로컬에만 있는 일정 유지
+      const localSched=getScheduleEvents();
+      const mergedSched=remote.schedule.slice();
+      const remoteIds=new Set(remote.schedule.map(e=>e.id));
+      localSched.forEach(e=>{if(!remoteIds.has(e.id))mergedSched.push(e);});
+      saveScheduleEvents(mergedSched);
+    }
     if(remote.dark)localStorage.setItem('do_dark',remote.dark);
     loadProfile();
     loadDay(curDateStr);
     renderTodayWidget();
     renderMiniCal();
     renderWeightGraph();
+    renderSchedule();
     mobRender();
     mobRenderCalendar();
     mobRenderStats();
