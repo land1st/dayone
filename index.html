@@ -997,17 +997,17 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
 
   /* 2단 요약 타일 */
   .m2-tile-row{display:flex;gap:10px;padding:0 20px 14px;flex-shrink:0;}
-  .m2-tile{flex:1;border-radius:20px;padding:12px 14px;display:flex;align-items:center;gap:10px;}
+  .m2-tile{flex:1;border-radius:20px;padding:18px 16px;display:flex;align-items:center;gap:12px;}
   .m2-tile-wt{background:var(--m2-ink);}
   .m2-tile-ex{background:var(--m2-lime);}
-  .m2-tile-icon{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .m2-tile-icon{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
   .m2-tile-wt .m2-tile-icon{background:rgba(255,255,255,0.12);color:#fff;}
   .m2-tile-ex .m2-tile-icon{background:rgba(19,33,29,0.12);color:var(--m2-ink);}
-  .m2-tile-val{font-size:19px;font-weight:700;letter-spacing:-0.04em;line-height:1;}
+  .m2-tile-val{font-size:23px;font-weight:700;letter-spacing:-0.04em;line-height:1;}
   .m2-tile-wt .m2-tile-val{color:#fff;}
   .m2-tile-ex .m2-tile-val{color:var(--m2-ink);}
-  .m2-tile-val span{font-size:11px;font-weight:600;}
-  .m2-tile-sub{font-size:11px;font-weight:500;margin-top:3px;}
+  .m2-tile-val span{font-size:13px;font-weight:600;}
+  .m2-tile-sub{font-size:12.5px;font-weight:500;margin-top:5px;}
   .m2-tile-wt .m2-tile-sub{color:var(--m2-lime);}
   .m2-tile-ex .m2-tile-sub{color:rgba(19,33,29,0.62);}
 
@@ -1051,11 +1051,13 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   .m2-habit-empty{padding:16px 14px;text-align:center;font-size:13px;color:var(--m2-text2);}
 
   /* 포토일기 */
-  .m2-photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 20px 22px;}
+  .m2-photo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:0 20px 22px;}
   .m2-photo-slot{aspect-ratio:1;border-radius:18px;overflow:hidden;position:relative;background:var(--m2-sub);cursor:pointer;-webkit-tap-highlight-color:transparent;}
   .m2-photo-slot img{width:100%;height:100%;object-fit:cover;display:block;}
   .m2-photo-slot-add{border:1.6px dashed var(--m2-text3);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--m2-text2);font-size:11px;font-weight:600;background:transparent;}
   .m2-photo-slot-del{position:absolute;top:5px;right:5px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;color:#fff;}
+  .m2-photo-caption-inp{display:block;width:calc(100% - 40px);margin:0 20px 22px;padding:11px 14px;border-radius:14px;border:none;background:var(--m2-sub);font-family:'Pretendard Variable',-apple-system,system-ui,sans-serif;font-size:13.5px;color:var(--m2-text);outline:none;}
+  .m2-photo-caption-inp::placeholder{color:var(--m2-text3);}
 
 
   /* ── 섹션 라벨 ── */
@@ -2489,10 +2491,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
     <div class="m2-chip" id="m2-chip-weather">
       <span id="m2w-icon">☀️</span><span id="m2w-temp">--°</span><span id="m2w-city"></span>
     </div>
-    <div class="m2-chip" id="m2-chip-dday" style="display:none;" onclick="openDdayModal()"></div>
-    <div class="m2-chip m2-chip-add" onclick="mobGoPage('settings')">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>위젯
-    </div>
+    <div class="m2-chip" id="m2-chip-date"></div>
   </div>
 
   <!-- 진행률 카드 -->
@@ -2522,7 +2521,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   <div class="m2-tile-row">
     <div class="m2-tile m2-tile-wt" id="mob-tile-wt" onclick="openWeightChart()">
       <div class="m2-tile-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v3"/><circle cx="12" cy="4" r="1.1" fill="currentColor" stroke="none"/><rect x="4" y="7" width="16" height="13" rx="3"/><path d="M9 13a3 3 0 0 1 6 0"/></svg>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v3"/><circle cx="12" cy="4" r="1.1" fill="currentColor" stroke="none"/><rect x="4" y="7" width="16" height="13" rx="3"/><path d="M9 13a3 3 0 0 1 6 0"/></svg>
       </div>
       <div>
         <div class="m2-tile-val"><span id="mob-tile-wt-val">--</span><span id="mob-tile-wt-unit">kg</span></div>
@@ -2531,7 +2530,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
     </div>
     <div class="m2-tile m2-tile-ex" id="mob-tile-ex" onclick="mobTileExTap()">
       <div class="m2-tile-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 8v8M4 9.5v5M17.5 8v8M20 9.5v5M6.5 12h11"/></svg>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 8v8M4 9.5v5M17.5 8v8M20 9.5v5M6.5 12h11"/></svg>
       </div>
       <div>
         <div class="m2-tile-val"><span id="mob-tile-ex-val">0</span><span>분</span></div>
@@ -2575,6 +2574,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
     <span class="m2-section-count" id="m2-photo-count">0 / 3</span>
   </div>
   <div class="m2-photo-grid" id="m2-photo-grid"></div>
+  <input type="text" id="m2-photo-caption-inp" class="m2-photo-caption-inp" placeholder="오늘 하루 한 줄로 남겨보세요" onblur="mobSavePhotoCaption()" onkeydown="if(event.key==='Enter')this.blur()">
   <input type="file" id="m2-photo-file-inp" accept="image/*" style="display:none;" onchange="mobPhotoFileSelected(event)">
 
   <!-- 일기 섹션 -->
@@ -4869,7 +4869,7 @@ function mobUpdateGreeting(){
   if(!el)return;
   const h=new Date().getHours();
   const name=localStorage.getItem('do_pf_name')||'';
-  const suffix=name?(', '+name):'';
+  const suffix=name?(', '+name+'님'):'';
   let msg;
   if(h<5)msg='늦은 밤이네요'+suffix;
   else if(h<12)msg='좋은 아침이에요'+suffix;
@@ -5082,39 +5082,36 @@ function mobRenderDiary(d){
 }
 
 // ── 식사 리스트 렌더 ──
-// ── D-day 위젯 칩 ──
+// ── 오늘 날짜 위젯 칩 ──
 function mobRenderDdayChip(){
-  const chip=document.getElementById('m2-chip-dday');
+  const chip=document.getElementById('m2-chip-date');
   if(!chip)return;
-  const items=getDdays();
-  if(!items.length){chip.style.display='none';return;}
-  const sorted=items.slice().sort((a,b)=>ddayDiff(a.date)-ddayDiff(b.date));
-  const upcoming=sorted.find(it=>ddayDiff(it.date)>=0)||sorted[0];
-  const diff=ddayDiff(upcoming.date);
-  chip.style.display='flex';
-  chip.innerHTML=`<span>${ddayBadgeText(diff)}</span><span style="color:var(--m2-text2);font-weight:500;">${upcoming.name}</span>`;
+  const dObj=new Date(curDateStr+'T00:00:00');
+  const dn=['일','월','화','수','목','금','토'];
+  chip.textContent=(dObj.getMonth()+1)+'월 '+dObj.getDate()+'일 '+dn[dObj.getDay()]+'요일';
 }
 
 // ── 포토일기 ──
 const MOB_PHOTO_MAX=3;
-let mobPhotoTargetIdx=null;
 function mobRenderPhotoDiary(d){
   const grid=document.getElementById('m2-photo-grid');
   const cnt=document.getElementById('m2-photo-count');
+  const capInp=document.getElementById('m2-photo-caption-inp');
   if(!grid)return;
-  const photos=d.photos||[];
+  const photos=(d.photos||[]).filter(p=>p);
   if(cnt)cnt.textContent=photos.length+' / '+MOB_PHOTO_MAX;
+  if(capInp&&document.activeElement!==capInp)capInp.value=d.photoCaption||'';
   let html='';
   for(let i=0;i<MOB_PHOTO_MAX;i++){
     if(photos[i]){
-      html+=`<div class="m2-photo-slot" onclick="mobPhotoView(${i})">
+      html+=`<div class="m2-photo-slot">
         <img src="${photos[i]}">
         <div class="m2-photo-slot-del" onclick="event.stopPropagation();mobPhotoDelete(${i})">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
         </div>
       </div>`;
-    }else{
-      html+=`<div class="m2-photo-slot m2-photo-slot-add" onclick="mobPhotoAddTap(${i})">
+    }else if(photos.length<MOB_PHOTO_MAX){
+      html+=`<div class="m2-photo-slot m2-photo-slot-add" onclick="mobPhotoAddTap()">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8a2 2 0 0 1 2-2h1.2l.9-1.5A1.6 1.6 0 0 1 9.5 3.7h5a1.6 1.6 0 0 1 1.4.8L16.8 6H18a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.4"/></svg>
         <span>추가</span>
       </div>`;
@@ -5122,32 +5119,26 @@ function mobRenderPhotoDiary(d){
   }
   grid.innerHTML=html;
 }
-function mobPhotoAddTap(idx){
-  mobPhotoTargetIdx=idx;
+function mobPhotoAddTap(){
   document.getElementById('m2-photo-file-inp')?.click();
 }
-function mobPhotoView(idx){
+function mobSavePhotoCaption(){
+  const inp=document.getElementById('m2-photo-caption-inp');
+  if(!inp)return;
   const d=getDayData(curDateStr);
-  const src=(d.photos||[])[idx];
-  if(!src)return;
-  const cap=prompt('사진 설명 (선택)',d.photoCaption||'');
-  if(cap===null)return;
-  d.photoCaption=cap.trim();
+  d.photoCaption=inp.value.trim();
   saveDayData(curDateStr,d);
   if(gAccessToken)syncToDrive();
 }
 function mobPhotoFileSelected(e){
   const file=e.target.files?.[0];
-  if(!file){mobPhotoTargetIdx=null;return;}
-  const idx=mobPhotoTargetIdx;
-  mobPhotoTargetIdx=null;
+  if(!file)return;
   mobPhotoResize(file,1600,0.85).then(dataUrl=>{
     const d=getDayData(curDateStr);
     if(!d.photos)d.photos=[];
-    while(d.photos.length<MOB_PHOTO_MAX)d.photos.push(null);
-    d.photos[idx]=dataUrl;
-    // null 제거하고 압축
     d.photos=d.photos.filter(p=>p);
+    if(d.photos.length>=MOB_PHOTO_MAX){toast('사진은 최대 '+MOB_PHOTO_MAX+'장까지 등록할 수 있어요');return;}
+    d.photos.push(dataUrl); // 항상 맨 뒤에 추가 — 기존 사진은 밀리지 않음
     saveDayData(curDateStr,d);
     mobRenderPhotoDiary(d);
     if(gAccessToken)syncToDrive();
@@ -5156,13 +5147,15 @@ function mobPhotoFileSelected(e){
   e.target.value='';
 }
 function mobPhotoDelete(idx){
-  if(!confirm('이 사진을 삭제할까요?'))return;
   const d=getDayData(curDateStr);
   if(!d.photos)return;
-  d.photos.splice(idx,1);
+  const photos=d.photos.filter(p=>p);
+  photos.splice(idx,1);
+  d.photos=photos;
   saveDayData(curDateStr,d);
   mobRenderPhotoDiary(d);
   if(gAccessToken)syncToDrive();
+  toast('사진 삭제됨');
 }
 function mobPhotoResize(file,maxDim,quality){
   return new Promise((resolve,reject)=>{
