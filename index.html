@@ -2990,9 +2990,6 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
     <div class="mob-tab" id="mtab2-calendar" onclick="mobGoPage('calendar')" aria-label="캘린더">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="3.2"/><path d="M3.5 9.5h17M8 3v3.5M16 3v3.5"/></svg>
     </div>
-    <div class="mob-tab mob-tab-plus" id="mtab2-plus" onclick="toast('준비 중인 기능입니다')" aria-label="기록 추가">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-    </div>
     <div class="mob-tab" id="mtab2-stats" onclick="mobGoPage('stats')" aria-label="통계">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V4"/><path d="M4 20h16"/><rect x="7" y="12" width="2.6" height="5" rx="1" fill="currentColor" stroke="none"/><rect x="11.7" y="8" width="2.6" height="9" rx="1" fill="currentColor" stroke="none"/><rect x="16.4" y="14" width="2.6" height="3" rx="1" fill="currentColor" stroke="none"/></svg>
     </div>
@@ -5105,15 +5102,21 @@ function mobRenderDdayChip(){
 
 // ── 포토일기 ──
 const MOB_PHOTO_MAX=3;
-function mobGenId(){return 'p'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
+let mobPhotoIdCounter=0;
+// 카운터를 포함시켜, 같은 밀리초에 여러 장이 한꺼번에 생성/마이그레이션되어도
+// ID가 절대 겹치지 않도록 함 (겹치면 삭제 시 서로 다른 사진이 함께 지워지는 문제가 있었음)
+function mobGenId(){mobPhotoIdCounter++;return 'p'+Date.now().toString(36)+'_'+mobPhotoIdCounter+'_'+Math.random().toString(36).slice(2,7);}
 // 구버전(문자열 배열) → {id,src} 객체 배열로 정규화. 변환이 실제로 일어난 경우
 // 그 자리에서 바로 저장해 ID를 고정한다 — 그렇지 않으면 호출될 때마다 새 ID가
 // 생겨서 삭제 시 ID가 어긋나 "삭제가 안 되는" 문제가 생긴다.
 function mobPhotoNormalize(d){
   if(!Array.isArray(d.photos)){d.photos=[];return d.photos;}
   let migrated=false;
+  const seen=new Set();
   d.photos=d.photos.filter(p=>p).map(p=>{
     if(typeof p==='string'){migrated=true;return{id:mobGenId(),src:p};}
+    if(!p.id||seen.has(p.id)){migrated=true;p={id:mobGenId(),src:p.src};} // 중복/누락 ID 자동 복구
+    seen.add(p.id);
     return p;
   });
   if(migrated)saveDayData(curDateStr,d);
@@ -5954,7 +5957,8 @@ function mobRenderMoodTiles(){
   for(let i=0;i<5;i++){
     const d=new Date(today);d.setDate(d.getDate()-i);
     const dd=all[localDateStr(d)]||{};
-    if(dd.mood>=1&&dd.mood<=5)counts[dd.mood-1]++;
+    const m=dd.diaryMood||dd.mood||0; // 모바일 일기 기분 또는 PC 사이드바 기분, 둘 중 있는 값 사용
+    if(m>=1&&m<=5)counts[m-1]++;
   }
   const ranked=counts.map((c,i)=>({i,c})).filter(x=>x.c>0).sort((a,b)=>b.c-a.c);
   const rank1=ranked[0]?ranked[0].i:-1;
