@@ -974,14 +974,8 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   .m2-avatar-btn{width:36px;height:36px;border-radius:50%;background:var(--m2-peri-light);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;overflow:hidden;font-size:16px;color:var(--m2-navy2);}
   .m2-avatar-btn img{width:100%;height:100%;object-fit:cover;}
 
-  /* 위젯 칩 행 */
-  .m2-chip-row{display:flex;gap:8px;padding:0 20px 14px;overflow-x:auto;flex-shrink:0;}
-  .m2-chip-row::-webkit-scrollbar{display:none;}
-  .m2-chip{flex-shrink:0;height:34px;border-radius:12px;background:var(--m2-sub);display:flex;align-items:center;gap:6px;padding:0 12px;font-size:12.5px;font-weight:600;color:var(--m2-text);white-space:nowrap;cursor:pointer;}
-  .m2-chip-add{border:1.4px dashed var(--m2-text3);background:transparent;color:var(--m2-text2);}
-
   /* 진행률 카드 */
-  .m2-progress-card{margin:0 20px 14px;border-radius:24px;padding:18px;background:var(--m2-indigo);position:relative;overflow:hidden;}
+  .m2-progress-card{margin:6px 20px 14px;border-radius:24px;padding:18px;background:var(--m2-indigo);position:relative;overflow:hidden;}
   .m2-progress-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;}
   .m2-progress-badge{display:flex;align-items:center;gap:7px;}
   .m2-progress-badge-icon{width:26px;height:26px;border-radius:9px;background:rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;}
@@ -993,23 +987,27 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   .m2-progress-pct{font-size:34px;font-weight:700;color:#fff;letter-spacing:-0.05em;line-height:1;}
   .m2-progress-pct span{font-size:20px;}
   .m2-progress-sub{font-size:12.5px;font-weight:500;color:rgba(255,255,255,0.72);margin-top:4px;}
-  .m2-spark{flex-shrink:0;}
+  .m2-hero-wt{flex-shrink:0;text-align:right;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  .m2-hero-wt-lbl{font-size:11px;font-weight:600;color:rgba(255,255,255,0.6);margin-bottom:2px;}
+  .m2-hero-wt-val{font-size:22px;font-weight:700;color:#fff;letter-spacing:-0.03em;}
+  .m2-hero-wt-unit{font-size:12px;font-weight:600;color:rgba(255,255,255,0.65);}
+  .m2-hero-wt-diff{display:inline-block;margin-top:3px;font-size:10.5px;font-weight:700;color:var(--m2-lime);background:rgba(216,240,53,0.16);padding:2px 7px;border-radius:20px;}
 
   /* 2단 요약 타일 */
   .m2-tile-row{display:flex;gap:10px;padding:0 20px 14px;flex-shrink:0;}
   .m2-tile{flex:1;border-radius:20px;padding:24px 16px;display:flex;align-items:center;gap:12px;}
-  .m2-tile-wt{background:var(--m2-ink);}
-  .m2-tile-ex{background:var(--m2-lime);}
+  .m2-tile-dark{background:var(--m2-ink);}
+  .m2-tile-lime{background:var(--m2-lime);}
   .m2-tile-icon{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-  .m2-tile-wt .m2-tile-icon{background:rgba(255,255,255,0.12);color:#fff;}
-  .m2-tile-ex .m2-tile-icon{background:rgba(19,33,29,0.12);color:var(--m2-ink);}
+  .m2-tile-dark .m2-tile-icon{background:rgba(255,255,255,0.12);color:#fff;}
+  .m2-tile-lime .m2-tile-icon{background:rgba(19,33,29,0.12);color:var(--m2-ink);}
   .m2-tile-val{font-size:27px;font-weight:700;letter-spacing:-0.04em;line-height:1;}
-  .m2-tile-wt .m2-tile-val{color:#fff;}
-  .m2-tile-ex .m2-tile-val{color:var(--m2-ink);}
+  .m2-tile-dark .m2-tile-val{color:#fff;}
+  .m2-tile-lime .m2-tile-val{color:var(--m2-ink);}
   .m2-tile-val span{font-size:15px;font-weight:600;}
   .m2-tile-sub{font-size:13.5px;font-weight:500;margin-top:6px;}
-  .m2-tile-wt .m2-tile-sub{color:var(--m2-lime);}
-  .m2-tile-ex .m2-tile-sub{color:rgba(19,33,29,0.62);}
+  .m2-tile-dark .m2-tile-sub{color:var(--m2-lime);}
+  .m2-tile-lime .m2-tile-sub{color:rgba(19,33,29,0.62);}
 
   /* 섹션 제목 (2a) */
   .m2-section-title{font-size:13px;font-weight:700;letter-spacing:-0.02em;color:var(--m2-text);padding:0 20px 8px;}
@@ -2474,23 +2472,12 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
 <div class="m2-header" id="mob-header">
   <div class="m2-greet" id="m2-greet">안녕하세요</div>
   <div class="m2-header-right">
-    <div class="m2-icon-btn" onclick="toast('준비 중인 기능입니다')" aria-label="알림">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-    </div>
     <div class="m2-avatar-btn" id="mob-avatar" onclick="mobOpenDrawer()">🙂</div>
   </div>
 </div>
 
 <!-- ── 스크롤 영역 ── -->
 <div class="mob-scroll" id="mob-scroll">
-
-  <!-- 위젯 칩 행 -->
-  <div class="m2-chip-row" id="m2-chip-row">
-    <div class="m2-chip" id="m2-chip-weather">
-      <span id="m2w-icon">☀️</span><span id="m2w-temp">--°</span><span id="m2w-city"></span>
-    </div>
-    <div class="m2-chip" id="m2-chip-date"></div>
-  </div>
 
   <!-- 진행률 카드 -->
   <div class="m2-progress-card" id="m2-progress-card">
@@ -2511,22 +2498,26 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
         <div class="m2-progress-pct" id="m2-pct">0<span>%</span></div>
         <div class="m2-progress-sub" id="m2-progress-sub">기록을 시작하세요</div>
       </div>
-      <svg class="m2-spark" id="m2-spark-svg" width="126" height="34" viewBox="0 0 126 34"></svg>
+      <div class="m2-hero-wt" id="m2-hero-wt" onclick="mobTileWtTap()">
+        <div class="m2-hero-wt-lbl">체중</div>
+        <div class="m2-hero-wt-val"><span id="m2-hero-wt-num">--</span><span class="m2-hero-wt-unit">kg</span></div>
+        <div class="m2-hero-wt-diff" id="m2-hero-wt-diff" style="display:none;"></div>
+      </div>
     </div>
   </div>
 
   <!-- 2단 요약 타일 -->
   <div class="m2-tile-row">
-    <div class="m2-tile m2-tile-wt" id="mob-tile-wt" onclick="mobTileWtTap()">
+    <div class="m2-tile m2-tile-dark" id="mob-tile-study" onclick="mobTileStudyTap()">
       <div class="m2-tile-icon">
-        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v3"/><circle cx="12" cy="4" r="1.1" fill="currentColor" stroke="none"/><rect x="4" y="7" width="16" height="13" rx="3"/><path d="M9 13a3 3 0 0 1 6 0"/></svg>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10.5 5 8 4.5 4.5 5v12.5C8 17 10.5 17.5 12 19M12 6.5C13.5 5 16 4.5 19.5 5v12.5C16 17 13.5 17.5 12 19M12 6.5V19"/></svg>
       </div>
       <div>
-        <div class="m2-tile-val"><span id="mob-tile-wt-val">--</span><span id="mob-tile-wt-unit">kg</span></div>
-        <div class="m2-tile-sub" id="m2-wt-sub">기록 없음</div>
+        <div class="m2-tile-val"><span id="mob-tile-study-val">0</span><span>분</span></div>
+        <div class="m2-tile-sub" id="m2-study-sub">기록 없음</div>
       </div>
     </div>
-    <div class="m2-tile m2-tile-ex" id="mob-tile-ex" onclick="mobTileExTap()">
+    <div class="m2-tile m2-tile-lime" id="mob-tile-ex" onclick="mobTileExTap()">
       <div class="m2-tile-icon">
         <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 8v8M4 9.5v5M17.5 8v8M20 9.5v5M6.5 12h11"/></svg>
       </div>
@@ -2753,6 +2744,16 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
     <!-- 환경설정 -->
     <div class="mob-set-section-lbl">환경설정</div>
     <div class="mob-group-card">
+      <!-- 화면 모드 -->
+      <div class="mob-set-row" onclick="toggleDark()">
+        <div class="mob-set-icon" style="background:#ECECF7;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#6667AB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12.5A8.5 8.5 0 1 1 11.5 4a7 7 0 0 0 8.5 8.5z"/></svg>
+        </div>
+        <span class="mob-set-row-title">화면 모드</span>
+        <span class="mob-set-row-detail" id="mob-set-dark-lbl">라이트</span>
+        <div class="toggle-track" style="margin-left:8px;"><div class="toggle-thumb"></div></div>
+      </div>
+      <div class="mob-set-sep"></div>
       <!-- 습관 관리 -->
       <div class="mob-set-row" onclick="mobSetOpenHabits()">
         <div class="mob-set-icon" style="background:#E6F7EB;">
@@ -3321,9 +3322,11 @@ function updateDarkUI(isDark){
   const icon=document.getElementById('dark-icon');
   const lbl=document.getElementById('dark-lbl');
   const dlbl=document.getElementById('ddark-lbl');
+  const mlbl=document.getElementById('mob-set-dark-lbl');
   if(icon)icon.textContent=isDark?'☀️':'🌙';
   if(lbl)lbl.textContent=isDark?'라이트 모드로':'다크 모드로';
   if(dlbl)dlbl.textContent=isDark?'라이트 모드로':'다크 모드로';
+  if(mlbl)mlbl.textContent=isDark?'다크':'라이트';
 }
 
 // ── CLOCK ──
@@ -3368,10 +3371,6 @@ async function fetchWeather(){
     const wind=(c.wind_speed_10m/3.6).toFixed(1);
     setW('',icon,temp,desc,feel,hum,wind);
     setW('d',icon,temp,desc,feel,hum,wind);
-    const m2icon=document.getElementById('m2w-icon');const m2temp=document.getElementById('m2w-temp');const m2city=document.getElementById('m2w-city');
-    if(m2icon)m2icon.textContent=icon;
-    if(m2temp)m2temp.textContent=temp+'°';
-    if(m2city)m2city.textContent=localStorage.getItem('do_weather_city')||'광명시';
   }catch(e){
     const wd=document.getElementById('w-desc');if(wd)wd.textContent='날씨 정보 없음';
     const dwd=document.getElementById('dw-desc');if(dwd)dwd.textContent='날씨 정보 없음';
@@ -3971,10 +3970,12 @@ function saveStudy(){
   document.getElementById('ms-cont').value='';
   document.getElementById('ms-dur').value='';
   toast('공부 기록 저장');
+  if(gAccessToken)syncToDrive();
 }
 function delStudy(i){
   const d=getDayData(curDateStr);if(d.study)d.study.splice(i,1);
   saveDayData(curDateStr,d);renderStudyList(d.study||[]);
+  if(gAccessToken)syncToDrive();
 }
 
 // ── MEAL ──
@@ -3997,13 +3998,17 @@ function saveMeal(){
   d.meals.push({time,food});
   saveDayData(curDateStr,d);
   renderMealList(d.meals);
+  if(typeof mobRenderMeals==='function')mobRenderMeals(d);
   closeModal('modal-meal');
   document.getElementById('mm-food').value='';
   toast('식사 기록 저장');
+  if(gAccessToken)syncToDrive();
 }
 function delMeal(i){
   const d=getDayData(curDateStr);if(d.meals)d.meals.splice(i,1);
   saveDayData(curDateStr,d);renderMealList(d.meals||[]);
+  if(typeof mobRenderMeals==='function')mobRenderMeals(d);
+  if(gAccessToken)syncToDrive();
 }
 
 // ── EXERCISE ──
@@ -4920,49 +4925,14 @@ function mobRenderHero(d,habits){
   const streakEl=document.getElementById('m2-streak-val');
   if(streakEl)streakEl.textContent=streak+'일';
 
-  // 스파크라인: 최근 7일 완료율
-  const spark=document.getElementById('m2-spark-svg');
-  if(spark&&total>0){
-    const pts=[];
-    let chk2=new Date(curDateStr+'T00:00:00');
-    chk2.setDate(chk2.getDate()-6);
-    for(let s=0;s<7;s++){
-      const ds=chk2.getFullYear()+'-'+pad(chk2.getMonth()+1)+'-'+pad(chk2.getDate());
-      const dd=all[ds]||{};
-      const dn=habits.filter(h=>dd.habits&&dd.habits[habitName(h)]).length;
-      pts.push(total?dn/total:0);
-      chk2.setDate(chk2.getDate()+1);
-    }
-    const w=126,h=34,pad2=4;
-    const coords=pts.map((v,i)=>{
-      const x=pad2+(i/(pts.length-1))*(w-pad2*2);
-      const y=h-pad2-v*(h-pad2*2);
-      return[x,y];
-    });
-    const path='M'+coords.map(c=>c[0].toFixed(1)+','+c[1].toFixed(1)).join(' L');
-    const last=coords[coords.length-1];
-    spark.innerHTML=`<path d="${path}" fill="none" stroke="var(--m2-lime)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="3.2" fill="var(--m2-lime)"/>`;
-  }else if(spark){
-    spark.innerHTML='';
-  }
-
-  // 운동 타일
-  const exSessions=d.exercises||(d.exercise?[d.exercise]:[]);
-  const exMin=exSessions.reduce((s,x)=>s+(x.dur||0),0);
-  const exEl=document.getElementById('mob-tile-ex-val');
-  if(exEl)exEl.textContent=exMin||0;
-  const exSubEl=document.getElementById('m2-ex-sub');
-  if(exSubEl)exSubEl.textContent=exSessions.length?(exSessions[0].type||'운동')+(exSessions[0].place?(' · '+exSessions[0].place):''):'기록 없음';
-
-  // 체중 타일
-  const wtEl=document.getElementById('mob-tile-wt-val');
-  const wtUnit=document.getElementById('mob-tile-wt-unit');
-  if(wtEl)wtEl.textContent=d.weight||'--';
-  if(wtUnit)wtUnit.textContent=d.weight?'kg':'';
-  const wtSubEl=document.getElementById('m2-wt-sub');
-  if(wtSubEl){
-    if(!d.weight)wtSubEl.textContent='기록 없음';
-    else{
+  // 히어로 카드 오른쪽: 체중
+  const heroWtNum=document.getElementById('m2-hero-wt-num');
+  const heroWtDiff=document.getElementById('m2-hero-wt-diff');
+  if(heroWtNum)heroWtNum.textContent=d.weight||'--';
+  if(heroWtDiff){
+    if(!d.weight){
+      heroWtDiff.style.display='none';
+    }else{
       let chk3=new Date(curDateStr+'T00:00:00');chk3.setDate(chk3.getDate()-7);
       let prevW=null;
       for(let s=0;s<14;s++){
@@ -4973,10 +4943,30 @@ function mobRenderHero(d,habits){
       }
       if(prevW!=null){
         const diff=(d.weight-prevW).toFixed(1);
-        wtSubEl.textContent=(diff>0?'+':'')+diff+' 지난주';
-      }else wtSubEl.textContent='지난주 기록 없음';
+        heroWtDiff.style.display='inline-block';
+        heroWtDiff.textContent=(diff>0?'+':'')+diff+' 지난주';
+      }else{
+        heroWtDiff.style.display='inline-block';
+        heroWtDiff.textContent='지난주 기록 없음';
+      }
     }
   }
+
+  // 운동 타일
+  const exSessions=d.exercises||(d.exercise?[d.exercise]:[]);
+  const exMin=exSessions.reduce((s,x)=>s+(x.dur||0),0);
+  const exEl=document.getElementById('mob-tile-ex-val');
+  if(exEl)exEl.textContent=exMin||0;
+  const exSubEl=document.getElementById('m2-ex-sub');
+  if(exSubEl)exSubEl.textContent=exSessions.length?(exSessions[0].type||'운동')+(exSessions[0].place?(' · '+exSessions[0].place):''):'기록 없음';
+
+  // 공부 타일
+  const studySessions=d.study||[];
+  const studyMin=studySessions.reduce((s,x)=>s+(x.dur||0),0);
+  const studyEl=document.getElementById('mob-tile-study-val');
+  if(studyEl)studyEl.textContent=studyMin||0;
+  const studySubEl=document.getElementById('m2-study-sub');
+  if(studySubEl)studySubEl.textContent=studySessions.length?(studySessions[0].subject||studySessions[0].content||'공부'):'기록 없음';
 }
 
 // ── 습관 아코디언 렌더 ──
@@ -5091,14 +5081,6 @@ function mobRenderDiary(d){
 }
 
 // ── 식사 리스트 렌더 ──
-// ── 오늘 날짜 위젯 칩 ──
-function mobRenderDdayChip(){
-  const chip=document.getElementById('m2-chip-date');
-  if(!chip)return;
-  const dObj=new Date(curDateStr+'T00:00:00');
-  const dn=['일','월','화','수','목','금','토'];
-  chip.textContent=(dObj.getMonth()+1)+'월 '+dObj.getDate()+'일 '+dn[dObj.getDay()]+'요일';
-}
 
 // ── 포토일기 ──
 const MOB_PHOTO_MAX=3;
@@ -5263,6 +5245,7 @@ function mobDelMealSlot(slot){
   d.meals=d.meals.filter(m=>m.time!==slot);
   saveDayData(curDateStr,d);
   mobRenderMeals(d);
+  if(gAccessToken)syncToDrive();
 }
 
 // ── 아바타 업데이트 ──
@@ -6067,7 +6050,6 @@ function mobRender(){
   mobRenderMeals(d);
   mobRenderTodos(d);
   mobRenderPhotoDiary(d);
-  mobRenderDdayChip();
   mobUpdateAvatar();
 }
 
@@ -6190,6 +6172,7 @@ function mobToggleTodo(i){
     saveDayData(curDateStr,d);
     mobRenderTodos(d);
     renderTodoTodayCard();
+    if(gAccessToken)syncToDrive();
   }
 }
 
@@ -6200,6 +6183,7 @@ function mobDelTodo(i){
   saveDayData(curDateStr,d);
   mobRenderTodos(d);
   renderTodoTodayCard();
+  if(gAccessToken)syncToDrive();
 }
 
 // ── 초기화 ──
