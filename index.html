@@ -1210,80 +1210,77 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   }
   .mob-fab:active{transform:scale(0.92);}
 
+  /* ── 캘린더 헤더 (2a) ── */
+  .m2-cal-header{padding:6px 20px 4px;flex-shrink:0;background:var(--m2-bg);}
+  .m2-cal-header-row{display:flex;align-items:flex-start;justify-content:space-between;}
+  .m2-cal-title{font-size:22px;font-weight:700;letter-spacing:-0.03em;color:var(--m2-text);}
+  .m2-cal-subtitle{font-size:12.5px;font-weight:500;color:var(--m2-text2);margin-top:3px;}
+  .m2-cal-nav{display:flex;gap:8px;flex-shrink:0;}
+
   /* ── 캘린더 네비 버튼 ── */
   .mob-cal-nav-btn{
-    width:34px;height:34px;border-radius:50%;
-    background:#fff;border:none;cursor:pointer;
-    box-shadow:0 1px 5px rgba(40,40,70,0.10);
+    width:32px;height:32px;border-radius:50%;
+    background:var(--m2-sub);border:none;cursor:pointer;
     display:flex;align-items:center;justify-content:center;
     -webkit-tap-highlight-color:transparent;
-    flex-shrink:0;
+    flex-shrink:0;color:var(--m2-text2);
   }
-  .mob-cal-nav-btn:active{background:#ECECF7;}
+  .mob-cal-nav-btn:active{background:var(--m2-div);}
 
   /* ── 캘린더 그리드 ── */
+  .m2-cal-card{margin:6px 20px 16px;padding:16px 12px 14px;border-radius:22px;background:var(--m2-sub);}
   .mob-cal-dow-row{
     display:grid;grid-template-columns:repeat(7,1fr);
-    margin-bottom:6px;
+    margin-bottom:8px;
   }
   .mob-cal-dow-cell{
     text-align:center;font-size:12px;font-weight:650;
-    padding:2px 0;
+    padding:2px 0;color:var(--m2-text2);
   }
   .mob-cal-grid{
     display:grid;grid-template-columns:repeat(7,1fr);
-    row-gap:4px;
+    row-gap:6px;
   }
   .mob-cal-cell{
     aspect-ratio:1;display:flex;align-items:center;justify-content:center;
     cursor:pointer;-webkit-tap-highlight-color:transparent;
   }
   .mob-cal-day{
-    width:34px;height:34px;border-radius:50%;
+    width:34px;height:34px;border-radius:12px;
     display:flex;align-items:center;justify-content:center;
-    position:relative;font-size:14.5px;font-weight:500;
-    color:#1A1A1C;transition:background .15s;
+    position:relative;font-size:14px;font-weight:600;
+    color:var(--m2-text);transition:background .15s;
   }
-  .mob-cal-day.lv1{background:rgba(102,103,171,0.28);color:#54549A;font-weight:600;}
-  .mob-cal-day.lv2{background:rgba(102,103,171,0.60);color:#fff;font-weight:650;}
-  .mob-cal-day.lv3{background:#6667AB;color:#fff;font-weight:750;}
-  .mob-cal-day.is-today{background:#6667AB;color:#fff;font-weight:750;}
-  .mob-cal-day.is-today.has-data{background:#6667AB;}
-  .mob-cal-day.selected{outline:2.5px solid #6667AB;outline-offset:2px;}
-  .mob-cal-today-dot{
-    position:absolute;bottom:-7px;width:4px;height:4px;
-    border-radius:50%;background:#6667AB;
-  }
+  .mob-cal-day.lv1{background:var(--m2-peri-light);color:var(--m2-indigo-deep);}
+  .mob-cal-day.lv2{background:var(--m2-peri);color:var(--m2-indigo-deep);font-weight:700;}
+  .mob-cal-day.lv3{background:var(--m2-indigo);color:#fff;font-weight:700;}
+  .mob-cal-day.is-today{background:var(--m2-lime);color:var(--m2-ink);font-weight:800;}
+  .mob-cal-day.selected{outline:2.5px solid var(--m2-indigo);outline-offset:2px;}
+  .mob-cal-today-dot{display:none;}
 
-  /* ── 선택일 요약 ── */
-  .mob-cal-sum-row{
-    display:flex;align-items:center;gap:13px;
-    padding:13px 16px;position:relative;
-  }
-  .mob-cal-sum-icon{
-    width:34px;height:34px;border-radius:10px;flex-shrink:0;
-    display:flex;align-items:center;justify-content:center;
-  }
-  .mob-cal-sum-sep{
-    position:absolute;left:63px;right:0;bottom:0;
-    height:0.5px;background:rgba(60,60,67,0.13);
-  }
-  .mob-cal-sum-title{font-size:15.5px;font-weight:600;color:#1A1A1C;letter-spacing:-0.3px;}
-  .mob-cal-sum-sub{font-size:12.5px;color:rgba(60,60,67,0.62);margin-top:1px;}
-  .mob-cal-sum-tap{cursor:pointer;-webkit-tap-highlight-color:transparent;}
-  .mob-cal-sum-tap:active{background:#F7F7FA;}
-  .mob-cal-sum-empty{
-    padding:28px 16px;text-align:center;
-    font-size:14px;color:rgba(60,60,67,0.34);
-  }
+  /* ── 선택일 요약 카드 (2a 인디고) ── */
+  .m2-cal-sum-card{margin:0 20px 16px;padding:18px;border-radius:22px;background:var(--m2-indigo);}
+  .m2-cal-sum-top{display:flex;align-items:center;justify-content:space-between;}
+  .m2-cal-sum-date{font-size:12.5px;font-weight:600;color:rgba(255,255,255,0.72);}
+  .m2-cal-sum-cnt{font-size:19px;font-weight:700;color:#fff;letter-spacing:-0.02em;margin-top:3px;}
+  .m2-cal-sum-body{margin-top:14px;}
+  .m2-cal-bar-row{display:flex;align-items:center;gap:10px;margin-top:10px;}
+  .m2-cal-bar-row:first-child{margin-top:0;}
+  .m2-cal-bar-lbl{width:44px;flex-shrink:0;font-size:12.5px;font-weight:600;color:rgba(255,255,255,0.85);}
+  .m2-cal-bar-track{flex:1;height:8px;border-radius:5px;background:rgba(255,255,255,0.18);overflow:hidden;}
+  .m2-cal-bar-fill{height:100%;border-radius:5px;}
+  .m2-cal-bar-val{width:46px;flex-shrink:0;text-align:right;font-size:12.5px;font-weight:700;color:#fff;}
+  .m2-cal-sum-row2{display:flex;align-items:center;gap:10px;padding:9px 0;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  .m2-cal-sum-row2-icon{width:26px;height:26px;border-radius:8px;background:rgba(255,255,255,0.16);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;}
+  .m2-cal-sum-row2-txt{flex:1;min-width:0;font-size:13.5px;font-weight:600;color:#fff;}
+  .m2-cal-sum-row2-sub{font-size:12px;font-weight:500;color:rgba(255,255,255,0.7);margin-top:1px;}
+  .m2-cal-sum-empty{padding:6px 0;font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.75);}
 
-  /* ── 범례 ── */
-  .mob-cal-legend{
-    display:flex;align-items:center;justify-content:center;
-    gap:8px;margin:14px 16px 0;
-  }
-  .mob-cal-legend-dot{width:13px;height:13px;border-radius:50%;}
-  .mob-cal-legend-txt{font-size:11.5px;font-weight:500;color:rgba(60,60,67,0.34);}
+  /* ── 그날의 사진 ── */
+  .m2-cal-photo-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 20px 20px;}
+  .m2-cal-photo-item{aspect-ratio:1;border-radius:16px;overflow:hidden;background:var(--m2-sub);}
+  .m2-cal-photo-item img{width:100%;height:100%;object-fit:cover;display:block;}
+
 
   /* ── 통계 상단 3카드 ── */
   .mob-stat-top-row{
@@ -2619,47 +2616,44 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
 <div id="mob-page-calendar" class="mob-page">
 
 <!-- 헤더 -->
-<div class="mob-header">
-  <div class="mob-header-left">
-    <div class="mob-date-kicker" id="mob-cal-kicker"></div>
-    <div class="mob-large-title" id="mob-cal-title"></div>
-  </div>
-  <div style="display:flex;gap:8px;">
-    <button class="mob-cal-nav-btn" onclick="mobCalMove(-1)">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6667AB" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
-    </button>
-    <button class="mob-cal-nav-btn" onclick="mobCalMove(1)">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6667AB" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
-    </button>
+<div class="m2-cal-header">
+  <div class="m2-cal-header-row">
+    <div>
+      <div class="m2-cal-title" id="mob-cal-title"></div>
+      <div class="m2-cal-subtitle">색이 진한 날은 기록이 많은 날</div>
+    </div>
+    <div class="m2-cal-nav">
+      <button class="mob-cal-nav-btn" onclick="mobCalMove(-1)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <button class="mob-cal-nav-btn" onclick="mobCalMove(1)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
   </div>
 </div>
 
 <!-- 스크롤 -->
 <div class="mob-scroll">
   <!-- 캘린더 그리드 카드 -->
-  <div class="mob-group-card" style="padding:14px 12px 16px;margin-bottom:18px;">
+  <div class="m2-cal-card">
     <!-- 요일 헤더 -->
     <div class="mob-cal-dow-row" id="mob-cal-dow"></div>
     <!-- 날짜 그리드 -->
     <div class="mob-cal-grid" id="mob-cal-grid"></div>
   </div>
 
-  <!-- 선택일 요약 -->
-  <div class="mob-section-label" style="margin-top:0;">
-    <span class="mob-section-title" id="mob-cal-sel-label">날짜를 선택하세요</span>
-  </div>
-  <div class="mob-group-card" id="mob-cal-summary"></div>
+  <!-- 선택일 요약 (인디고 카드) -->
+  <div class="m2-cal-sum-card" id="mob-cal-summary"></div>
 
-  <!-- 농도 범례 -->
-  <div class="mob-cal-legend">
-    <span class="mob-cal-legend-txt">적음</span>
-    <div class="mob-cal-legend-dot" style="background:rgba(102,103,171,0.28);"></div>
-    <div class="mob-cal-legend-dot" style="background:rgba(102,103,171,0.60);"></div>
-    <div class="mob-cal-legend-dot" style="background:#6667AB;"></div>
-    <span class="mob-cal-legend-txt">많음</span>
+  <!-- 그날의 사진 -->
+  <div class="m2-section-title-row" id="mob-cal-photo-header" style="display:none;">
+    <span class="m2-section-title" style="padding:0;">그날의 사진</span>
+    <span class="m2-section-count" id="mob-cal-photo-count"></span>
   </div>
+  <div class="m2-cal-photo-row" id="mob-cal-photo-row"></div>
 
-  <div style="height:100px;"></div>
+  <div style="height:20px;"></div>
 </div>
 
 </div><!-- /mob-page-calendar -->
@@ -5305,10 +5299,8 @@ function mobGoPage(page){
 let mobCalYear, mobCalMonth, mobCalSelDate=null;
 
 function mobCalUpdateHeader(){
-  const kicker=document.getElementById('mob-cal-kicker');
   const title=document.getElementById('mob-cal-title');
-  if(kicker)kicker.textContent=mobCalYear+'년';
-  if(title)title.textContent=(mobCalMonth+1)+'월';
+  if(title)title.textContent=mobCalYear+'년 '+(mobCalMonth+1)+'월';
 }
 
 function mobCalMove(dir){
@@ -5348,7 +5340,7 @@ function mobRenderCalendar(){
 
   const dowEl=document.getElementById('mob-cal-dow');
   if(dowEl){
-    const dows=[{l:'일',c:'#FF6482'},{l:'월',c:'rgba(60,60,67,0.34)'},{l:'화',c:'rgba(60,60,67,0.34)'},{l:'수',c:'rgba(60,60,67,0.34)'},{l:'목',c:'rgba(60,60,67,0.34)'},{l:'금',c:'rgba(60,60,67,0.34)'},{l:'토',c:'#3E83C4'}];
+    const dows=[{l:'일',c:'#FF6482'},{l:'월',c:'var(--m2-text2)'},{l:'화',c:'var(--m2-text2)'},{l:'수',c:'var(--m2-text2)'},{l:'목',c:'var(--m2-text2)'},{l:'금',c:'var(--m2-text2)'},{l:'토',c:'#3E83C4'}];
     dowEl.innerHTML=dows.map(d=>`<div class="mob-cal-dow-cell" style="color:${d.c};">${d.l}</div>`).join('');
   }
 
@@ -5383,80 +5375,102 @@ function mobCalSelect(ds){
 }
 
 function mobRenderCalSum(ds){
-  const lblEl=document.getElementById('mob-cal-sel-label');
   const sumEl=document.getElementById('mob-cal-summary');
   if(!sumEl)return;
   if(!ds){
-    if(lblEl)lblEl.textContent='날짜를 선택하세요';
-    sumEl.innerHTML='<div class="mob-cal-sum-empty">날짜를 탭하면 기록을 볼 수 있어요</div>';
+    sumEl.innerHTML=`<div class="m2-cal-sum-top">
+      <div><div class="m2-cal-sum-date">날짜를 선택하세요</div><div class="m2-cal-sum-cnt">기록 보기</div></div>
+    </div>
+    <div class="m2-cal-sum-empty">날짜를 탭하면 그날의 기록을 볼 수 있어요</div>`;
+    mobRenderCalPhotos(null);
     return;
   }
   const dObj=new Date(ds+'T00:00:00');
   const dn=['일','월','화','수','목','금','토'];
   const dlbl=(dObj.getMonth()+1)+'월 '+dObj.getDate()+'일 '+dn[dObj.getDay()]+'요일';
-  if(lblEl)lblEl.textContent=dlbl;
 
   const dd=getDayData(ds);
   const habits=getHabits();
-  const rows=[];
+  const bars=[]; // 진행률 바 (습관/운동/공부)
+  const rows2=[]; // 탭 가능한 행 (일기)
+  let recordCount=0;
 
   if(habits.length>0){
     const doneCnt=habits.filter(h=>dd.habits&&dd.habits[habitName(h)]).length;
-    const notDone=habits.filter(h=>!(dd.habits&&dd.habits[habitName(h)])).map(habitName);
-    const subTxt=notDone.length>0
-      ?notDone.slice(0,2).join(', ')+(notDone.length>2?' 외 '+(notDone.length-2)+'개':'')
-      :'모두 완료';
-    rows.push({
-      icon:`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#34C759" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>`,
-      bg:'#E6F7EB',title:`습관 ${doneCnt}/${habits.length} 완료`,sub:subTxt
-    });
-  }
-  const studySessions=dd.study||[];
-  if(studySessions.length>0){
-    const totalMin=studySessions.reduce((s,x)=>s+(x.dur||0),0);
-    const h=Math.floor(totalMin/60),m=totalMin%60;
-    const durTxt=h>0?(h+'시간'+(m>0?' '+m+'분':'')):(m+'분');
-    const subjs=studySessions.map(s=>s.subject||'').filter(Boolean).slice(0,2).join(' · ');
-    rows.push({
-      icon:`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3E83C4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10.5 5 8 4.5 4.5 5v12.5C8 17 10.5 17.5 12 19M12 6.5C13.5 5 16 4.5 19.5 5v12.5C16 17 13.5 17.5 12 19M12 6.5V19"/></svg>`,
-      bg:'#E5EFF9',title:`공부 ${durTxt}`,sub:subjs
-    });
+    if(doneCnt>0)recordCount++;
+    bars.push({lbl:'습관',val:doneCnt+'/'+habits.length,pct:Math.round(doneCnt/habits.length*100),color:'var(--m2-lime)'});
   }
   const exSessions=dd.exercises||(dd.exercise?[dd.exercise]:[]);
   if(exSessions.length>0){
+    recordCount++;
     const totalMin=exSessions.reduce((s,x)=>s+(x.dur||0),0);
-    const types=exSessions.map(x=>x.type||'').filter(Boolean).slice(0,2).join(' · ');
-    rows.push({
-      icon:`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#34C759" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 8v8M4 9.5v5M17.5 8v8M20 9.5v5M6.5 12h11"/></svg>`,
-      bg:'#E6F7EB',title:`운동${totalMin>0?' '+totalMin+'분':''}`,sub:types
-    });
+    bars.push({lbl:'운동',val:totalMin+'분',pct:Math.min(100,Math.round(totalMin/60*100)),color:'var(--m2-lime)'});
+  }
+  const studySessions=dd.study||[];
+  if(studySessions.length>0){
+    recordCount++;
+    const totalMin=studySessions.reduce((s,x)=>s+(x.dur||0),0);
+    const h=Math.floor(totalMin/60),m=totalMin%60;
+    const durTxt=h>0?(h+'시간'+(m>0?' '+m+'분':'')):(m+'분');
+    bars.push({lbl:'공부',val:durTxt,pct:Math.min(100,Math.round(totalMin/180*100)),color:'var(--m2-peri)'});
   }
   if(dd.diary||dd.diaryTitle){
+    recordCount++;
     const MOODS_CAL=['','😔','😐','🙂','😊','😄'];
-    const preview=(dd.diaryTitle||dd.diary||'').slice(0,20);
+    const preview=(dd.diaryTitle||dd.diary||'').slice(0,22);
     const moodEmoji=dd.diaryMood?MOODS_CAL[dd.diaryMood]:'';
-    rows.push({
-      icon:`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6667AB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 4.5l3 3L9 18l-4 1 1-4 10.5-10.5z"/></svg>`,
-      bg:'#ECECF7',title:'일기 작성됨',
-      sub:preview+(moodEmoji?' · '+moodEmoji:''),
+    rows2.push({
+      icon:`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 4.5l3 3L9 18l-4 1 1-4 10.5-10.5z"/></svg>`,
+      txt:'일기: '+preview+(moodEmoji?' '+moodEmoji:''),
       onclick:`mobOpenSheet('${ds}')`
     });
   }
+  if(dd.weight)recordCount++;
+  if((dd.photos||[]).filter(p=>p).length>0)recordCount++;
 
-  if(rows.length===0){
-    sumEl.innerHTML='<div class="mob-cal-sum-empty">이 날의 기록이 없어요</div>';
-    return;
+  let html=`<div class="m2-cal-sum-top">
+    <div>
+      <div class="m2-cal-sum-date">${dlbl}</div>
+      <div class="m2-cal-sum-cnt">기록 ${recordCount}개</div>
+    </div>
+  </div>`;
+  if(bars.length===0&&rows2.length===0){
+    html+=`<div class="m2-cal-sum-empty">이 날의 기록이 없어요</div>`;
+  }else{
+    html+=`<div class="m2-cal-sum-body">`;
+    bars.forEach(b=>{
+      html+=`<div class="m2-cal-bar-row">
+        <span class="m2-cal-bar-lbl">${b.lbl}</span>
+        <div class="m2-cal-bar-track"><div class="m2-cal-bar-fill" style="width:${b.pct}%;background:${b.color};"></div></div>
+        <span class="m2-cal-bar-val">${b.val}</span>
+      </div>`;
+    });
+    rows2.forEach(r=>{
+      html+=`<div class="m2-cal-sum-row2" onclick="${r.onclick}">
+        <div class="m2-cal-sum-row2-icon">${r.icon}</div>
+        <div class="m2-cal-sum-row2-txt">${r.txt}</div>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+      </div>`;
+    });
+    html+=`</div>`;
   }
-  sumEl.innerHTML=rows.map((r,i)=>`
-    <div class="mob-cal-sum-row${r.onclick?' mob-cal-sum-tap':''}" ${r.onclick?`onclick="${r.onclick}"`:''}>
-      <div class="mob-cal-sum-icon" style="background:${r.bg};">${r.icon}</div>
-      <div style="flex:1;min-width:0;">
-        <div class="mob-cal-sum-title">${r.title}</div>
-        ${r.sub?`<div class="mob-cal-sum-sub">${r.sub}</div>`:''}
-      </div>
-      ${r.onclick?`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,0.3)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>`:''}
-      ${i<rows.length-1?'<div class="mob-cal-sum-sep"></div>':''}
-    </div>`).join('');
+  sumEl.innerHTML=html;
+  mobRenderCalPhotos(ds);
+}
+
+// ── 그날의 사진 (캘린더) ──
+function mobRenderCalPhotos(ds){
+  const header=document.getElementById('mob-cal-photo-header');
+  const cntEl=document.getElementById('mob-cal-photo-count');
+  const row=document.getElementById('mob-cal-photo-row');
+  if(!row)return;
+  if(!ds){header.style.display='none';row.innerHTML='';return;}
+  const dd=getDayData(ds);
+  const photos=(dd.photos||[]).filter(p=>p).map(p=>(typeof p==='string')?p:p.src);
+  if(!photos.length){header.style.display='none';row.innerHTML='';return;}
+  header.style.display='flex';
+  if(cntEl)cntEl.textContent=photos.length+'장';
+  row.innerHTML=photos.map(src=>`<div class="m2-cal-photo-item"><img src="${src}"></div>`).join('');
 }
 
 // ── 일기 탭 ──
@@ -6694,8 +6708,8 @@ async function fetchGoogleProfile(token){
 }
 
 // Drive에 저장
-async function syncToDrive(){
-  if(!gAccessToken||!gapiReady){toast('Google 연동이 필요합니다');return;}
+async function syncToDrive(silent){
+  if(!gAccessToken||!gapiReady){if(!silent)toast('Google 연동이 필요합니다');return;}
   const btn=document.getElementById('sync-btn');
   const mobBtn=document.getElementById('mob-sync-btn');
   if(btn)btn.classList.add('syncing');
@@ -6736,10 +6750,10 @@ async function syncToDrive(){
         body:form
       });
     }
-    toast('Drive에 저장됐습니다 ✓');
+    if(!silent)toast('Drive에 저장됐습니다 ✓');
   }catch(e){
     console.error('syncToDrive',e);
-    toast('저장 실패. 다시 시도하세요.');
+    if(!silent)toast('저장 실패. 다시 시도하세요.');
     gAccessToken=null;localStorage.removeItem('g_token');
     updateSyncUI(false);
   }finally{
@@ -6749,7 +6763,7 @@ async function syncToDrive(){
 }
 
 // Drive에서 불러오기
-async function syncFromDrive(){
+async function syncFromDrive(silent){
   if(!gAccessToken||!gapiReady)return;
   gapi.client.setToken({access_token:gAccessToken});
   try{
@@ -6796,13 +6810,32 @@ async function syncFromDrive(){
     mobRenderCalendar();
     mobRenderStats();
     mobRenderSettings();
-    toast('Drive에서 불러왔습니다 ✓');
+    if(!silent)toast('Drive에서 불러왔습니다 ✓');
   }catch(e){
     console.error('syncFromDrive',e);
     gAccessToken=null;localStorage.removeItem('g_token');
     updateSyncUI(false);
   }
 }
+
+// ── 앱을 다시 열거나 화면 전환에서 돌아왔을 때 자동으로 최신 데이터 재동기화 ──
+// (기존에는 최초 로드 시 한 번만 받아와서, PC에서 입력한 뒤 모바일 앱을 계속 켜두면
+//  새 내용이 반영되지 않는 문제가 있었음)
+let gLastAutoPull=0;
+function mobAutoPullIfDue(){
+  if(!gAccessToken)return;
+  const now=Date.now();
+  if(now-gLastAutoPull<15000)return; // 15초 내 중복 호출 방지
+  gLastAutoPull=now;
+  // 혹시 아직 Drive에 반영 안 된 로컬 변경분이 있으면 먼저 올린 뒤, 최신 데이터를 받아옴
+  // (푸시 없이 바로 받아오면, 마지막 로컬 편집이 다른 기기의 데이터로 덮어써질 수 있음)
+  syncToDrive(true).catch(()=>{}).then(()=>syncFromDrive(true));
+}
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='visible')mobAutoPullIfDue();
+});
+window.addEventListener('pageshow',()=>{mobAutoPullIfDue();});
+window.addEventListener('focus',()=>{mobAutoPullIfDue();});
 
 </script>
 </body>
