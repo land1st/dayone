@@ -1041,7 +1041,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   body.dark .m2-habit-group.open .m2-habit-chk.off{border-color:rgba(255,255,255,0.35);}
   .m2-habit-chk.on{background:var(--m2-indigo);border:1.5px solid var(--m2-indigo);}
   body.dark .m2-habit-group.open .m2-habit-chk.on{background:var(--m2-lime);border-color:var(--m2-lime);}
-  .m2-habit-name{flex:1;font-size:13.5px;color:var(--m2-text);}
+  .m2-habit-name{flex:1;font-size:14.5px;font-weight:600;color:var(--m2-text);}
   body.dark .m2-habit-group.open .m2-habit-name{color:#F1F3F2;}
   .m2-habit-name.done{color:var(--m2-text2);}
   .m2-habit-streak{font-size:11px;font-weight:600;color:var(--m2-text3);}
@@ -1273,11 +1273,6 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   .m2-cal-sum-row2-txt{flex:1;min-width:0;font-size:13.5px;font-weight:600;color:#fff;}
   .m2-cal-sum-row2-sub{font-size:12px;font-weight:500;color:rgba(255,255,255,0.7);margin-top:1px;}
   .m2-cal-sum-empty{padding:6px 0;font-size:13.5px;font-weight:500;color:rgba(255,255,255,0.75);}
-
-  /* ── 그날의 사진 ── */
-  .m2-cal-photo-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 20px 20px;}
-  .m2-cal-photo-item{aspect-ratio:1;border-radius:16px;overflow:hidden;background:var(--m2-sub);}
-  .m2-cal-photo-item img{width:100%;height:100%;object-fit:cover;display:block;}
 
 
   /* ══════════ 2a 통계 화면 ══════════ */
@@ -2557,15 +2552,6 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
     </div>
   </div>
 
-  <!-- 포토일기 -->
-  <div class="m2-section-title-row" style="margin-top:8px;">
-    <span class="m2-section-title" style="padding:0;">포토일기</span>
-    <span class="m2-section-count" id="m2-photo-count">0 / 3</span>
-  </div>
-  <div class="m2-photo-grid" id="m2-photo-grid"></div>
-  <input type="text" id="m2-photo-caption-inp" class="m2-photo-caption-inp" placeholder="오늘 하루 한 줄로 남겨보세요" onblur="mobSavePhotoCaption()" onkeydown="if(event.key==='Enter')this.blur()">
-  <input type="file" id="m2-photo-file-inp" accept="image/*" style="display:none;" onchange="mobPhotoFileSelected(event)">
-
   <!-- 일기 섹션 -->
   <div class="mob-section-label" style="margin-top:8px;">
     <span class="mob-section-title">오늘의 일기</span>
@@ -2637,13 +2623,6 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
 
   <!-- 선택일 요약 (인디고 카드) -->
   <div class="m2-cal-sum-card" id="mob-cal-summary"></div>
-
-  <!-- 그날의 사진 -->
-  <div class="m2-section-title-row" id="mob-cal-photo-header" style="display:none;">
-    <span class="m2-section-title" style="padding:0;">그날의 사진</span>
-    <span class="m2-section-count" id="mob-cal-photo-count"></span>
-  </div>
-  <div class="m2-cal-photo-row" id="mob-cal-photo-row"></div>
 
   <div style="height:20px;"></div>
 </div>
@@ -5385,7 +5364,6 @@ function mobRenderCalSum(ds){
       <div><div class="m2-cal-sum-date">날짜를 선택하세요</div><div class="m2-cal-sum-cnt">기록 보기</div></div>
     </div>
     <div class="m2-cal-sum-empty">날짜를 탭하면 그날의 기록을 볼 수 있어요</div>`;
-    mobRenderCalPhotos(null);
     return;
   }
   const dObj=new Date(ds+'T00:00:00');
@@ -5458,22 +5436,6 @@ function mobRenderCalSum(ds){
     html+=`</div>`;
   }
   sumEl.innerHTML=html;
-  mobRenderCalPhotos(ds);
-}
-
-// ── 그날의 사진 (캘린더) ──
-function mobRenderCalPhotos(ds){
-  const header=document.getElementById('mob-cal-photo-header');
-  const cntEl=document.getElementById('mob-cal-photo-count');
-  const row=document.getElementById('mob-cal-photo-row');
-  if(!row)return;
-  if(!ds){header.style.display='none';row.innerHTML='';return;}
-  const dd=getDayData(ds);
-  const photos=(dd.photos||[]).filter(p=>p).map(p=>(typeof p==='string')?p:p.src);
-  if(!photos.length){header.style.display='none';row.innerHTML='';return;}
-  header.style.display='flex';
-  if(cntEl)cntEl.textContent=photos.length+'장';
-  row.innerHTML=photos.map(src=>`<div class="m2-cal-photo-item"><img src="${src}"></div>`).join('');
 }
 
 // ── 일기 탭 ──
@@ -6049,7 +6011,6 @@ function mobRender(){
   mobRenderDiary(d);
   mobRenderMeals(d);
   mobRenderTodos(d);
-  mobRenderPhotoDiary(d);
   mobUpdateAvatar();
 }
 
