@@ -320,14 +320,25 @@ body.dark .hero-card{box-shadow:0 8px 24px rgba(0,0,0,.4);}
 #cb-todo-today,#cb-todo-tomorrow{padding-bottom:10px;}
 
 /* habit */
-.habit-list{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
-.habit-row{display:flex;align-items:center;gap:9px;}
+.habit-list{display:flex;flex-direction:column;gap:4px;margin-bottom:10px;}
+.habit-row{display:flex;align-items:center;gap:9px;padding:3px 0;}
 .habit-chk{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .12s;flex-shrink:0;font-size:10px;color:transparent;}
 .habit-chk.on{background:var(--accent);border-color:var(--accent);color:#fff;}
 .habit-name{font-size:13px;color:var(--text);flex:1;transition:color .12s;}
 .habit-name.done{color:var(--text3);text-decoration:line-through;}
 .habit-progress{height:2px;background:var(--border);border-radius:2px;overflow:hidden;}
 .habit-bar{height:100%;background:var(--accent);border-radius:2px;transition:width .4s ease;}
+
+/* habit 오전/오후 아코디언 */
+.habit-subgroup{margin-bottom:4px;}
+.habit-subgroup-head{display:flex;align-items:center;gap:7px;padding:6px 2px;cursor:pointer;user-select:none;}
+.habit-subgroup-title{font-size:11.5px;font-weight:650;color:var(--text2);flex:1;}
+.habit-subgroup-cnt{font-size:11px;font-weight:600;color:var(--text3);}
+.habit-subgroup-chevron{width:12px;height:12px;color:var(--text3);transition:transform .15s;flex-shrink:0;}
+.habit-subgroup.open .habit-subgroup-chevron{transform:rotate(180deg);}
+.habit-subgroup-body{display:flex;flex-direction:column;gap:6px;max-height:0;overflow:hidden;transition:max-height .2s ease-out;padding-left:2px;}
+.habit-subgroup.open .habit-subgroup-body{max-height:600px;}
+.habit-subgroup-empty{font-size:12px;color:var(--text3);padding:2px 2px 6px;}
 
 /* study */
 .study-session{margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border);}
@@ -3622,6 +3633,7 @@ function saveAll(){
 }
 
 // ── HABITS ──
+let pcHabitOpenGroups={morning:true,evening:true};
 function renderHabits(d,habits){
   const list=document.getElementById('habit-list');
   const bar=document.getElementById('habit-bar');
@@ -3632,14 +3644,35 @@ function renderHabits(d,habits){
   const pct=Math.round(done/habits.length*100);
   if(bar)bar.style.width=pct+'%';
   if(badge)badge.textContent=done+'/'+habits.length;
-  list.innerHTML=habits.map(h=>{
+
+  const rowHtml=h=>{
     const nm=habitName(h);
     const on=d.habits&&d.habits[nm];
     return`<div class="habit-row">
       <div class="habit-chk ${on?'on':''}" onclick="toggleHabit('${nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}')">${on?'✓':''}</div>
       <span class="habit-name ${on?'done':''}">${nm}</span>
     </div>`;
-  }).join('');
+  };
+  const groupHtml=(period,title)=>{
+    const items=habits.filter(h=>(h.period||'morning')===period);
+    const doneCnt=items.filter(h=>d.habits&&d.habits[habitName(h)]).length;
+    const open=pcHabitOpenGroups[period];
+    return`<div class="habit-subgroup ${open?'open':''}">
+      <div class="habit-subgroup-head" onclick="togglePcHabitGroup('${period}')">
+        <svg class="habit-subgroup-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        <span class="habit-subgroup-title">${title}</span>
+        <span class="habit-subgroup-cnt">${doneCnt}/${items.length}</span>
+      </div>
+      <div class="habit-subgroup-body">
+        ${items.length?items.map(rowHtml).join(''):'<div class="habit-subgroup-empty">등록된 습관이 없습니다</div>'}
+      </div>
+    </div>`;
+  };
+  list.innerHTML=groupHtml('morning','오전 습관')+groupHtml('evening','오후 습관');
+}
+function togglePcHabitGroup(period){
+  pcHabitOpenGroups[period]=!pcHabitOpenGroups[period];
+  renderHabits(getDayData(curDateStr),getHabits());
 }
 function toggleHabit(name){
   const d=getDayData(curDateStr);
