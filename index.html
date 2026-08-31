@@ -2407,8 +2407,8 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
           <div class="new-habit-row">
             <input class="form-input" id="new-habit-inp" type="text" placeholder="새 습관 이름" style="max-width:220px;">
             <select class="form-input" id="new-habit-period" style="max-width:90px;">
-              <option value="morning">아침</option>
-              <option value="evening">저녁</option>
+              <option value="morning">오전</option>
+              <option value="evening">오후</option>
             </select>
             <button class="settings-btn primary" onclick="addHabit()">추가</button>
           </div>
@@ -2532,14 +2532,14 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
     </div>
   </div>
 
-  <!-- 습관 트래커 (아침/저녁 아코디언) -->
+  <!-- 습관 트래커 (오전/오후 아코디언) -->
   <div class="m2-section-title">습관 트래커</div>
   <div class="m2-habit-group" id="m2-habit-group-morning">
     <div class="m2-habit-group-head" onclick="mobToggleHabitGroup('morning')">
       <div class="m2-habit-group-icon">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="17" r="4"/><path d="M12 3v2M4.2 8.2l1.4 1.4M19.8 8.2l-1.4 1.4M3 17h2M19 17h2"/></svg>
       </div>
-      <div class="m2-habit-group-name">아침 습관</div>
+      <div class="m2-habit-group-name">오전 습관</div>
       <div class="m2-habit-group-cnt" id="m2-habit-morning-cnt">0/0</div>
       <svg class="m2-habit-group-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
     </div>
@@ -2552,7 +2552,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
       <div class="m2-habit-group-icon">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12.5A8.5 8.5 0 1 1 11.5 4a7 7 0 0 0 8.5 8.5z"/></svg>
       </div>
-      <div class="m2-habit-group-name">저녁 습관</div>
+      <div class="m2-habit-group-name">오후 습관</div>
       <div class="m2-habit-group-cnt" id="m2-habit-evening-cnt">0/0</div>
       <svg class="m2-habit-group-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
     </div>
@@ -2664,8 +2664,8 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
       <span class="m2-section-count" id="mob-stat-habit-total"></span>
     </div>
     <div class="m2-stat-habit-tabs">
-      <div class="m2-stat-habit-tab" id="mob-stat-tab-morning" onclick="mobSetStatsHabitTab('morning')">아침</div>
-      <div class="m2-stat-habit-tab" id="mob-stat-tab-evening" onclick="mobSetStatsHabitTab('evening')">저녁</div>
+      <div class="m2-stat-habit-tab" id="mob-stat-tab-morning" onclick="mobSetStatsHabitTab('morning')">오전</div>
+      <div class="m2-stat-habit-tab" id="mob-stat-tab-evening" onclick="mobSetStatsHabitTab('evening')">오후</div>
     </div>
     <div class="m2-stat-card" id="mob-stat-habit-bars"></div>
 
@@ -2858,8 +2858,8 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
     <div class="mob-set-add-row">
       <input class="mob-set-field-inp" id="mob-habit-new-inp" type="text" maxlength="20" placeholder="새 습관 이름..." style="flex:1;margin-bottom:0;">
       <select class="mob-set-field-inp" id="mob-habit-new-period" style="flex:0 0 74px;margin-bottom:0;">
-        <option value="morning">아침</option>
-        <option value="evening">저녁</option>
+        <option value="morning">오전</option>
+        <option value="evening">오후</option>
       </select>
       <button class="mob-set-add-btn" onclick="mobAddHabit()">추가</button>
     </div>
@@ -4519,7 +4519,7 @@ function renderHabitSettings(){
     const period=h.period||'morning';
     return`
     <div class="habit-edit-row" id="pc-habit-row-${i}">
-      <button class="habit-period-pill" onclick="togglePeriodHabit(${i})" title="탭해서 아침/저녁 전환" style="flex-shrink:0;border:none;cursor:pointer;font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;background:${period==='morning'?'var(--amber-bg)':'var(--blue-bg)'};color:${period==='morning'?'var(--amber)':'var(--blue)'};">${period==='morning'?'아침':'저녁'}</button>
+      <button class="habit-period-pill" onclick="togglePeriodHabit(${i})" title="탭해서 오전/오후 전환" style="flex-shrink:0;border:none;cursor:pointer;font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;background:${period==='morning'?'var(--amber-bg)':'var(--blue-bg)'};color:${period==='morning'?'var(--amber)':'var(--blue)'};">${period==='morning'?'오전':'오후'}</button>
       <span class="habit-edit-name">${nm}</span>
       <button class="habit-edit-btn" onclick="pcEditHabitStart(${i})">수정</button>
       <button class="habit-del-btn" onclick="delHabit(${i})">삭제</button>
@@ -5580,7 +5580,7 @@ function mobRenderHabitSheet(){
     const period=h.period||'morning';
     return`
     <div class="mob-habits-row" id="mob-habit-row-${i}">
-      <button onclick="mobTogglePeriodHabit(${i})" title="탭해서 아침/저녁 전환" style="flex-shrink:0;border:none;cursor:pointer;font-size:11px;font-weight:600;padding:4px 9px;border-radius:20px;background:${period==='morning'?'#FFF3DF':'#E4ECEF'};color:${period==='morning'?'#8C6B2A':'#3F6B7A'};">${period==='morning'?'아침':'저녁'}</button>
+      <button onclick="mobTogglePeriodHabit(${i})" title="탭해서 오전/오후 전환" style="flex-shrink:0;border:none;cursor:pointer;font-size:11px;font-weight:600;padding:4px 9px;border-radius:20px;background:${period==='morning'?'#FFF3DF':'#E4ECEF'};color:${period==='morning'?'#8C6B2A':'#3F6B7A'};">${period==='morning'?'오전':'오후'}</button>
       <span class="mob-habits-name">${nm}</span>
       <button class="mob-habits-edit" onclick="mobEditHabitStart(${i})" title="이름 변경">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
@@ -5817,7 +5817,7 @@ function mobRenderStats(){
   const barsEl=document.getElementById('mob-stat-habit-bars');
   if(barsEl){
     if(!tabHabits.length){
-      barsEl.innerHTML=`<div class="m2-stat-habit-empty">${mobStatsHabitTab==='morning'?'아침':'저녁'} 습관이 없습니다</div>`;
+      barsEl.innerHTML=`<div class="m2-stat-habit-empty">${mobStatsHabitTab==='morning'?'오전':'오후'} 습관이 없습니다</div>`;
     } else {
       const computed=tabHabits.map(h=>{
         const nm=habitName(h);
@@ -6691,6 +6691,13 @@ function gsiLoaded(){
     gAccessToken=savedTok;
     gTokenExpiresAt=savedExp;
     updateSyncUI(true);
+  }else if(savedTok&&!savedExp){
+    // 만료 시각 정보 없이 토큰만 저장된 예전 방식(이번 업데이트 이전에 로그인한 세션).
+    // 실제로는 아직 유효할 수 있으므로 무조건 로그아웃 처리하지 않고,
+    // 일단 이 토큰으로 사용해보면서 조용히 새 토큰으로 갱신을 시도한다.
+    gAccessToken=savedTok;
+    updateSyncUI(true);
+    requestDriveToken(true); // 무음 재발급 — 성공하면 만료 시각까지 정상적으로 채워짐
   }else{
     if(savedTok){localStorage.removeItem('g_token');localStorage.removeItem('g_token_exp');}
     updateSyncUI(false);
