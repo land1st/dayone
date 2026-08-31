@@ -3618,7 +3618,7 @@ function saveAll(){
   renderDiaryPreview(d);
   toast('저장했습니다 ✓');
   // 로그인 상태면 Drive에 자동 저장
-  if(gAccessToken)syncToDrive();
+  mobSyncNow();
 }
 
 // ── HABITS ──
@@ -3650,7 +3650,7 @@ function toggleHabit(name){
   renderHabits(d,habits);
   updateHero(d,habits);
   // 로그인 상태면 Drive에 자동 저장
-  if(gAccessToken)syncToDrive();
+  mobSyncNow();
 }
 
 // ── PREVIEW RENDERERS ──
@@ -3852,7 +3852,7 @@ function saveDiaryEditor(){
   renderDiaryPreview(d);
   closeModal('modal-diary-editor');
   toast('일기 저장 ✓');
-  if(gAccessToken)syncToDrive();
+  mobSyncNow();
 }
 
 // ── STUDY LIST ──
@@ -3958,12 +3958,12 @@ function saveStudy(){
   document.getElementById('ms-cont').value='';
   document.getElementById('ms-dur').value='';
   toast('공부 기록 저장');
-  if(gAccessToken)syncToDrive();
+  mobSyncNow();
 }
 function delStudy(i){
   const d=getDayData(curDateStr);if(d.study)d.study.splice(i,1);
   saveDayData(curDateStr,d);renderStudyList(d.study||[]);
-  if(gAccessToken)syncToDrive();
+  mobSyncNow();
 }
 
 // ── MEAL ──
@@ -3990,13 +3990,13 @@ function saveMeal(){
   closeModal('modal-meal');
   document.getElementById('mm-food').value='';
   toast('식사 기록 저장');
-  if(gAccessToken)syncToDrive();
+  mobSyncNow();
 }
 function delMeal(i){
   const d=getDayData(curDateStr);if(d.meals)d.meals.splice(i,1);
   saveDayData(curDateStr,d);renderMealList(d.meals||[]);
   if(typeof mobRenderMeals==='function')mobRenderMeals(d);
-  if(gAccessToken)syncToDrive();
+  mobSyncNow();
 }
 
 // ── EXERCISE ──
@@ -4045,7 +4045,7 @@ function saveExercise(){
   renderExercise(d.exercises);
   updateHero(d,getHabits());
   if(typeof mobRenderHero==='function')mobRenderHero(d,getHabits());
-  if(gAccessToken)syncToDrive();
+  mobSyncNow();
   closeModal('modal-exercise');
   // 입력 초기화
   document.getElementById('me-type').value='';
@@ -4062,7 +4062,7 @@ function delExercise(i){
   renderExercise(d.exercises);
   updateHero(d,getHabits());
   if(typeof mobRenderHero==='function')mobRenderHero(d,getHabits());
-  if(gAccessToken)syncToDrive();
+  mobSyncNow();
 }
 
 // ── WEIGHT ──
@@ -4082,7 +4082,7 @@ function saveWeight(){
   document.getElementById('weight-disp').innerHTML=v+'<span class="unit-sm"> kg</span>';
   renderWeightDelta(curDateStr,v);updateHero(d,getHabits());renderWeightGraph();toast('체중 저장');
   if(typeof mobRenderHero==='function')mobRenderHero(d,getHabits());
-  if(gAccessToken)syncToDrive();
+  mobSyncNow();
 }
 function saveWeightModal(){
   const v=parseFloat(document.getElementById('mw-val')?.value);
@@ -4092,7 +4092,7 @@ function saveWeightModal(){
   document.getElementById('weight-inp').value=v;
   renderWeightDelta(curDateStr,v);updateHero(d,getHabits());renderWeightGraph();
   if(typeof mobRenderHero==='function')mobRenderHero(d,getHabits());
-  if(gAccessToken)syncToDrive();
+  mobSyncNow();
   closeModal('modal-weight');toast('체중 저장');
 }
 
@@ -4533,7 +4533,7 @@ function togglePeriodHabit(i){
   saveHabits(habits);
   renderHabitSettings();
   if(typeof mobRenderHabitSheet==='function'&&document.getElementById('mob-habits-edit-list'))mobRenderHabitSheet();
-  if(gAccessToken)syncToDrive();
+  mobSyncNow();
 }
 function pcEditHabitStart(i){
   const row=document.getElementById('pc-habit-row-'+i);
@@ -4583,7 +4583,7 @@ function addHabit(){
   if(!v){toast('습관 이름을 입력하세요');return;}
   const habits=getHabits();if(habits.some(h=>habitName(h)===v)){toast('이미 있는 습관입니다');return;}
   habits.push({name:v,period});saveHabits(habits);renderHabitSettings();loadDay(curDateStr);inp.value='';toast('습관 추가');
-  if(gAccessToken)syncToDrive();
+  mobSyncNow();
 }
 function delHabit(i){
   if(!confirm('이 습관을 삭제할까요?'))return;
@@ -4782,6 +4782,11 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   // 온보딩 체크
   obStart();
+
+  // 안전장치: 구글 로그인 스크립트 자체가 로드 실패하는 등의 이유로
+  // gsiLoaded()가 끝내 호출되지 않으면 gTokenReadyPromise가 영원히 안 풀려서
+  // 저장이 계속 대기 상태로 멈출 수 있음 — 5초 뒤에는 강제로 풀어준다.
+  setTimeout(markTokenReady,5000);
 
   // Google API 초기화
   loadGoogleAPI();
@@ -5022,7 +5027,7 @@ function mobToggleHabitByName(name){
   // 기존 PC 히어로도 업데이트 (공유 데이터)
   updateHero(d,habits);
   // 로그인 상태면 Drive에 자동 저장
-  if(gAccessToken)syncToDrive();
+  mobSyncNow();
 }
 function mobToggleHabit(idx){
   const habits=getHabits();
@@ -5134,7 +5139,7 @@ function mobSavePhotoCaption(){
   const d=getDayData(curDateStr);
   d.photoCaption=inp.value.trim();
   saveDayData(curDateStr,d);
-  if(gAccessToken)syncToDrive();
+  mobSyncNow();
 }
 function mobPhotoFileSelected(e){
   const file=e.target.files?.[0];
@@ -5149,7 +5154,7 @@ function mobPhotoFileSelected(e){
       d.photos=photos;
       saveDayData(curDateStr,d);
       mobRenderPhotoDiary(d);
-      if(gAccessToken)syncToDrive();
+      mobSyncNow();
       toast('사진 추가됨 ✓');
     });
   }).catch(()=>{toast('사진 처리 실패');});
@@ -5163,7 +5168,7 @@ function mobPhotoDelete(id){
     d.photos=next;
     saveDayData(curDateStr,d);
     mobRenderPhotoDiary(d);
-    if(gAccessToken)syncToDrive();
+    mobSyncNow();
     toast('사진 삭제됨');
   });
 }
@@ -5233,7 +5238,7 @@ function mobDelMealSlot(slot){
   d.meals=d.meals.filter(m=>m.time!==slot);
   saveDayData(curDateStr,d);
   mobRenderMeals(d);
-  if(gAccessToken)syncToDrive();
+  mobSyncNow();
 }
 
 // ── 아바타 업데이트 ──
@@ -5605,7 +5610,7 @@ function mobAddHabit(){
   loadDay(curDateStr); // 오늘 탭 습관 리스트 갱신
   if(window.innerWidth<=680)mobRender();
   toast('습관 추가됨');
-  if(gAccessToken)syncToDrive();
+  mobSyncNow();
 }
 function mobTogglePeriodHabit(i){
   const habits=getHabits();
@@ -5614,7 +5619,7 @@ function mobTogglePeriodHabit(i){
   saveHabits(habits);
   mobRenderHabitSheet();
   if(window.innerWidth<=680)mobRender();
-  if(gAccessToken)syncToDrive();
+  mobSyncNow();
 }
 function mobEditHabitStart(i){
   const row=document.getElementById('mob-habit-row-'+i);
@@ -6131,7 +6136,7 @@ function mobAddTodo(){
   mobRenderTodos(d);
   // PC 할 일 카드도 동기화
   renderTodoTodayCard();
-  if(gAccessToken)syncToDrive();
+  mobSyncNow();
 }
 
 // ── 오늘 할 일 토글 ──
@@ -6142,7 +6147,7 @@ function mobToggleTodo(i){
     saveDayData(curDateStr,d);
     mobRenderTodos(d);
     renderTodoTodayCard();
-    if(gAccessToken)syncToDrive();
+    mobSyncNow();
   }
 }
 
@@ -6153,7 +6158,7 @@ function mobDelTodo(i){
   saveDayData(curDateStr,d);
   mobRenderTodos(d);
   renderTodoTodayCard();
-  if(gAccessToken)syncToDrive();
+  mobSyncNow();
 }
 
 // ── 초기화 ──
@@ -6610,6 +6615,21 @@ let gapiReady=false;
 let gsiReady=false;
 let gSyncedOnLoad=false;
 
+// 저장된 토큰의 유효성 검사가 끝날 때까지 기다릴 수 있는 Promise.
+// 모바일(특히 iOS Safari)은 백그라운드 갔다 오면 페이지가 통째로 새로고침되는 경우가 많은데,
+// 그 직후 바로 습관을 체크하면 아직 토큰 유효성 검사(비동기, 네트워크 요청)가 끝나기 전이라
+// gAccessToken이 아직 null이라서 "로그인 안 된 것"처럼 조용히 동기화를 건너뛰던 문제가 있었다.
+// 저장 시점마다 이 Promise를 기다리게 해서, 검사가 끝날 때까지 살짝 대기했다가 정확한
+// 로그인 상태로 동기화를 시도하도록 한다.
+let gTokenReadyResolve;
+let gTokenReadyPromise=new Promise(r=>{gTokenReadyResolve=r;});
+function markTokenReady(){if(gTokenReadyResolve){gTokenReadyResolve();gTokenReadyResolve=null;}}
+// 실제 저장 함수들은 전부 이 함수를 통해 동기화를 시도한다.
+async function mobSyncNow(){
+  await gTokenReadyPromise;
+  if(gAccessToken)syncToDrive();
+}
+
 // gapi.js onload 콜백
 function gapiLoaded(){
   gapi.load('client',async()=>{
@@ -6631,6 +6651,7 @@ function gsiLoaded(){
       localStorage.setItem('g_token',resp.access_token);
       gSyncedOnLoad=true;
       updateSyncUI(true);
+      markTokenReady();
       toast('Google 로그인 완료 — Drive에서 데이터를 불러옵니다...');
       fetchGoogleProfile(resp.access_token);
       syncFromDrive();
@@ -6653,12 +6674,16 @@ function gsiLoaded(){
           updateSyncUI(true);
           checkGoogleReady();
         }
+        markTokenReady();
       })
       .catch(()=>{
         gAccessToken=null;
         localStorage.removeItem('g_token');
         updateSyncUI(false);
+        markTokenReady();
       });
+  } else {
+    markTokenReady(); // 저장된 토큰 자체가 없으면 기다릴 게 없으니 즉시 완료 처리
   }
 }
 
