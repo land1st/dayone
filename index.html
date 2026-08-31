@@ -4783,11 +4783,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   // 온보딩 체크
   obStart();
 
-  // 안전장치: 구글 로그인 스크립트 자체가 로드 실패하는 등의 이유로
-  // gsiLoaded()가 끝내 호출되지 않으면 gTokenReadyPromise가 영원히 안 풀려서
-  // 저장이 계속 대기 상태로 멈출 수 있음 — 5초 뒤에는 강제로 풀어준다.
-  setTimeout(markTokenReady,5000);
-
   // Google API 초기화
   loadGoogleAPI();
 
@@ -5282,6 +5277,7 @@ function mobGoPage(page){
   const pg=document.getElementById('mob-page-'+page);
   if(pg)pg.classList.add('mob-page-active');
   mobCurTab=page;
+  if(page==='today') mobRender();
   if(page==='calendar'){
     mobCalYear=mobCalYear||new Date().getFullYear();
     mobCalMonth=mobCalMonth!=null?mobCalMonth:new Date().getMonth();
@@ -6611,22 +6607,34 @@ const G_FILE_NAME='dayone_backup.json';
 
 let gTokenClient=null;
 let gAccessToken=null;
+let gTokenExpiresAt=0; // 토큰 만료 시각(ms). 이 값과 Date.now()만 비교해서 유효성을 즉시 판단 —
+                        // 예전처럼 매번 구글 서버에 네트워크로 물어보지 않으므로, 그 응답을
+                        // 기다리는 사이에 다른 로그인이 끼어들며 생기던 레이스 컨디션 자체가
+                        // 구조적으로 발생할 수 없다.
 let gapiReady=false;
 let gsiReady=false;
 let gSyncedOnLoad=false;
+let gLastAutoPull=0;
+let gPendingSilent=false;      // 지금 진행 중인 토큰 재발급이 무음(자동) 재발급인지
+let gPendingSyncAction=null;   // 재발급 완료 후 이어서 할 작업: 'push' | 'pull' | null
 
-// 저장된 토큰의 유효성 검사가 끝날 때까지 기다릴 수 있는 Promise.
-// 모바일(특히 iOS Safari)은 백그라운드 갔다 오면 페이지가 통째로 새로고침되는 경우가 많은데,
-// 그 직후 바로 습관을 체크하면 아직 토큰 유효성 검사(비동기, 네트워크 요청)가 끝나기 전이라
-// gAccessToken이 아직 null이라서 "로그인 안 된 것"처럼 조용히 동기화를 건너뛰던 문제가 있었다.
-// 저장 시점마다 이 Promise를 기다리게 해서, 검사가 끝날 때까지 살짝 대기했다가 정확한
-// 로그인 상태로 동기화를 시도하도록 한다.
-let gTokenReadyResolve;
-let gTokenReadyPromise=new Promise(r=>{gTokenReadyResolve=r;});
-function markTokenReady(){if(gTokenReadyResolve){gTokenReadyResolve();gTokenReadyResolve=null;}}
-// 실제 저장 함수들은 전부 이 함수를 통해 동기화를 시도한다.
-async function mobSyncNow(){
-  await gTokenReadyPromise;
+function isTokenValid(){
+  return !!(gAccessToken&&gTokenExpiresAt&&Date.now()<gTokenExpiresAt);
+}
+// 토큰이 없거나 만료됐을 때 재발급을 요청한다.
+// silent=true면 사용자에게 아무것도 안 보여주고 조용히 시도(브라우저에 구글 로그인
+// 세션이 살아있으면 팝업 없이 새 토큰을 받아옴). action은 재발급 완료 후 이어서
+// 자동으로 재시도할 작업('push' 또는 'pull')을 지정한다.
+function requestDriveToken(silent,action){
+  if(!gTokenClient){
+    if(!silent)toast('Google 인증 준비 중입니다. 잠시 후 다시 시도해주세요.');
+    return;
+  }
+  gPendingSilent=!!silent;
+  gPendingSyncAction=action||null;
+  gTokenClient.requestAccessToken({prompt:silent?'':'consent'});
+}
+function mobSyncNow(){
   if(gAccessToken)syncToDrive();
 }
 
@@ -6646,45 +6654,48 @@ function gsiLoaded(){
     client_id:G_CLIENT_ID,
     scope:G_SCOPES+' https://www.googleapis.com/auth/userinfo.profile',
     callback:(resp)=>{
-      if(resp.error){toast('Google 연동 실패: '+resp.error);return;}
+      const wasSilent=gPendingSilent;
+      const action=gPendingSyncAction;
+      gPendingSilent=false;gPendingSyncAction=null;
+      if(resp.error){
+        if(!wasSilent)toast('Google 연동 실패: '+resp.error);
+        return;
+      }
       gAccessToken=resp.access_token;
+      gTokenExpiresAt=Date.now()+(((resp.expires_in||3600)-60)*1000); // 60초 여유
       localStorage.setItem('g_token',resp.access_token);
+      localStorage.setItem('g_token_exp',String(gTokenExpiresAt));
       gSyncedOnLoad=true;
       updateSyncUI(true);
-      markTokenReady();
-      toast('Google 로그인 완료 — Drive에서 데이터를 불러옵니다...');
-      fetchGoogleProfile(resp.access_token);
-      syncFromDrive();
+      // 로그인 팝업이 닫히며 포커스가 돌아오는 순간 백그라운드 자동 재동기화가 겹쳐서
+      // 충돌하지 않도록, 방금 로그인했으니 당분간은 자동 재동기화를 건너뛰게 한다.
+      gLastAutoPull=Date.now();
+      if(!wasSilent){
+        toast('Google 로그인 완료 — Drive에서 데이터를 불러옵니다...');
+        fetchGoogleProfile(resp.access_token);
+      }
+      // 재발급 전에 하려던 작업이 있으면 이어서 실행, 없으면(수동 로그인) 최신 데이터를 받아옴
+      if(action==='push')syncToDrive();
+      else if(action==='pull')syncFromDrive(wasSilent);
+      else if(!wasSilent)syncFromDrive();
     }
   });
   gsiReady=true;
-  checkGoogleReady();
-  // 저장된 토큰 유효성 검증 — 유효하면 LOGOUT으로 변경
-  const saved=localStorage.getItem('g_token');
-  if(saved){
-    fetch('https://www.googleapis.com/oauth2/v3/tokeninfo?access_token='+saved)
-      .then(r=>r.json())
-      .then(info=>{
-        if(info.error||info.error_description){
-          gAccessToken=null;
-          localStorage.removeItem('g_token');
-          updateSyncUI(false);
-        } else {
-          gAccessToken=saved;
-          updateSyncUI(true);
-          checkGoogleReady();
-        }
-        markTokenReady();
-      })
-      .catch(()=>{
-        gAccessToken=null;
-        localStorage.removeItem('g_token');
-        updateSyncUI(false);
-        markTokenReady();
-      });
-  } else {
-    markTokenReady(); // 저장된 토큰 자체가 없으면 기다릴 게 없으니 즉시 완료 처리
+  // 저장된 토큰 복원 — 네트워크 검증 없이 저장해둔 만료 시각과 현재 시각만 비교한다.
+  // (예전엔 매번 구글 서버에 유효성을 물어보는 비동기 요청을 했는데, 그 응답이 오는
+  // 사이에 사용자가 새로 로그인하면 뒤늦은 응답이 방금 로그인한 상태를 덮어써서
+  // "로그인하자마자 풀리는" 문제가 반복됐다. 로컬 비교만 쓰면 이 레이스 자체가 없다.)
+  const savedTok=localStorage.getItem('g_token');
+  const savedExp=parseInt(localStorage.getItem('g_token_exp')||'0',10);
+  if(savedTok&&savedExp&&Date.now()<savedExp){
+    gAccessToken=savedTok;
+    gTokenExpiresAt=savedExp;
+    updateSyncUI(true);
+  }else{
+    if(savedTok){localStorage.removeItem('g_token');localStorage.removeItem('g_token_exp');}
+    updateSyncUI(false);
   }
+  checkGoogleReady();
 }
 
 // DOMContentLoaded 에서 호출 — UI 초기화만 담당
@@ -6737,7 +6748,7 @@ function handleSyncClick(){
     if(confirm('Google 연동을 해제할까요?\n\nDrive에 현재 데이터를 저장하고 로그아웃합니다.')){
       syncToDrive().then(()=>{
         gAccessToken=null;
-        localStorage.removeItem('g_token');
+        localStorage.removeItem('g_token');localStorage.removeItem('g_token_exp');
         localStorage.removeItem('do_pf_google_img');
         updateSyncUI(false);
         mobUpdateAvatar();
@@ -6746,8 +6757,9 @@ function handleSyncClick(){
       });
     }
   }else{
-    // 로그인
+    // 로그인 (계정 선택 화면 표시)
     if(!gTokenClient){toast('Google API 로드 중입니다. 잠시 후 다시 시도하세요.');return;}
+    gPendingSilent=false;gPendingSyncAction=null;
     gTokenClient.requestAccessToken({prompt:'select_account'});
   }
 }
@@ -6783,6 +6795,9 @@ async function fetchGoogleProfile(token){
 // Drive에 저장
 async function syncToDrive(silent){
   if(!gAccessToken||!gapiReady){if(!silent)toast('Google 연동이 필요합니다');return;}
+  // 토큰이 만료됐으면 실제 요청을 보내보고 실패를 기다리는 대신, 먼저 무음으로
+  // 재발급받고 그게 끝나면 이 저장을 이어서 자동으로 재시도한다.
+  if(!isTokenValid()){requestDriveToken(true,'push');return;}
   const btn=document.getElementById('sync-btn');
   const mobBtn=document.getElementById('mob-sync-btn');
   if(btn)btn.classList.add('syncing');
@@ -6827,13 +6842,25 @@ async function syncToDrive(silent){
     // fetch()는 401/403 같은 HTTP 오류에도 reject하지 않으므로, 직접 상태를 확인해야 함.
     // 이걸 확인 안 하면 토큰이 만료돼서 실제로는 저장이 실패해도 "저장됐습니다"로 표시되는
     // 심각한 문제가 있었음 (모바일에서 입력한 게 PC에 동기화 안 되던 원인).
-    if(!res.ok)throw new Error('Drive upload failed: '+res.status);
+    if(!res.ok){
+      const err=new Error('Drive upload failed: '+res.status);
+      err.status=res.status;
+      throw err;
+    }
     if(!silent)toast('Drive에 저장됐습니다 ✓');
   }catch(e){
     console.error('syncToDrive',e);
-    if(!silent)toast('로그인이 만료되어 저장하지 못했습니다. 다시 로그인해주세요.');
-    gAccessToken=null;localStorage.removeItem('g_token');
-    updateSyncUI(false);
+    // 인증 자체가 잘못된 경우(401/403)에만 로그아웃 처리한다. 그 외 일시적 오류로
+    // 로그인이 풀려버리면 "로그인했는데 바로 풀리는" 문제가 생기므로 로그인은 유지한다.
+    if(e.status===401||e.status===403){
+      // 로그인 상태가 실제로 풀리는 건 사용자가 반드시 알아야 하는 중요한 변화이므로,
+      // 무음(silent) 동기화라도 이 경우만큼은 항상 메시지를 띄운다.
+      toast('로그인이 만료되어 저장하지 못했습니다. 다시 로그인해주세요.');
+      gAccessToken=null;localStorage.removeItem('g_token');localStorage.removeItem('g_token_exp');
+      updateSyncUI(false);
+    }else if(!silent){
+      toast('일시적으로 저장하지 못했습니다. 잠시 후 다시 시도해주세요.');
+    }
   }finally{
     if(btn)btn.classList.remove('syncing');
     if(mobBtn)mobBtn.classList.remove('syncing');
@@ -6843,6 +6870,7 @@ async function syncToDrive(silent){
 // Drive에서 불러오기
 async function syncFromDrive(silent){
   if(!gAccessToken||!gapiReady)return;
+  if(!isTokenValid()){requestDriveToken(true,'pull');return;}
   gapi.client.setToken({access_token:gAccessToken});
   try{
     const list=await gapi.client.drive.files.list({
@@ -6855,7 +6883,11 @@ async function syncFromDrive(silent){
     const res=await fetch(`https://www.googleapis.com/drive/v3/files/${files[0].id}?alt=media`,{
       headers:{'Authorization':'Bearer '+gAccessToken}
     });
-    if(!res.ok)throw new Error('Drive download failed: '+res.status);
+    if(!res.ok){
+      const err=new Error('Drive download failed: '+res.status);
+      err.status=res.status;
+      throw err;
+    }
     const remote=await res.json();
     if(remote.habits)saveHabits(remote.habits);
     if(remote.records){
@@ -6892,8 +6924,18 @@ async function syncFromDrive(silent){
     if(!silent)toast('Drive에서 불러왔습니다 ✓');
   }catch(e){
     console.error('syncFromDrive',e);
-    gAccessToken=null;localStorage.removeItem('g_token');
-    updateSyncUI(false);
+    // 인증 자체가 잘못된 경우(401/403)에만 로그아웃 처리한다.
+    // 그 외(네트워크 일시 오류, 요청 제한 등)는 로그인 상태를 유지해야
+    // "로그인했는데 바로 풀리는" 문제가 생기지 않는다.
+    if(e.status===401||e.status===403){
+      gAccessToken=null;localStorage.removeItem('g_token');localStorage.removeItem('g_token_exp');
+      updateSyncUI(false);
+      // 로그인 상태가 실제로 풀리는 건 사용자가 반드시 알아야 하는 중요한 변화이므로,
+      // 무음(silent) 동기화라도 이 경우만큼은 항상 메시지를 띄운다.
+      toast('로그인이 만료되었습니다. 다시 로그인해주세요.');
+    }else if(!silent){
+      toast('일시적으로 불러오지 못했습니다. 잠시 후 다시 시도됩니다.');
+    }
   }
 }
 
@@ -6905,13 +6947,13 @@ async function syncFromDrive(silent){
 // 상태라면, 그걸 그대로 Drive에 덮어써서 실제 저장돼 있던 데이터를 지워버릴 수 있었다.
 // 그래서 자동 실행되는 건 "받아오기"만 하고, "올리기"는 실제로 뭔가를 저장할 때만(각 저장
 // 함수에서) 하도록 분리한다.
-let gLastAutoPull=0;
 function mobAutoPullIfDue(){
   if(!gAccessToken)return;
   const now=Date.now();
   if(now-gLastAutoPull<15000)return; // 15초 내 중복 호출 방지
   gLastAutoPull=now;
-  syncFromDrive(true);
+  if(isTokenValid())syncFromDrive(true);
+  else requestDriveToken(true,'pull'); // 만료됐으면 무음 재발급 후 이어서 받아옴
 }
 document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState==='visible')mobAutoPullIfDue();
