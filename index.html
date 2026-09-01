@@ -253,6 +253,59 @@ body.dark .hero-card{box-shadow:0 8px 24px rgba(0,0,0,.4);}
 .hero-tile-val{font-size:16px;font-weight:700;color:#fff;}
 .hero-tile-lbl{font-size:10px;color:rgba(255,255,255,.7);margin-top:2px;}
 
+/* ── PC 대시보드 4칸 지표 행 (4a) ── */
+.dm-row{display:flex;gap:16px;margin-bottom:16px;align-items:stretch;}
+.dm-card{border-radius:22px;padding:18px 20px;position:relative;overflow:hidden;min-width:0;}
+.dm-card-indigo{flex:1.5;background:#504DA8;}
+.dm-card-ink{flex:1;background:#13211D;}
+body.dark .dm-card-ink{background:#1A231F;}
+.dm-card-lime{flex:1;background:#D8F035;}
+.dm-card-apricot{flex:1;background:#F6C89A;}
+.dm-eyebrow{font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px;}
+.dm-card-indigo .dm-eyebrow,.dm-card-ink .dm-eyebrow{color:#fff;}
+.dm-card-lime .dm-eyebrow{color:#13211D;}
+.dm-card-apricot .dm-eyebrow{color:#3A2415;}
+.dm-add-btn{position:absolute;top:16px;right:16px;width:26px;height:26px;border-radius:9px;background:rgba(0,0,0,0.08);display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;color:inherit;font-size:16px;line-height:1;}
+.dm-card-indigo .dm-add-btn,.dm-card-ink .dm-add-btn{background:rgba(255,255,255,0.14);color:#fff;}
+.dm-val-row{display:flex;align-items:flex-end;justify-content:space-between;margin-top:16px;}
+.dm-val{font-size:30px;font-weight:700;letter-spacing:-.04em;line-height:1;}
+.dm-card-indigo .dm-val{font-size:44px;}
+.dm-val span{font-size:14px;font-weight:600;margin-left:2px;}
+.dm-card-indigo .dm-val,.dm-card-ink .dm-val{color:#fff;}
+.dm-card-lime .dm-val{color:#13211D;}
+.dm-card-apricot .dm-val{color:#3A2415;}
+.dm-sub{font-size:12.5px;font-weight:500;margin-top:5px;}
+.dm-card-indigo .dm-sub{color:rgba(255,255,255,.72);}
+.dm-card-ink .dm-sub{color:rgba(255,255,255,.6);}
+.dm-card-lime .dm-sub{color:rgba(19,33,29,.6);}
+.dm-card-apricot .dm-sub{color:rgba(58,36,21,.6);}
+.dm-delta{font-size:12px;font-weight:700;padding:4px 10px;border-radius:20px;background:rgba(216,240,53,0.18);color:#D8F035;white-space:nowrap;}
+.dm-ring-wrap{position:absolute;top:18px;right:20px;width:82px;height:82px;}
+.dm-ring-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff;}
+.dm-ring-svg{transform:rotate(-90deg);}
+.dm-ring-track{fill:none;stroke:rgba(255,255,255,.2);}
+.dm-ring-fill{fill:none;stroke:#D8F035;stroke-linecap:round;transition:stroke-dashoffset .6s ease;}
+
+/* ── PC 대시보드 좌/우 2열 (order 대신 명시적 컬럼) ── */
+.dash-cols{display:flex;gap:16px;align-items:flex-start;}
+.dash-col{flex:1;display:flex;flex-direction:column;gap:14px;min-width:0;}
+.dash-col-right .do-card:last-child{flex:1;display:flex;flex-direction:column;}
+.dash-col-right .do-card:last-child{flex:1;}
+.dash-col-right .do-card:last-child .card-body{flex:1;display:flex;flex-direction:column;}
+
+.pc-todo-toggle{display:flex;background:var(--surface2);border-radius:9px;padding:2px;gap:2px;}
+.pc-todo-toggle-btn{padding:5px 12px;border:none;background:transparent;border-radius:7px;font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;}
+.pc-todo-toggle-btn.active{background:var(--card);color:var(--text);box-shadow:0 1px 2px rgba(0,0,0,0.06);}
+
+/* 식사 카드 (아침/점심/저녁 라벨칩) */
+.pc-meal-row{display:flex;align-items:center;gap:12px;padding:11px 0;position:relative;}
+.pc-meal-row+.pc-meal-row{border-top:1px solid var(--border);}
+.pc-meal-chip{flex-shrink:0;width:44px;text-align:center;font-size:11.5px;font-weight:700;color:#504DA8;background:#EFEFF8;border-radius:8px;padding:4px 0;}
+body.dark .pc-meal-chip{background:rgba(156,157,211,0.15);color:#9C9DD3;}
+.pc-meal-text{flex:1;min-width:0;font-size:13.5px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pc-meal-text.empty{color:var(--text3);}
+.pc-meal-del{background:none;border:none;cursor:pointer;color:var(--text3);font-size:16px;line-height:1;padding:2px 4px;flex-shrink:0;}
+
 /* ── DASHBOARD GRID ──
    PC:  2열 고정, 행 배치는 order로 제어
    MOB: 1열 기본, mob-half는 2열 중 1열
@@ -264,7 +317,8 @@ body.dark .hero-card{box-shadow:0 8px 24px rgba(0,0,0,.4);}
 .pc-col-1{grid-column:auto;}
 
 /* diary card preview */
-.diary-card-preview{cursor:pointer;padding:10px 12px;background:var(--surface2);border-radius:12px;transition:background .12s;display:flex;align-items:flex-start;gap:12px;}
+.diary-card-preview{cursor:pointer;padding:14px 16px;background:var(--surface2);border-radius:14px;transition:background .12s;display:flex;align-items:flex-start;gap:12px;min-height:120px;}
+.diary-card-preview:has(.diary-prev-empty){align-items:center;justify-content:center;}
 .diary-card-preview:hover{background:var(--border);}
 .diary-prev-emoji{width:40px;height:40px;border-radius:10px;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;box-shadow:var(--shadow);}
 .diary-prev-text{flex:1;min-width:0;}
@@ -278,21 +332,6 @@ body.dark .hero-card{box-shadow:0 8px 24px rgba(0,0,0,.4);}
 .study-prev-row:last-child{border-bottom:none;}
 .study-prev-subj{font-size:13px;font-weight:600;color:var(--blue);}
 .study-prev-dur{font-size:12px;color:var(--text3);}
-
-/* PC order: 습관(1), 운동(2), 일기(3), 공부(4), 식사(5), 체중(6) */
-#card-habit{order:1;}
-#card-exercise{order:2;}
-#card-diary{order:3;}
-#card-study{order:4;}
-#card-meal{order:5;}
-#card-weight{order:6;}
-#card-todo{order:7;display:none;}
-#card-todo-today{order:7;}
-#card-todo-tomorrow{order:8;}
-
-/* 공부+체중 min-height */
-#card-study,#card-weight{min-height:140px;display:flex;flex-direction:column;}
-#card-study .card-body,#card-weight .card-body{flex:1;display:flex;flex-direction:column;}
 
 /* weight graph */
 .weight-graph-wrap{margin-top:10px;}
@@ -813,19 +852,9 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   .dash-grid{grid-template-columns:1fr;gap:10px;align-items:start;}
   .pc-full{grid-column:auto;}
 
-  /* 모바일 order: 습관→일기→공부→운동→식사→체중 모두 1단 */
-  #card-habit{order:1;grid-column:1/-1;}
-  #card-diary{order:2;grid-column:1/-1;}
-  #card-study{order:3;grid-column:1/-1;}
-  #card-exercise{order:4;grid-column:1/-1;}
-  #card-meal{order:5;grid-column:1/-1;}
-  #card-weight{order:6;grid-column:1/-1;}
-  #card-todo{display:none;}
-
   /* 모바일 섹션 타이틀 */
   .do-eyebrow{font-size:14px;font-weight:700;}
 
-  #card-study,#card-weight{min-height:unset;}
   .hero-card{border-radius:18px;margin-bottom:14px;}
   .hero-metric{font-size:38px;}
   .hero-tiles{gap:6px;}
@@ -2066,168 +2095,151 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
         <div class="dash-title">TODAY</div>
       </div>
 
-      <!-- Hero Card -->
-      <div class="hero-card">
-        <div class="hero-inner">
-          <div>
-            <div class="hero-eyebrow">오늘의 완료</div>
-            <div class="hero-metric" id="hero-metric">0<span class="hero-metric-sub" id="hero-total">/0</span></div>
-            <div class="hero-sub" id="hero-sub">목표 달성률 0%</div>
+      <!-- 4칸 지표 행 -->
+      <div class="dm-row">
+        <div class="dm-card dm-card-indigo">
+          <div class="dm-eyebrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l4-4 4 4 6-8 4 4"/></svg>
+            오늘의 완료
           </div>
-          <div class="hero-ring-wrap">
-            <svg class="hero-ring-svg" width="78" height="78" viewBox="0 0 78 78">
-              <circle class="ring-track" cx="39" cy="39" r="33" stroke-width="7"/>
-              <circle class="ring-fill" id="hero-ring" cx="39" cy="39" r="33" stroke-width="7" stroke-dasharray="207.3" stroke-dashoffset="207.3"/>
+          <div class="dm-val-row">
+            <div>
+              <div class="dm-val"><span id="dm-done">0</span><span id="dm-total">/0</span></div>
+              <div class="dm-sub" id="dm-sub">목표 달성률 0%</div>
+            </div>
+          </div>
+          <div class="dm-ring-wrap">
+            <svg class="dm-ring-svg" width="82" height="82" viewBox="0 0 82 82">
+              <circle class="dm-ring-track" cx="41" cy="41" r="35" stroke-width="7"/>
+              <circle class="dm-ring-fill" id="dm-ring-fill" cx="41" cy="41" r="35" stroke-width="7"/>
             </svg>
-            <div class="hero-pct" id="hero-pct">0%</div>
+            <div class="dm-ring-pct" id="dm-ring-pct">0%</div>
           </div>
         </div>
-        <div class="hero-tiles">
-          <div class="hero-tile" onclick="openModal('exercise')"><div class="hero-tile-val" id="ht-ex">0분</div><div class="hero-tile-lbl">운동</div></div>
-          <div class="hero-tile" onclick="openModal('weight')"><div class="hero-tile-val" id="ht-wt">--</div><div class="hero-tile-lbl">체중 kg</div></div>
-          <div class="hero-tile" onclick="openStudyReader()"><div class="hero-tile-val" id="ht-study">0h</div><div class="hero-tile-lbl">공부</div></div>
+        <div class="dm-card dm-card-ink" onclick="mobTileWtTap()" style="cursor:pointer;">
+          <div class="dm-eyebrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v3"/><circle cx="12" cy="4" r="1.1" fill="currentColor" stroke="none"/><rect x="4" y="7" width="16" height="13" rx="3"/><path d="M9 13a3 3 0 0 1 6 0"/></svg>
+            체중
+          </div>
+          <div class="dm-val-row">
+            <div class="dm-val" id="dm-wt-val">--<span>kg</span></div>
+            <span class="dm-delta" id="dm-wt-delta" style="display:none;"></span>
+          </div>
+          <div class="dm-sub">전일 대비</div>
+        </div>
+        <div class="dm-card dm-card-lime" onclick="mobTileExTap()" style="cursor:pointer;">
+          <button class="dm-add-btn" onclick="event.stopPropagation();openModal('exercise')">+</button>
+          <div class="dm-eyebrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 8v8M4 9.5v5M17.5 8v8M20 9.5v5M6.5 12h11"/></svg>
+            운동
+          </div>
+          <div class="dm-val-row">
+            <div class="dm-val" id="dm-ex-val">0<span>분</span></div>
+          </div>
+          <div class="dm-sub" id="dm-ex-sub">기록 없음</div>
+        </div>
+        <div class="dm-card dm-card-apricot" onclick="mobTileStudyTap()" style="cursor:pointer;">
+          <button class="dm-add-btn" onclick="event.stopPropagation();openModal('study')">+</button>
+          <div class="dm-eyebrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10.5 5 8 4.5 4.5 5v12.5C8 17 10.5 17.5 12 19M12 6.5C13.5 5 16 4.5 19.5 5v12.5C16 17 13.5 17.5 12 19M12 6.5V19"/></svg>
+            공부
+          </div>
+          <div class="dm-val-row">
+            <div class="dm-val" id="dm-study-val">0<span>분</span></div>
+          </div>
+          <div class="dm-sub" id="dm-study-sub">기록 없음</div>
         </div>
       </div>
 
-      <div class="dash-grid">
+      <div class="dash-cols">
+        <div class="dash-col dash-col-left">
 
-        <!-- 1행: 습관+운동 -->
-        <div class="do-card pc-col-1 mob-full" id="card-habit">
-          <div class="do-card-head">
-            <div class="do-card-left"><span class="do-eyebrow">습관 체크</span><span class="badge badge-green" id="habit-badge">0/0</span></div>
-            <button class="collapse-btn" onclick="toggleCard('card-habit')">▾</button>
+          <!-- 습관 체크 -->
+          <div class="do-card" id="card-habit">
+            <div class="do-card-head">
+              <div class="do-card-left"><span class="do-eyebrow">습관 체크</span><span class="badge badge-green" id="habit-badge">0/0</span></div>
+              <button class="collapse-btn" onclick="toggleCard('card-habit')">▾</button>
+            </div>
+            <div class="card-body" id="cb-habit">
+              <div class="habit-list" id="habit-list"></div>
+              <div class="habit-progress"><div class="habit-bar" id="habit-bar" style="width:0%"></div></div>
+            </div>
           </div>
-          <div class="card-body" id="cb-habit">
-            <div class="habit-list" id="habit-list"></div>
-            <div class="habit-progress"><div class="habit-bar" id="habit-bar" style="width:0%"></div></div>
+
+          <!-- 할 일 (오늘/내일 토글로 병합) -->
+          <div class="do-card" id="card-todo">
+            <div class="do-card-head">
+              <div class="do-card-left">
+                <span class="do-eyebrow">할 일</span>
+                <span class="badge badge-gray" id="todo-today-badge"></span>
+                <span class="badge badge-gray" id="todo-tomorrow-badge" style="display:none;"></span>
+              </div>
+              <div class="pc-todo-toggle">
+                <button class="pc-todo-toggle-btn active" id="pc-todo-tab-today" onclick="pcTodoSwitch('today')">오늘</button>
+                <button class="pc-todo-toggle-btn" id="pc-todo-tab-tomorrow" onclick="pcTodoSwitch('tomorrow')">내일</button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div id="pc-todo-pane-today">
+                <div id="todo-today-date" style="font-size:11px;color:var(--text3);margin-bottom:6px;"></div>
+                <div class="todo-list" id="todo-today-list"></div>
+                <div class="todo-inp-row">
+                  <input class="todo-inp" id="todo-today-inp" type="text" placeholder="할 일 추가..." onkeydown="if(event.key==='Enter')addTodoToday()">
+                  <button class="add-btn" onclick="addTodoToday()">+</button>
+                </div>
+              </div>
+              <div id="pc-todo-pane-tomorrow" style="display:none;">
+                <div id="todo-tomorrow-date" style="font-size:11px;color:var(--text3);margin-bottom:6px;"></div>
+                <div class="todo-list" id="todo-tomorrow-list"></div>
+                <div class="todo-inp-row">
+                  <input class="todo-inp" id="todo-tomorrow-inp" type="text" placeholder="할 일 추가..." onkeydown="if(event.key==='Enter')addTodoTomorrow()">
+                  <button class="add-btn" onclick="addTodoTomorrow()">+</button>
+                </div>
+              </div>
+            </div>
           </div>
+
         </div>
 
-        <div class="do-card pc-col-1 mob-half" id="card-exercise">
-          <div class="do-card-head">
-            <div class="do-card-left"><span class="do-eyebrow" id="pc-ex-label">운동</span><span class="badge badge-green" id="exercise-badge">0분</span></div>
-            <div style="display:flex;gap:6px;">
-              <button class="icon-btn" onclick="openModal('exercise')">+</button>
-              <button class="collapse-btn" onclick="toggleCard('card-exercise')">▾</button>
-            </div>
-          </div>
-          <div class="card-body" id="cb-exercise">
-            <div id="exercise-body"><div class="empty">기록이 없습니다</div></div>
-          </div>
-        </div>
+        <div class="dash-col dash-col-right">
 
-        <!-- 2행: 일기+공부 (PC 2열, 모바일 각 full/half) -->
-        <div class="do-card pc-col-1 mob-full" id="card-diary">
-          <div class="do-card-head">
-            <div class="do-card-left"><span class="do-eyebrow">오늘의 일기</span><span id="diary-mood-disp" style="font-size:16px;margin-left:4px;"></span></div>
-            <div style="display:flex;align-items:center;gap:6px;">
-              <button class="icon-btn" id="diary-add-btn" onclick="openDiaryEditor()">+</button>
-              <button class="collapse-btn" onclick="toggleCard('card-diary')">▾</button>
-            </div>
-          </div>
-          <div class="card-body" id="cb-diary">
-            <div id="diary-preview" class="diary-card-preview">
-              <div class="diary-prev-empty">일기를 작성하세요</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="do-card pc-col-1 mob-half" id="card-study">
-          <div class="do-card-head">
-            <div class="do-card-left"><span class="do-eyebrow" id="pc-study-label">공부</span><span class="badge badge-blue" id="study-badge">0h</span></div>
-            <div style="display:flex;gap:6px;">
-              <button class="icon-btn" onclick="openModal('study')">+</button>
-              <button class="collapse-btn" onclick="toggleCard('card-study')">▾</button>
-            </div>
-          </div>
-          <div class="card-body" id="cb-study">
-            <div id="study-preview" class="study-card-preview" onclick="openStudyReader()">
-              <div class="empty">기록이 없습니다</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 3행: 식사+체중 -->
-        <div class="do-card pc-col-1 mob-half" id="card-meal">
-          <div class="do-card-head">
-            <div class="do-card-left"><span class="do-eyebrow">식사</span></div>
-            <div style="display:flex;gap:6px;">
+          <!-- 식사 -->
+          <div class="do-card" id="card-meal">
+            <div class="do-card-head">
+              <div class="do-card-left"><span class="do-eyebrow">식사</span><span class="badge badge-gray" id="meal-badge"></span></div>
               <button class="icon-btn" onclick="openModal('meal')">+</button>
-              <button class="collapse-btn" onclick="toggleCard('card-meal')">▾</button>
+            </div>
+            <div class="card-body">
+              <div id="meal-list-pc"></div>
             </div>
           </div>
-          <div class="card-body" id="cb-meal">
-            <div id="meal-list"><div class="empty">기록이 없습니다</div></div>
+
+          <!-- 오늘의 일기 (남은 높이 채움) -->
+          <div class="do-card" id="card-diary">
+            <div class="do-card-head">
+              <div class="do-card-left"><span class="do-eyebrow">오늘의 일기</span><span id="diary-mood-disp" style="font-size:16px;margin-left:4px;"></span></div>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <button class="icon-btn" id="diary-add-btn" onclick="openDiaryEditor()">+</button>
+              </div>
+            </div>
+            <div class="card-body" id="cb-diary">
+              <div id="diary-preview" class="diary-card-preview" style="flex:1;">
+                <div class="diary-prev-empty">일기를 작성하세요</div>
+              </div>
+            </div>
           </div>
+
         </div>
+      </div>
 
-        <div class="do-card pc-col-1 mob-half" id="card-weight">
-          <div class="do-card-head">
-            <div class="do-card-left"><span class="do-eyebrow">체중</span></div>
-            <button class="collapse-btn" onclick="toggleCard('card-weight')">▾</button>
-          </div>
-          <div class="card-body" id="cb-weight">
-            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-              <div class="big-val" id="weight-disp" style="cursor:pointer;" onclick="openWeightChart()">--<span class="unit-sm"> kg</span></div>
-              <div class="delta" id="weight-delta"></div>
-            </div>
-            <div class="inline-edit-row" style="margin-top:10px;">
-              <input class="inline-input" type="number" step="0.1" id="weight-inp" placeholder="kg 입력">
-              <button class="add-btn" onclick="saveWeight()">저장</button>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- 오늘 할 일 -->
-        <div class="do-card pc-col-1 mob-half" id="card-todo-today" style="order:7;">
-          <div class="do-card-head">
-            <div class="do-card-left">
-              <span class="do-eyebrow">오늘 할 일</span>
-              <span class="badge badge-gray" id="todo-today-badge"></span>
-            </div>
-            <div style="display:flex;gap:6px;">
-              <button class="collapse-btn" onclick="toggleCard('card-todo-today')">▾</button>
-            </div>
-          </div>
-          <div class="card-body" id="cb-todo-today">
-            <div id="todo-today-date" style="font-size:11px;color:var(--text3);margin-bottom:6px;"></div>
-            <div class="todo-list" id="todo-today-list"></div>
-            <div class="todo-inp-row">
-              <input class="todo-inp" id="todo-today-inp" type="text" placeholder="할 일 추가..." onkeydown="if(event.key==='Enter')addTodoToday()">
-              <button class="add-btn" onclick="addTodoToday()">+</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- 내일 할 일 -->
-        <div class="do-card pc-col-1 mob-half" id="card-todo-tomorrow" style="order:8;">
-          <div class="do-card-head">
-            <div class="do-card-left">
-              <span class="do-eyebrow">내일 할 일</span>
-              <span class="badge badge-gray" id="todo-tomorrow-badge"></span>
-            </div>
-            <div style="display:flex;gap:6px;">
-              <button class="collapse-btn" onclick="toggleCard('card-todo-tomorrow')">▾</button>
-            </div>
-          </div>
-          <div class="card-body" id="cb-todo-tomorrow">
-            <div id="todo-tomorrow-date" style="font-size:11px;color:var(--text3);margin-bottom:6px;"></div>
-            <div class="todo-list" id="todo-tomorrow-list"></div>
-            <div class="todo-inp-row">
-              <input class="todo-inp" id="todo-tomorrow-inp" type="text" placeholder="할 일 추가..." onkeydown="if(event.key==='Enter')addTodoTomorrow()">
-              <button class="add-btn" onclick="addTodoTomorrow()">+</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- 수면 hidden -->
-        <div style="display:none;">
-          <input id="sleep-inp" type="number">
-          <div id="sleep-disp"></div>
-          <div id="sleep-bar"></div>
-        </div>
-
+      <div style="display:none;">
+        <!-- 예전 카드 요소 참조 호환용 (숨김) -->
+        <div id="exercise-body"></div>
+        <div id="study-preview"></div>
+        <span id="pc-ex-label"></span><span id="exercise-badge"></span>
+        <span id="pc-study-label"></span><span id="study-badge"></span>
+        <div id="weight-disp">--</div><div id="weight-delta"></div><input id="weight-inp"><div id="meal-list"></div>
+        <input id="sleep-inp" type="number"><div id="sleep-disp"></div><div id="sleep-bar"></div>
       </div>
     </div>
 
@@ -3642,19 +3654,53 @@ function updateHero(d,habits){
   const done=habits.filter(h=>d.habits&&d.habits[habitName(h)]).length;
   const total=habits.length;
   const pct=total?Math.round(done/total*100):0;
-  const circ=2*Math.PI*33;
+  const circ=2*Math.PI*35;
   const offset=circ-(pct/100)*circ;
-  const hm=document.getElementById('hero-metric');
-  if(hm)hm.innerHTML=done+'<span class="hero-metric-sub">/'+total+'</span>';
-  const hs=document.getElementById('hero-sub');if(hs)hs.textContent='목표 달성률 '+pct+'%';
-  const hp=document.getElementById('hero-pct');if(hp)hp.textContent=pct+'%';
-  const hr=document.getElementById('hero-ring');
-  if(hr){hr.setAttribute('stroke-dasharray',circ.toFixed(1));hr.setAttribute('stroke-dashoffset',offset.toFixed(1));}
+
+  const dmDone=document.getElementById('dm-done');if(dmDone)dmDone.textContent=done;
+  const dmTotal=document.getElementById('dm-total');if(dmTotal)dmTotal.textContent='/'+total;
+  const dmSub=document.getElementById('dm-sub');if(dmSub)dmSub.textContent='목표 달성률 '+pct+'%';
+  const dmPct=document.getElementById('dm-ring-pct');if(dmPct)dmPct.textContent=pct+'%';
+  const dmRing=document.getElementById('dm-ring-fill');
+  if(dmRing){dmRing.setAttribute('stroke-dasharray',circ.toFixed(1));dmRing.setAttribute('stroke-dashoffset',offset.toFixed(1));}
+
+  // 체중
+  const dmWtVal=document.getElementById('dm-wt-val');
+  const dmWtDelta=document.getElementById('dm-wt-delta');
+  if(dmWtVal)dmWtVal.innerHTML=(d.weight!=null?d.weight:'--')+'<span>kg</span>';
+  if(dmWtDelta){
+    if(d.weight==null){dmWtDelta.style.display='none';}
+    else{
+      const all=getAllData();
+      let chk=new Date(curDateStr+'T00:00:00');chk.setDate(chk.getDate()-1);
+      let prevW=null;
+      for(let s=0;s<14;s++){
+        const ds=chk.getFullYear()+'-'+pad(chk.getMonth()+1)+'-'+pad(chk.getDate());
+        const dd=all[ds];
+        if(dd&&dd.weight!=null){prevW=dd.weight;break;}
+        chk.setDate(chk.getDate()-1);
+      }
+      if(prevW!=null){
+        const diff=(d.weight-prevW).toFixed(1);
+        dmWtDelta.style.display='inline-block';
+        dmWtDelta.textContent=(diff>0?'+':'')+diff+'kg';
+      }else{
+        dmWtDelta.style.display='none';
+      }
+    }
+  }
+
+  // 운동
   const exSessions=d.exercises||(d.exercise?[d.exercise]:[]);
   const exTotal=exSessions.reduce((s,x)=>s+(x.dur||0),0);
-  const ht1=document.getElementById('ht-ex');if(ht1)ht1.textContent=exTotal?exTotal+'분':'0분';
-  const ht2=document.getElementById('ht-wt');if(ht2)ht2.textContent=d.weight?d.weight:'--';
-  const ht3=document.getElementById('ht-sl');if(ht3)ht3.textContent=(d.sleep!=null)?d.sleep:'--';
+  const dmExVal=document.getElementById('dm-ex-val');if(dmExVal)dmExVal.innerHTML=(exTotal||0)+'<span>분</span>';
+  const dmExSub=document.getElementById('dm-ex-sub');if(dmExSub)dmExSub.textContent=exSessions.length?exSessions.map(x=>x.type).filter(Boolean).join(' · '):'기록 없음';
+
+  // 공부
+  const stSessions=d.study||[];
+  const stTotal=stSessions.reduce((s,x)=>s+(x.dur||0),0);
+  const dmStVal=document.getElementById('dm-study-val');if(dmStVal)dmStVal.innerHTML=(stTotal||0)+'<span>분</span>';
+  const dmStSub=document.getElementById('dm-study-sub');if(dmStSub)dmStSub.textContent=stSessions.length?stSessions.map(x=>x.subject||x.content).filter(Boolean).join(' · '):'기록 없음';
 }
 
 // ── LOAD DAY ──
@@ -4075,14 +4121,46 @@ function delStudy(i){
 
 // ── MEAL ──
 function renderMealList(meals){
-  const el=document.getElementById('meal-list');if(!el)return;
-  if(!meals.length){el.innerHTML='<div class="empty">기록이 없습니다</div>';return;}
-  el.innerHTML=meals.map((m,i)=>`
-    <div class="meal-row">
-      <span class="meal-time">${m.time}</span>
-      <span class="meal-food">${m.food}</span>
-      <button style="margin-left:auto;background:none;border:none;cursor:pointer;color:var(--text3);font-size:14px;" onclick="delMeal(${i})">×</button>
-    </div>`).join('');
+  const el=document.getElementById('meal-list');if(el){
+    if(!meals.length){el.innerHTML='<div class="empty">기록이 없습니다</div>';}
+    else{
+      el.innerHTML=meals.map((m,i)=>`
+        <div class="meal-row">
+          <span class="meal-time">${m.time}</span>
+          <span class="meal-food">${m.food}</span>
+          <button style="margin-left:auto;background:none;border:none;cursor:pointer;color:var(--text3);font-size:14px;" onclick="delMeal(${i})">×</button>
+        </div>`).join('');
+    }
+  }
+  renderMealListPc(meals);
+}
+// ── PC 식사 카드 (아침/점심/저녁 라벨칩) ──
+function renderMealListPc(meals){
+  const el=document.getElementById('meal-list-pc');
+  const badge=document.getElementById('meal-badge');
+  if(!el)return;
+  const slots=['아침','점심','저녁'];
+  const filled=slots.filter(s=>meals.some(m=>m.time===s)).length;
+  if(badge)badge.textContent=filled+'/3';
+  el.innerHTML=slots.map(s=>{
+    const recs=meals.filter(m=>m.time===s);
+    const done=recs.length>0;
+    const foodList=recs.map(r=>r.food).join(', ');
+    return`<div class="pc-meal-row">
+      <div class="pc-meal-chip">${s}</div>
+      <div class="pc-meal-text${done?'':' empty'}">${done?foodList:'아직 기록 전'}</div>
+      ${done?`<button class="pc-meal-del" onclick="pcDelMealSlot('${s}')">×</button>`:''}
+    </div>`;
+  }).join('');
+}
+function pcDelMealSlot(slot){
+  const d=getDayData(curDateStr);
+  if(!d.meals)return;
+  d.meals=d.meals.filter(m=>m.time!==slot);
+  saveDayData(curDateStr,d);
+  renderMealList(d.meals);
+  if(typeof mobRenderMeals==='function')mobRenderMeals(d);
+  mobSyncNow();
 }
 function saveMeal(){
   const time=document.getElementById('mm-time')?.value;
@@ -4758,6 +4836,20 @@ function closeModal(id){const el=document.getElementById(id);if(el)el.classList.
 document.addEventListener('click',e=>{if(e.target.classList.contains('modal-bg'))e.target.classList.remove('open');});
 
 // ── CARD COLLAPSE ──
+// ── PC 할 일 카드: 오늘/내일 토글 ──
+function pcTodoSwitch(which){
+  document.getElementById('pc-todo-tab-today')?.classList.toggle('active',which==='today');
+  document.getElementById('pc-todo-tab-tomorrow')?.classList.toggle('active',which==='tomorrow');
+  const paneToday=document.getElementById('pc-todo-pane-today');
+  const paneTomorrow=document.getElementById('pc-todo-pane-tomorrow');
+  if(paneToday)paneToday.style.display=which==='today'?'':'none';
+  if(paneTomorrow)paneTomorrow.style.display=which==='tomorrow'?'':'none';
+  const badgeToday=document.getElementById('todo-today-badge');
+  const badgeTomorrow=document.getElementById('todo-tomorrow-badge');
+  if(badgeToday)badgeToday.style.display=which==='today'?'':'none';
+  if(badgeTomorrow)badgeTomorrow.style.display=which==='tomorrow'?'':'none';
+}
+
 function toggleCard(id){
   const el=document.getElementById(id);if(!el)return;
   const cbId='cb-'+id.replace('card-','');
