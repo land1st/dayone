@@ -348,6 +348,9 @@ body.dark .pc-meal-chip{background:rgba(156,157,211,0.15);color:#9C9DD3;}
 .collapse-btn:hover{color:var(--accent);}
 .do-card.collapsed .collapse-btn{transform:rotate(-90deg);}
 .icon-btn{background:none;border:1px solid var(--border);border-radius:6px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text3);font-size:13px;transition:all .12s;}
+.card-add-btn{background:#F4F5F7;border:none;border-radius:9px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);font-size:16px;transition:all .12s;flex-shrink:0;}
+body.dark .card-add-btn{background:var(--surface2);}
+.card-add-btn:hover{background:var(--border);}
 .icon-btn:hover{background:var(--accent-light);border-color:var(--accent);color:var(--accent);}
 
 /* badge */
@@ -364,7 +367,8 @@ body.dark .pc-meal-chip{background:rgba(156,157,211,0.15);color:#9C9DD3;}
 .habit-chk{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .12s;flex-shrink:0;font-size:10px;color:transparent;}
 .habit-chk.on{background:var(--accent);border-color:var(--accent);color:#fff;}
 .habit-name{font-size:13px;color:var(--text);flex:1;transition:color .12s;}
-.habit-name.done{color:var(--text3);text-decoration:line-through;}
+.habit-name.done{color:var(--accent);font-weight:600;}
+.habit-streak{font-size:11px;font-weight:600;color:var(--text3);flex-shrink:0;}
 .habit-progress{height:2px;background:var(--border);border-radius:2px;overflow:hidden;}
 .habit-bar{height:100%;background:var(--accent);border-radius:2px;transition:width .4s ease;}
 
@@ -2158,7 +2162,9 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
           <div class="do-card" id="card-habit">
             <div class="do-card-head">
               <div class="do-card-left"><span class="do-eyebrow">습관 체크</span><span class="badge badge-green" id="habit-badge">0/0</span></div>
-              <button class="collapse-btn" onclick="toggleCard('card-habit')">▾</button>
+              <button class="card-add-btn" onclick="goPage('settings')" title="습관 추가/관리">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+              </button>
             </div>
             <div class="card-body" id="cb-habit">
               <div class="habit-list" id="habit-list"></div>
@@ -3768,9 +3774,22 @@ function renderHabits(d,habits){
   const rowHtml=h=>{
     const nm=habitName(h);
     const on=d.habits&&d.habits[nm];
+    let streak=0;
+    if(on){
+      const all=getAllData();
+      let chk=new Date(curDateStr+'T00:00:00');
+      for(let s=0;s<365;s++){
+        const ds=chk.getFullYear()+'-'+pad(chk.getMonth()+1)+'-'+pad(chk.getDate());
+        const dd=all[ds]||{};
+        if(dd.habits&&dd.habits[nm])streak++;
+        else break;
+        chk.setDate(chk.getDate()-1);
+      }
+    }
     return`<div class="habit-row">
       <div class="habit-chk ${on?'on':''}" onclick="toggleHabit('${nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}')">${on?'✓':''}</div>
       <span class="habit-name ${on?'done':''}">${nm}</span>
+      <span class="habit-streak">${streak}일</span>
     </div>`;
   };
   const groupHtml=(period,title)=>{
