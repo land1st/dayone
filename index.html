@@ -917,7 +917,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
     flex:1;overflow-y:auto;
     padding-top:4px;
     -webkit-overflow-scrolling:touch;
-    padding-bottom:calc(112px + env(safe-area-inset-bottom,0px));
+    padding-bottom:calc(96px + env(safe-area-inset-bottom,0px));
   }
   .mob-scroll::-webkit-scrollbar{display:none;}
 
@@ -1630,12 +1630,12 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
 
   /* ── 탭바 (2a 플로팅 내비) ── */
   .mob-tabbar{
-    position:fixed;left:20px;right:20px;bottom:30px;
+    position:fixed;left:20px;right:20px;bottom:14px;
     z-index:10000;flex-shrink:0;
     padding-bottom:env(safe-area-inset-bottom,0px);
   }
   .mob-tabbar-glow{
-    position:absolute;left:-20px;right:-20px;bottom:-30px;height:134px;
+    position:absolute;left:-20px;right:-20px;bottom:-14px;height:118px;
     background:linear-gradient(to top, var(--m2-bg) 0%, var(--m2-bg) 30%, transparent 100%);
     pointer-events:none;z-index:-1;
   }
@@ -1668,7 +1668,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
 
   /* 토스트가 플로팅 하단내비(z-index:10000)에 가려서 안 보이던 문제 수정 */
   .toast{
-    left:50%;right:auto;bottom:calc(96px + env(safe-area-inset-bottom,0px)) !important;
+    left:50%;right:auto;bottom:calc(80px + env(safe-area-inset-bottom,0px)) !important;
     transform:translate(-50%,8px);
     z-index:10500;
     max-width:80vw;text-align:center;
