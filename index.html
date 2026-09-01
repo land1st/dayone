@@ -2424,20 +2424,12 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
         <div class="settings-head">날씨 지역 설정</div>
         <div class="settings-body">
           <div style="margin-bottom:10px;font-size:13px;color:var(--text2);">현재 지역: <strong id="weather-city-label">광명시</strong></div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;" id="weather-city-btns">
-            <button class="settings-btn weather-city-btn active" data-lat="37.4786" data-lon="126.8644" data-name="광명시" onclick="setWeatherCity(this)">광명시</button>
-            <button class="settings-btn weather-city-btn" data-lat="37.5665" data-lon="126.9780" data-name="서울" onclick="setWeatherCity(this)">서울</button>
-            <button class="settings-btn weather-city-btn" data-lat="35.1796" data-lon="129.0756" data-name="부산" onclick="setWeatherCity(this)">부산</button>
-            <button class="settings-btn weather-city-btn" data-lat="37.4563" data-lon="126.7052" data-name="인천" onclick="setWeatherCity(this)">인천</button>
-            <button class="settings-btn weather-city-btn" data-lat="35.8714" data-lon="128.6014" data-name="대구" onclick="setWeatherCity(this)">대구</button>
-            <button class="settings-btn weather-city-btn" data-lat="35.5384" data-lon="129.3114" data-name="울산" onclick="setWeatherCity(this)">울산</button>
-            <button class="settings-btn weather-city-btn" data-lat="36.3504" data-lon="127.3845" data-name="대전" onclick="setWeatherCity(this)">대전</button>
-            <button class="settings-btn weather-city-btn" data-lat="35.1595" data-lon="126.8526" data-name="광주" onclick="setWeatherCity(this)">광주</button>
-            <button class="settings-btn weather-city-btn" data-lat="37.2636" data-lon="127.0286" data-name="수원" onclick="setWeatherCity(this)">수원</button>
-            <button class="settings-btn weather-city-btn" data-lat="37.6541" data-lon="127.0499" data-name="의정부" onclick="setWeatherCity(this)">의정부</button>
-            <button class="settings-btn weather-city-btn" data-lat="33.4996" data-lon="126.5312" data-name="제주" onclick="setWeatherCity(this)">제주</button>
+          <div style="display:flex;gap:8px;">
+            <input class="form-input" id="weather-search-inp" type="text" placeholder="도시 이름 검색 (예: 서울, London, Tokyo)" style="flex:1;margin-bottom:0;" onkeydown="if(event.key==='Enter')searchWeatherCity()">
+            <button class="settings-btn primary" onclick="searchWeatherCity()" style="flex-shrink:0;">검색</button>
           </div>
-          <div class="settings-note">선택한 지역의 실시간 날씨를 표시합니다.</div>
+          <div id="weather-search-results" style="display:flex;flex-direction:column;gap:6px;margin-top:10px;"></div>
+          <div class="settings-note">도시 이름을 검색해서 선택하면 그 지역의 실시간 날씨를 표시합니다.</div>
         </div>
       </div>
 
@@ -3454,28 +3446,49 @@ function setW(p,icon,temp,desc,feel,hum,wind){
   document.querySelectorAll('.w-loc').forEach(el=>el.textContent=city);
 }
 
-function setWeatherCity(btn){
-  const lat=btn.dataset.lat;
-  const lon=btn.dataset.lon;
-  const name=btn.dataset.name;
-  localStorage.setItem('do_weather_lat',lat);
-  localStorage.setItem('do_weather_lon',lon);
-  localStorage.setItem('do_weather_city',name);
-  document.querySelectorAll('.weather-city-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  const lbl=document.getElementById('weather-city-label');
-  if(lbl)lbl.textContent=name;
-  fetchWeather();
-  toast(name+' 날씨로 변경됨 ✓');
+let weatherSearchResults=[];
+async function searchWeatherCity(){
+  const inp=document.getElementById('weather-search-inp');
+  const q=inp?.value?.trim();
+  const resultsEl=document.getElementById('weather-search-results');
+  if(!resultsEl)return;
+  if(!q){resultsEl.innerHTML='';return;}
+  resultsEl.innerHTML='<div style="font-size:13px;color:var(--text3);padding:6px 2px;">검색 중...</div>';
+  try{
+    const res=await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=6&language=ko&format=json`);
+    const data=await res.json();
+    weatherSearchResults=data.results||[];
+    if(!weatherSearchResults.length){
+      resultsEl.innerHTML='<div style="font-size:13px;color:var(--text3);padding:6px 2px;">검색 결과가 없습니다</div>';
+      return;
+    }
+    resultsEl.innerHTML=weatherSearchResults.map((r,i)=>{
+      const label=[r.name,r.admin1,r.country].filter(Boolean).join(', ');
+      return `<button class="settings-btn weather-city-btn" style="text-align:left;width:100%;" onclick="selectWeatherSearchResult(${i})">${label}</button>`;
+    }).join('');
+  }catch(e){
+    resultsEl.innerHTML='<div style="font-size:13px;color:var(--text3);padding:6px 2px;">검색에 실패했습니다. 다시 시도해주세요.</div>';
+  }
 }
-
+function selectWeatherSearchResult(i){
+  const r=weatherSearchResults[i];
+  if(!r)return;
+  localStorage.setItem('do_weather_lat',r.latitude);
+  localStorage.setItem('do_weather_lon',r.longitude);
+  localStorage.setItem('do_weather_city',r.name);
+  const lbl=document.getElementById('weather-city-label');
+  if(lbl)lbl.textContent=r.name;
+  const resultsEl=document.getElementById('weather-search-results');
+  if(resultsEl)resultsEl.innerHTML='';
+  const inp=document.getElementById('weather-search-inp');
+  if(inp)inp.value='';
+  fetchWeather();
+  toast(r.name+' 날씨로 변경됨 ✓');
+}
 function initWeatherCityUI(){
   const saved=localStorage.getItem('do_weather_city')||'광명시';
   const lbl=document.getElementById('weather-city-label');
   if(lbl)lbl.textContent=saved;
-  document.querySelectorAll('.weather-city-btn').forEach(b=>{
-    b.classList.toggle('active',b.dataset.name===saved);
-  });
 }
 
 // ── MINI CALENDAR ──
