@@ -6144,12 +6144,12 @@ function mobOpenExModal(sessions){
     <div style="padding:14px 0;border-bottom:0.5px solid rgba(60,60,67,0.10);">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:${ex.note?'6px':'0'};">
         <div style="display:flex;align-items:baseline;gap:8px;">
-          <span style="font-size:15px;font-weight:650;color:#1A1A1C;letter-spacing:-0.3px;">${ex.type||'운동'}</span>
+          <span style="font-size:15px;font-weight:650;color:var(--text);letter-spacing:-0.3px;">${ex.type||'운동'}</span>
           ${ex.dur?`<span style="font-size:13px;font-weight:600;color:#6667AB;">${ex.dur}분</span>`:''}
         </div>
-        <button onclick="delExercise(${i});mobTileExTap_refresh();" style="background:none;border:none;cursor:pointer;color:rgba(60,60,67,0.35);font-size:18px;line-height:1;padding:2px 4px;">×</button>
+        <button onclick="delExercise(${i});mobTileExTap_refresh();" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:18px;line-height:1;padding:2px 4px;">×</button>
       </div>
-      ${ex.note?`<div style="font-size:13.5px;color:rgba(60,60,67,0.62);line-height:1.55;">${ex.note}</div>`:''}
+      ${ex.note?`<div style="font-size:13.5px;color:var(--text2);line-height:1.55;">${ex.note}</div>`:''}
     </div>`).join('');
   // 공통 모달 재활용 (modal-bg)
   const m=document.getElementById('mob-ex-view-modal');
@@ -6198,8 +6198,8 @@ function mobRenderTodos(d){
       <div class="mob-ios-check ${t.done?'on':'off'}">
         ${t.done?`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>`:''}
       </div>
-      <span style="flex:1;font-size:16px;font-weight:500;color:${t.done?'rgba(60,60,67,0.34)':'#1A1A1C'};letter-spacing:-0.3px;">${t.text}</span>
-      <button onclick="event.stopPropagation();mobDelTodo(${i})" style="background:none;border:none;cursor:pointer;color:rgba(60,60,67,0.28);font-size:18px;line-height:1;padding:2px 6px;-webkit-tap-highlight-color:transparent;">×</button>
+      <span style="flex:1;font-size:16px;font-weight:500;color:${t.done?'var(--text3)':'var(--text)'};letter-spacing:-0.3px;">${t.text}</span>
+      <button onclick="event.stopPropagation();mobDelTodo(${i})" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:18px;line-height:1;padding:2px 6px;-webkit-tap-highlight-color:transparent;">×</button>
       ${!isLast?'<div class="mob-habit-sep"></div>':''}
     </div>`;
   }).join('');
