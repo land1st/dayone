@@ -4788,6 +4788,7 @@ function pcEditHabitSave(i){
   renderHabitSettings();
   loadDay(curDateStr);
   toast('습관 이름 변경됨');
+  mobSyncNow();
 }
 function addHabit(){
   const inp=document.getElementById('new-habit-inp');const v=inp?.value?.trim();
@@ -4801,6 +4802,7 @@ function addHabit(){
 function delHabit(i){
   if(!confirm('이 습관을 삭제할까요?'))return;
   const habits=getHabits();habits.splice(i,1);saveHabits(habits);renderHabitSettings();loadDay(curDateStr);toast('습관 삭제');
+  mobSyncNow();
 }
 
 // ── PROFILE ──
@@ -5890,6 +5892,7 @@ function mobEditHabitSave(i){
   loadDay(curDateStr);
   if(window.innerWidth<=680)mobRender();
   toast('습관 이름 변경됨');
+  mobSyncNow();
 }
 function mobDelHabit(i){
   if(!confirm('이 습관을 삭제할까요?'))return;
@@ -5898,6 +5901,7 @@ function mobDelHabit(i){
   loadDay(curDateStr);
   if(window.innerWidth<=680)mobRender();
   toast('습관 삭제됨');
+  mobSyncNow();
 }
 
 // ── 데이터 가져오기 ──
