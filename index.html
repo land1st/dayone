@@ -6733,13 +6733,19 @@ function schedSave(){
   if(!start||!end){toast('시간을 입력하세요');return;}
   if(end<=start){toast('종료 시간은 시작 시간보다 늦어야 합니다');return;}
   const events=getScheduleEvents();
+  let oldEvent=null;
+  let newEvent;
   if(schedEditingId){
+    oldEvent=events.find(e=>e.id===schedEditingId)||null;
+    newEvent={id:schedEditingId,title,date,start,end,priority:schedCurrentPriority};
     const idx=events.findIndex(e=>e.id===schedEditingId);
-    if(idx>-1)events[idx]={id:schedEditingId,title,date,start,end,priority:schedCurrentPriority};
+    if(idx>-1)events[idx]=newEvent;
   }else{
-    events.push({id:'sch_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),title,date,start,end,priority:schedCurrentPriority});
+    newEvent={id:'sch_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),title,date,start,end,priority:schedCurrentPriority};
+    events.push(newEvent);
   }
   saveScheduleEvents(events);
+  syncScheduleTodo(newEvent,oldEvent);
   closeModal('modal-schedule');
   renderSchedule();
   toast('일정이 저장됐습니다');
@@ -6747,10 +6753,57 @@ function schedSave(){
 
 function schedDeleteCurrent(){
   if(!schedEditingId)return;
+  const ev=getScheduleEvents().find(e=>e.id===schedEditingId)||null;
   saveScheduleEvents(getScheduleEvents().filter(e=>e.id!==schedEditingId));
+  removeScheduleTodo(ev);
   closeModal('modal-schedule');
   renderSchedule();
   toast('일정이 삭제됐습니다');
+}
+
+// ── 일정 → 할 일 자동 연동 ──
+function schedTodoText(ev){
+  return ev.start+'-'+ev.end+' '+ev.title;
+}
+function refreshTodoUI(){
+  renderTodoTodayCard();
+  const listEl=document.getElementById('todo-list');
+  if(listEl)renderTodoList((getDayData(curDateStr).todos)||[]);
+  const mobEl=document.getElementById('mob-todo-list');
+  if(mobEl)mobRenderTodos(getDayData(curDateStr));
+  renderCalendar();
+  mobSyncNow();
+}
+function syncScheduleTodo(ev,oldEv){
+  const text=schedTodoText(ev);
+  let carriedDone=false;
+  // 날짜가 바뀐 경우, 이전 날짜에서 연동된 할 일을 제거(완료 상태는 옮겨감)
+  if(oldEv&&oldEv.date!==ev.date){
+    const od=getDayData(oldEv.date);
+    if(od.todos){
+      const oi=od.todos.findIndex(t=>t.schedId===ev.id);
+      if(oi>-1){carriedDone=!!od.todos[oi].done;od.todos.splice(oi,1);saveDayData(oldEv.date,od);}
+    }
+  }
+  const d=getDayData(ev.date);
+  if(!d.todos)d.todos=[];
+  const idx=d.todos.findIndex(t=>t.schedId===ev.id);
+  if(idx>-1){
+    d.todos[idx].text=text;
+  }else{
+    d.todos.push({text,done:carriedDone,schedId:ev.id});
+  }
+  saveDayData(ev.date,d);
+  refreshTodoUI();
+}
+function removeScheduleTodo(ev){
+  if(!ev)return;
+  const d=getDayData(ev.date);
+  if(d.todos){
+    const idx=d.todos.findIndex(t=>t.schedId===ev.id);
+    if(idx>-1){d.todos.splice(idx,1);saveDayData(ev.date,d);}
+  }
+  refreshTodoUI();
 }
 
 // ── 오늘의 명언 ──
