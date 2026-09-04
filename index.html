@@ -3559,13 +3559,15 @@ function renderTodoTodayCard(){
   if(dEl)dEl.textContent=formatDate(curDateStr);
   if(bEl){const done=todos.filter(t=>t.done).length;bEl.textContent=todos.length?done+'/'+todos.length:'\u00A0';}
   if(lEl){
-    if(!todos.length){lEl.innerHTML='<div class="empty">할 일이 없습니다</div>';return;}
-    lEl.innerHTML=todos.map((t,i)=>`
-      <div class="todo-row">
-        <div class="todo-chk ${t.done?'on':''}" onclick="toggleTodoToday(${i})">${t.done?'✓':''}</div>
-        <span class="todo-text ${t.done?'done':''}">${t.text}</span>
-        <button class="todo-del" onclick="delTodoToday(${i})">×</button>
-      </div>`).join('');
+    if(!todos.length){lEl.innerHTML='<div class="empty">할 일이 없습니다</div>';}
+    else{
+      lEl.innerHTML=todos.map((t,i)=>`
+        <div class="todo-row">
+          <div class="todo-chk ${t.done?'on':''}" onclick="toggleTodoToday(${i})">${t.done?'✓':''}</div>
+          <span class="todo-text ${t.done?'done':''}">${t.text}</span>
+          <button class="todo-del" onclick="delTodoToday(${i})">×</button>
+        </div>`).join('');
+    }
   }
   renderTodoTomorrowCard();
 }
