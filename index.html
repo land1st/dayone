@@ -1456,6 +1456,97 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   body.dark .m2-mood-tile.rank1{background:var(--m2-lime);color:var(--m2-ink);}
   .m2-mood-cnt{font-size:16px;font-weight:700;color:var(--m2-text);letter-spacing:-0.02em;}
 
+  /* ══════════ 5a 모아보기 (보기 위주) ══════════ */
+  .mg-header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:18px 20px 12px;flex-shrink:0;background:var(--m2-bg);}
+  .mg-title{font-size:22px;font-weight:700;letter-spacing:-0.035em;color:var(--m2-text);}
+  .mg-sync{display:flex;align-items:center;gap:6px;margin-top:5px;font-size:11.5px;font-weight:500;color:var(--m2-text2);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  .mg-dot{width:7px;height:7px;border-radius:50%;background:#AFB1B9;flex-shrink:0;}
+  .mg-sync.ok .mg-dot{background:#7CB342;}
+  .mg-sync.fail .mg-dot{background:#C0392B;}
+  .mg-datenav{display:flex;align-items:center;gap:2px;background:var(--m2-sub);border-radius:12px;padding:3px;flex-shrink:0;}
+  .mg-datenav-btn{width:28px;height:28px;border-radius:9px;border:none;background:var(--m2-bg);display:flex;align-items:center;justify-content:center;color:var(--m2-text);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  .mg-datenav-btn:disabled{opacity:.35;}
+  .mg-datenav-lbl{min-width:70px;text-align:center;padding:0 6px;font-size:12.5px;font-weight:700;color:var(--m2-text);cursor:pointer;-webkit-tap-highlight-color:transparent;white-space:nowrap;}
+  .mg-scroll{padding-bottom:calc(112px + env(safe-area-inset-bottom,0px)) !important;}
+  .mg-body{padding:4px 20px 0;display:flex;flex-direction:column;gap:12px;}
+
+  /* 습관 달성률 (Indigo) */
+  .mg-habit{background:var(--m2-indigo);border-radius:24px;padding:18px 20px;}
+  .mg-habit-top{display:flex;align-items:center;justify-content:space-between;}
+  .mg-habit-lbl{font-size:12px;font-weight:600;color:rgba(255,255,255,0.75);}
+  .mg-habit-num{font-size:40px;font-weight:700;letter-spacing:-0.04em;line-height:1.05;color:#fff;margin-top:2px;}
+  .mg-habit-num span{font-size:22px;font-weight:600;color:rgba(255,255,255,0.6);}
+  .mg-ring{position:relative;width:64px;height:64px;flex-shrink:0;}
+  .mg-ring svg{width:64px;height:64px;transform:rotate(-90deg);}
+  .mg-ring-track{fill:none;stroke:rgba(255,255,255,0.2);stroke-width:6.5;}
+  .mg-ring-fill{fill:none;stroke:#D8F035;stroke-width:6.5;stroke-linecap:round;transition:stroke-dashoffset .5s ease;}
+  .mg-ring-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;}
+  .mg-bar-row{display:flex;align-items:center;gap:10px;margin-top:10px;}
+  .mg-bar-lbl{width:28px;flex-shrink:0;font-size:12.5px;font-weight:600;color:rgba(255,255,255,0.85);}
+  .mg-bar-track{flex:1;height:8px;border-radius:5px;background:rgba(255,255,255,0.18);overflow:hidden;}
+  .mg-bar-fill{height:100%;border-radius:5px;}
+  .mg-bar-val{width:30px;flex-shrink:0;text-align:right;font-size:12.5px;font-weight:700;color:#fff;}
+  .mg-habit-toggle{display:flex;align-items:center;justify-content:space-between;min-height:44px;margin-top:10px;border-top:1px solid rgba(255,255,255,0.16);cursor:pointer;-webkit-tap-highlight-color:transparent;font-size:12.5px;font-weight:600;color:#fff;}
+  .mg-habit-toggle svg{transition:transform .2s ease-out;}
+  .mg-habit.open .mg-habit-toggle svg{transform:rotate(180deg);}
+  .mg-habit-list{max-height:0;overflow:hidden;transition:max-height .2s ease-out;}
+  .mg-habit.open .mg-habit-list{max-height:900px;}
+  .mg-habit-grp{font-size:10.5px;font-weight:700;letter-spacing:.08em;color:rgba(255,255,255,0.6);margin:4px 0 2px;}
+  .mg-habit-row{display:flex;align-items:center;gap:12px;min-height:44px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  .mg-habit-chk{width:22px;height:22px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(255,255,255,0.45);transition:all .15s;}
+  .mg-habit-chk.on{background:#D8F035;border-color:#D8F035;}
+  .mg-habit-name{flex:1;font-size:13.5px;font-weight:600;color:#fff;}
+  .mg-habit-name.done{color:rgba(255,255,255,0.6);}
+  .mg-habit-empty{font-size:12.5px;color:rgba(255,255,255,0.6);padding:6px 0 10px;}
+
+  /* 지표 3칸 */
+  .mg-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+  .mg-metric{border-radius:18px;padding:13px;min-width:0;}
+  .mg-metric.ex{background:#D8F035;color:#13211D;}
+  .mg-metric.study{background:#F6C89A;color:#3A2415;}
+  .mg-metric.wt{background:#13211D;color:#fff;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  body.dark .mg-metric.wt{background:#1A231F;}
+  .mg-metric-lbl{font-size:11.5px;font-weight:600;opacity:.85;}
+  .mg-metric-val{font-size:22px;font-weight:700;letter-spacing:-0.04em;line-height:1.1;margin-top:8px;white-space:nowrap;}
+  .mg-metric-val span{font-size:11px;font-weight:600;margin-left:2px;opacity:.7;letter-spacing:0;}
+  .mg-metric-sub{font-size:10.5px;font-weight:500;margin-top:4px;opacity:.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .mg-metric.wt .mg-metric-sub.up{color:#D8F035;opacity:1;font-weight:700;}
+
+  /* 식사 */
+  .mg-sec-title{font-size:13px;font-weight:700;letter-spacing:-0.02em;color:var(--m2-text);}
+  .mg-meals{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px;}
+  .mg-meal{border-radius:16px;padding:12px;min-height:84px;min-width:0;background:var(--m2-sub);}
+  .mg-meal.empty{background:#FAFBFC;border:1px dashed #DCDEE3;}
+  body.dark .mg-meal.empty{background:transparent;border-color:#2E3A34;}
+  .mg-meal-lbl{font-size:10.5px;font-weight:700;color:var(--m2-indigo);}
+  body.dark .mg-meal-lbl{color:var(--m2-peri);}
+  .mg-meal.empty .mg-meal-lbl{color:#AFB1B9;}
+  .mg-meal-txt{margin-top:5px;font-size:12px;line-height:1.45;color:var(--m2-text);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word;}
+  .mg-meal.empty .mg-meal-txt{color:#AFB1B9;}
+
+  /* 메모 · 일기 카드 */
+  .mg-card{background:var(--m2-sub);border-radius:20px;padding:16px;}
+  .mg-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+  .mg-card-title{font-size:13.5px;font-weight:700;letter-spacing:-0.02em;color:var(--m2-text);}
+  .mg-card-link{font-size:12.5px;font-weight:700;color:var(--m2-indigo);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  body.dark .mg-card-link{color:var(--m2-peri);}
+  .mg-memo-row{display:flex;align-items:flex-start;gap:10px;padding:9px 0;}
+  .mg-memo-row+.mg-memo-row{border-top:1px solid #E6E7EB;}
+  body.dark .mg-memo-row+.mg-memo-row{border-top-color:var(--m2-div);}
+  .mg-memo-time{flex-shrink:0;background:#E7E9F9;color:var(--m2-indigo);font-size:10.5px;font-weight:700;border-radius:7px;padding:3px 8px;font-variant-numeric:tabular-nums;}
+  body.dark .mg-memo-time{background:rgba(180,186,245,0.16);color:var(--m2-peri);}
+  .mg-memo-txt{flex:1;min-width:0;font-size:12.5px;line-height:1.5;color:var(--m2-text);word-break:break-word;white-space:pre-wrap;}
+  .mg-empty-txt{font-size:12.5px;color:#AFB1B9;padding:2px 0 4px;}
+  .mg-diary-title{font-size:13px;font-weight:600;color:var(--m2-text);margin-bottom:4px;}
+  .mg-diary-body{font-size:12.5px;line-height:1.55;color:#6B6D76;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word;}
+  body.dark .mg-diary-body{color:var(--m2-text2);}
+
+  /* 메모 전체 시트 */
+  .mg-memo-sheet-row{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-bottom:1px solid var(--border);}
+  .mg-memo-sheet-row:last-child{border-bottom:none;}
+
+  /* 캘린더 → 모아보기 이동 버튼 */
+  .mg-cal-jump{flex-shrink:0;background:rgba(255,255,255,0.16);color:#fff;border-radius:12px;padding:8px 13px;font-size:12px;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;}
 
   /* ── 설정 섹션 라벨 ── */
   .mob-set-section-lbl{
@@ -2852,6 +2943,43 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   </div>
 </div><!-- /mob-page-stats -->
 
+<!-- ── 페이지: 모아보기 (보기 위주) ── -->
+<div id="mob-page-gather" class="mob-page">
+  <div class="mg-header">
+    <div>
+      <div class="mg-title">모아보기</div>
+      <div class="mg-sync" id="mg-sync" onclick="mobGatherSyncTap()"><span class="mg-dot"></span><span id="mg-sync-txt">동기화 안 됨</span></div>
+    </div>
+    <div class="mg-datenav">
+      <button class="mg-datenav-btn" onclick="mobGatherMove(-1)" aria-label="이전 날">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <div class="mg-datenav-lbl" id="mg-date-lbl" onclick="mobGatherOpenCalendar()"></div>
+      <button class="mg-datenav-btn" id="mg-next-btn" onclick="mobGatherMove(1)" aria-label="다음 날">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="mob-scroll mg-scroll">
+    <div class="mg-body" id="mg-body"></div>
+  </div>
+</div><!-- /mob-page-gather -->
+
+<!-- ── 메모 전체 보기 시트 ── -->
+<div class="mob-sheet-dim" id="mob-memo-dim" onclick="mobCloseMemoSheet()"></div>
+<div class="mob-sheet" id="mob-sheet-memo">
+  <div class="mob-sheet-handle"></div>
+  <div class="mob-sheet-inner">
+    <div class="mob-sheet-head">
+      <div class="mob-sheet-date" id="mg-memo-sheet-date">메모</div>
+      <button class="mob-sheet-close" onclick="mobCloseMemoSheet()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div id="mg-memo-sheet-list"></div>
+  </div>
+</div>
+
 <!-- ── 페이지: 설정 ── -->
 <div id="mob-page-settings" class="mob-page">
   <div class="mob-header">
@@ -3143,8 +3271,8 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
     <div class="mob-tab active" id="mtab2-today" onclick="mobGoPage('today')" aria-label="오늘">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5L12 4l9 7.5"/><path d="M5.5 10v9.5a1 1 0 0 0 1 1H9.5V15h5v5.5h3a1 1 0 0 0 1-1V10"/></svg>
     </div>
-    <div class="mob-tab" id="mtab2-calendar" onclick="mobGoPage('calendar')" aria-label="캘린더">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="3.2"/><path d="M3.5 9.5h17M8 3v3.5M16 3v3.5"/></svg>
+    <div class="mob-tab" id="mtab2-gather" onclick="mobOpenGather()" aria-label="모아보기">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="2"/></svg>
     </div>
     <div class="mob-tab" id="mtab2-stats" onclick="mobGoPage('stats')" aria-label="통계">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V4"/><path d="M4 20h16"/><rect x="7" y="12" width="2.6" height="5" rx="1" fill="currentColor" stroke="none"/><rect x="11.7" y="8" width="2.6" height="9" rx="1" fill="currentColor" stroke="none"/><rect x="16.4" y="14" width="2.6" height="3" rx="1" fill="currentColor" stroke="none"/></svg>
@@ -5610,7 +5738,8 @@ function mobOpenMeal(slot){
 let mobCurTab='today';
 function mobGoPage(page){
   document.querySelectorAll('.mob-tab').forEach(t=>t.classList.remove('active'));
-  const tab=document.getElementById('mtab2-'+page);
+  // 캘린더는 탭이 없으므로 모아보기 탭을 활성 표시
+  const tab=document.getElementById('mtab2-'+(page==='calendar'?'gather':page));
   if(tab)tab.classList.add('active');
   // 페이지 show/hide
   document.querySelectorAll('.mob-page').forEach(p=>p.classList.remove('mob-page-active'));
@@ -5623,6 +5752,7 @@ function mobGoPage(page){
     mobCalMonth=mobCalMonth!=null?mobCalMonth:new Date().getMonth();
     mobRenderCalendar();
   }
+  if(page==='gather') mobRenderGather();
   if(page==='stats') mobRenderStats();
   if(page==='settings') mobRenderSettings();
 }
@@ -5764,6 +5894,7 @@ function mobRenderCalSum(ds){
       <div class="m2-cal-sum-date">${dlbl}</div>
       <div class="m2-cal-sum-cnt">기록 ${recordCount}개</div>
     </div>
+    <div class="mg-cal-jump" onclick="mobGatherJump('${ds}')">모아보기 ›</div>
   </div>`;
   if(bars.length===0&&rows2.length===0){
     html+=`<div class="m2-cal-sum-empty">이 날의 기록이 없어요</div>`;
@@ -6294,8 +6425,10 @@ function mobRenderMoodTiles(){
 
 // ── drawer 열기 (기존 함수 연결) ──
 let mobSheetDate=null;
-function mobOpenSheet(ds){
+function mobOpenSheet(ds,readOnly){
   mobSheetDate=ds;
+  const editBtn=document.querySelector('#mob-sheet-diary .mob-sheet-edit-btn');
+  if(editBtn)editBtn.style.display=readOnly?'none':'';
   const dd=getDayData(ds);
   const MOODS_SHEET=['','😔','😐','🙂','😊','😄'];
   const MOOD_LABELS_SHEET=['','울적함','보통','차분함','아주 좋음','활기참'];
@@ -7030,6 +7163,203 @@ let gTokenExpiresAt=0; // 토큰 만료 시각(ms). 이 값과 Date.now()만 비
 let gapiReady=false;
 let gsiReady=false;
 let gSyncedOnLoad=false;
+// ══════════ 모바일 모아보기 (보기 위주) ══════════
+let mgDate=null;          // 모아보기에서 보고 있는 날짜 (YYYY-MM-DD)
+let mgHabitOpen=false;    // 습관 목록 펼침 상태
+let gSyncFailed=false;    // 마지막 동기화 실패 여부
+function mgEsc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function mgShiftDate(ds,n){
+  const d=new Date(ds+'T00:00:00');
+  d.setDate(d.getDate()+n);
+  return localDateStr(d);
+}
+// 모아보기 탭 진입: 항상 오늘 기준으로 시작
+function mobOpenGather(){
+  mgDate=todayStr();
+  mobGoPage('gather');
+}
+// 캘린더 요약에서 "모아보기 ›" 탭
+function mobGatherJump(ds){
+  mgDate=ds||todayStr();
+  mobGoPage('gather');
+}
+function mobGatherMove(n){
+  if(!mgDate)mgDate=todayStr();
+  const next=mgShiftDate(mgDate,n);
+  if(next>todayStr())return; // 미래 날짜는 이동 불가
+  mgDate=next;
+  mobRenderGather();
+}
+// 날짜 탭 → 캘린더 (거기서 날짜 선택 후 "모아보기 ›"로 복귀)
+function mobGatherOpenCalendar(){
+  const d=new Date((mgDate||todayStr())+'T00:00:00');
+  mobCalYear=d.getFullYear();
+  mobCalMonth=d.getMonth();
+  mobGoPage('calendar');
+}
+// 동기화 상태 표시
+function gSyncMark(ok){
+  gSyncFailed=!ok;
+  if(ok){try{localStorage.setItem('g_last_sync',String(Date.now()));}catch(e){}}
+  mobGatherRenderSync();
+}
+function mobGatherRenderSync(){
+  const el=document.getElementById('mg-sync');
+  const tx=document.getElementById('mg-sync-txt');
+  if(!el||!tx)return;
+  el.classList.remove('ok','fail');
+  if(!gAccessToken){tx.textContent='동기화 안 됨';return;}
+  if(gSyncFailed){el.classList.add('fail');tx.textContent='동기화 실패 · 다시 시도';return;}
+  let t=0;try{t=parseInt(localStorage.getItem('g_last_sync')||'0',10);}catch(e){}
+  if(!t){tx.textContent='동기화 대기 중';return;}
+  const d=new Date(t);
+  const h=d.getHours(),ap=h<12?'오전':'오후',h12=h%12===0?12:h%12;
+  el.classList.add('ok');
+  tx.textContent='PC와 동기화 · '+ap+' '+h12+':'+pad(d.getMinutes());
+}
+function mobGatherSyncTap(){
+  if(!gAccessToken){toast('설정에서 로그인하면 PC와 동기화돼요');return;}
+  syncFromDrive(false);
+}
+// 습관 체크 (모아보기 화면에서도 가능)
+function mobGatherToggleHabit(idx){
+  const habits=getHabits();
+  if(!habits[idx])return;
+  const ds=mgDate||todayStr();
+  const name=habitName(habits[idx]);
+  const d=getDayData(ds);
+  if(!d.habits)d.habits={};
+  d.habits[name]=!d.habits[name];
+  saveDayData(ds,d);
+  mobRenderGather();
+  if(ds===curDateStr){ // 홈/PC 화면과 데이터 맞추기
+    try{mobRender();loadDay(curDateStr);}catch(e){}
+  }
+  mobSyncNow();
+}
+function mobGatherToggleOpen(){
+  mgHabitOpen=!mgHabitOpen;
+  document.getElementById('mg-habit')?.classList.toggle('open',mgHabitOpen);
+}
+function mobGatherOpenDiary(){
+  mobOpenSheet(mgDate||todayStr(),true);
+}
+// 메모 전체 시트 (보기 전용)
+function mobGatherOpenMemos(){
+  const ds=mgDate||todayStr();
+  const memos=(getDayData(ds).memos||[]).map((m,i)=>({m,i})).reverse();
+  const dObj=new Date(ds+'T00:00:00');
+  const dn=['일','월','화','수','목','금','토'];
+  const lbl=document.getElementById('mg-memo-sheet-date');
+  if(lbl)lbl.textContent='메모 · '+(dObj.getMonth()+1)+'월 '+dObj.getDate()+'일 '+dn[dObj.getDay()]+'요일';
+  const list=document.getElementById('mg-memo-sheet-list');
+  if(list){
+    list.innerHTML=memos.length
+      ?memos.map(x=>`<div class="mg-memo-sheet-row"><span class="mg-memo-time">${mgEsc(x.m.time||'')}</span><span class="mg-memo-txt">${mgEsc(x.m.text)}</span></div>`).join('')
+      :'<div class="mg-empty-txt" style="padding:18px 0;">이 날의 메모가 없습니다</div>';
+  }
+  document.getElementById('mob-memo-dim')?.classList.add('open');
+  document.getElementById('mob-sheet-memo')?.classList.add('open');
+}
+function mobCloseMemoSheet(){
+  document.getElementById('mob-memo-dim')?.classList.remove('open');
+  document.getElementById('mob-sheet-memo')?.classList.remove('open');
+}
+function mobRenderGather(){
+  const body=document.getElementById('mg-body');
+  if(!body)return;
+  if(!mgDate)mgDate=todayStr();
+  const ds=mgDate,today=todayStr();
+  const d=getDayData(ds);
+  const habits=getHabits();
+  const dn=['일','월','화','수','목','금','토'];
+  const dObj=new Date(ds+'T00:00:00');
+  const lbl=ds===today?'오늘':(dObj.getMonth()+1)+'월 '+dObj.getDate()+'일 '+dn[dObj.getDay()];
+  const lblEl=document.getElementById('mg-date-lbl');
+  if(lblEl)lblEl.textContent=lbl;
+  const nextBtn=document.getElementById('mg-next-btn');
+  if(nextBtn)nextBtn.disabled=(ds>=today);
+  mobGatherRenderSync();
+
+  // ── 습관 ──
+  const isDone=h=>!!(d.habits&&d.habits[habitName(h)]);
+  const total=habits.length;
+  const done=habits.filter(isDone).length;
+  const pct=total?Math.round(done/total*100):0;
+  const mor=habits.map((h,i)=>({h,i})).filter(x=>(x.h.period||'morning')==='morning');
+  const eve=habits.map((h,i)=>({h,i})).filter(x=>x.h.period==='evening');
+  const cnt=a=>a.filter(x=>isDone(x.h)).length;
+  const bar=(name,a,color)=>{
+    const p=a.length?Math.round(cnt(a)/a.length*100):0;
+    return `<div class="mg-bar-row"><span class="mg-bar-lbl">${name}</span><div class="mg-bar-track"><div class="mg-bar-fill" style="width:${p}%;background:${color}"></div></div><span class="mg-bar-val">${cnt(a)}/${a.length}</span></div>`;
+  };
+  const R=26,C=2*Math.PI*R;
+  const row=x=>{
+    const on=isDone(x.h);
+    return `<div class="mg-habit-row" onclick="mobGatherToggleHabit(${x.i})"><div class="mg-habit-chk ${on?'on':''}">${on?'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#13211D" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>':''}</div><div class="mg-habit-name ${on?'done':''}">${mgEsc(habitName(x.h))}</div></div>`;
+  };
+  const grp=(t,a)=>a.length?`<div class="mg-habit-grp">${t}</div>${a.map(row).join('')}`:'';
+  const habitHtml=`<div class="mg-habit ${mgHabitOpen?'open':''}" id="mg-habit">
+    <div class="mg-habit-top">
+      <div><div class="mg-habit-lbl">습관 달성률</div><div class="mg-habit-num">${done}<span>/${total}</span></div></div>
+      <div class="mg-ring"><svg viewBox="0 0 64 64"><circle class="mg-ring-track" cx="32" cy="32" r="${R}"/><circle class="mg-ring-fill" cx="32" cy="32" r="${R}" stroke-dasharray="${C.toFixed(2)}" stroke-dashoffset="${(C*(1-pct/100)).toFixed(2)}"/></svg><div class="mg-ring-pct">${pct}%</div></div>
+    </div>
+    ${bar('오전',mor,'#D8F035')}${bar('오후',eve,'#B4BAF5')}
+    <div class="mg-habit-toggle" onclick="mobGatherToggleOpen()"><span>습관 체크하기</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
+    <div class="mg-habit-list">${total?grp('오전',mor)+grp('오후',eve):'<div class="mg-habit-empty">등록된 습관이 없어요</div>'}</div>
+  </div>`;
+
+  // ── 지표 3칸 ──
+  const ex=d.exercises||(d.exercise?[d.exercise]:[]);
+  const exMin=ex.reduce((s,x)=>s+(x.dur||0),0);
+  const st=d.study||[];
+  const stMin=st.reduce((s,x)=>s+(x.dur||0),0);
+  const stH=Math.floor(stMin/60),stM=stMin%60;
+  const stVal=stMin?(stH>0?`${stH}<span>시간</span>${stM?` ${stM}<span>분</span>`:''}`:`${stM}<span>분</span>`):'–';
+  let wtSub='기록 전',wtCls='';
+  if(d.weight){
+    const dates=Object.keys(getAllData()).filter(k=>k<ds&&getDayData(k).weight).sort();
+    if(dates.length){
+      const diff=Math.round((d.weight-getDayData(dates[dates.length-1]).weight)*10)/10;
+      wtSub=(diff>0?'+':'')+diff+' 이전 대비';
+      if(diff!==0)wtCls='up';
+    }else wtSub='첫 기록';
+  }
+  const metrics=`<div class="mg-metrics">
+    <div class="mg-metric ex"><div class="mg-metric-lbl">운동</div><div class="mg-metric-val">${exMin?exMin+'<span>분</span>':'–'}</div><div class="mg-metric-sub">${ex.length?ex.length+'회 · '+mgEsc(ex[0].type||'운동'):'기록 전'}</div></div>
+    <div class="mg-metric study"><div class="mg-metric-lbl">공부</div><div class="mg-metric-val">${stVal}</div><div class="mg-metric-sub">${st.length?mgEsc(st[0].subject||'공부')+(st.length>1?' 외 '+(st.length-1):''):'기록 전'}</div></div>
+    <div class="mg-metric wt"><div class="mg-metric-lbl">체중</div><div class="mg-metric-val">${d.weight?d.weight+'<span>kg</span>':'–'}</div><div class="mg-metric-sub ${wtCls}">${wtSub}</div></div>
+  </div>`;
+
+  // ── 식사 ──
+  const meals=d.meals||[];
+  const mealHtml=['아침','점심','저녁'].map(k=>{
+    const r=meals.filter(m=>m.time===k);
+    return r.length
+      ?`<div class="mg-meal"><div class="mg-meal-lbl">${k}</div><div class="mg-meal-txt">${r.map(x=>mgEsc(x.food)).join(', ')}</div></div>`
+      :`<div class="mg-meal empty"><div class="mg-meal-lbl">${k}</div><div class="mg-meal-txt">기록 전</div></div>`;
+  }).join('');
+  const mealSec=`<div><div class="mg-sec-title">식사</div><div class="mg-meals">${mealHtml}</div></div>`;
+
+  // ── 메모 (최신 2개) ──
+  const memos=(d.memos||[]).map((m,i)=>({m,i})).reverse();
+  const memoSec=`<div class="mg-card">
+    <div class="mg-card-head"><div class="mg-card-title">메모</div>${memos.length?`<div class="mg-card-link" onclick="mobGatherOpenMemos()">전체 ${memos.length}</div>`:''}</div>
+    ${memos.length?memos.slice(0,2).map(x=>`<div class="mg-memo-row"><span class="mg-memo-time">${mgEsc(x.m.time||'')}</span><span class="mg-memo-txt">${mgEsc(x.m.text)}</span></div>`).join(''):'<div class="mg-empty-txt">작성된 메모가 없습니다</div>'}
+  </div>`;
+
+  // ── 일기 ──
+  const hasDiary=!!(d.diary||d.diaryTitle);
+  const diarySec=`<div class="mg-card">
+    <div class="mg-card-head"><div class="mg-card-title">일기</div>${hasDiary?`<div class="mg-card-link" onclick="mobGatherOpenDiary()">열기 ›</div>`:''}</div>
+    ${hasDiary
+      ?`${d.diaryTitle?`<div class="mg-diary-title">${mgEsc(d.diaryTitle)}</div>`:''}${d.diary?`<div class="mg-diary-body">${mgEsc(d.diary)}</div>`:''}`
+      :'<div class="mg-empty-txt">작성된 일기가 없습니다</div>'}
+  </div>`;
+
+  body.innerHTML=habitHtml+metrics+mealSec+memoSec+diarySec;
+}
+
 let gLastAutoPull=0;
 let gPendingSilent=false;      // 지금 진행 중인 토큰 재발급이 무음(자동) 재발급인지
 let gPendingSyncAction=null;   // 재발급 완료 후 이어서 할 작업: 'push' | 'pull' | null
@@ -7139,6 +7469,7 @@ function checkGoogleReady(){
 }
 
 function updateSyncUI(connected){
+  try{mobGatherRenderSync();}catch(e){}
   const btn=document.getElementById('sync-btn');
   const lbl=document.getElementById('sync-label');
   const mobBtn=document.getElementById('mob-sync-btn');
@@ -7270,9 +7601,11 @@ async function syncToDrive(silent){
       err.status=res.status;
       throw err;
     }
+    gSyncMark(true);
     if(!silent)toast('Drive에 저장됐습니다 ✓');
   }catch(e){
     console.error('syncToDrive',e);
+    gSyncMark(false);
     // 인증 자체가 잘못된 경우(401/403)에만 로그아웃 처리한다. 그 외 일시적 오류로
     // 로그인이 풀려버리면 "로그인했는데 바로 풀리는" 문제가 생기므로 로그인은 유지한다.
     if(e.status===401||e.status===403){
@@ -7344,9 +7677,12 @@ async function syncFromDrive(silent){
     mobRenderCalendar();
     mobRenderStats();
     mobRenderSettings();
+    if(document.getElementById('mob-page-gather')?.classList.contains('mob-page-active'))mobRenderGather();
+    gSyncMark(true);
     if(!silent)toast('Drive에서 불러왔습니다 ✓');
   }catch(e){
     console.error('syncFromDrive',e);
+    gSyncMark(false);
     // 인증 자체가 잘못된 경우(401/403)에만 로그아웃 처리한다.
     // 그 외(네트워크 일시 오류, 요청 제한 등)는 로그인 상태를 유지해야
     // "로그인했는데 바로 풀리는" 문제가 생기지 않는다.
