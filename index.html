@@ -305,6 +305,39 @@ body.dark .dm-card-ink{background:#1A231F;}
 .memo-row:hover .memo-del{opacity:1;}
 .memo-del:hover{color:var(--red);}
 .memo-empty{font-size:13px;color:var(--text3);font-style:italic;padding:4px 0;}
+/* ── 메모 핀 · 태그 · 검색 ── */
+.memo-pin{background:none;border:none;cursor:pointer;color:var(--text3);padding:2px 4px;flex-shrink:0;opacity:0;transition:opacity .15s,color .15s;display:flex;align-items:center;}
+.memo-row:hover .memo-pin{opacity:1;}
+.memo-pin.on{opacity:1;color:var(--accent);}
+.memo-pin:hover{color:var(--accent);}
+.memo-row.pinned .memo-time{background:var(--accent);color:#fff;}
+.memo-tag{color:var(--accent);font-weight:600;cursor:pointer;}
+.memo-pins-btn{background:var(--accent-light);color:var(--accent);border:none;border-radius:8px;padding:3px 9px;font-size:11.5px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:4px;font-family:inherit;}
+.pin-row{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-bottom:1px solid var(--border);}
+.pin-row:last-child{border-bottom:none;}
+.pin-date{flex-shrink:0;font-size:11.5px;font-weight:600;color:var(--text3);min-width:62px;cursor:pointer;padding-top:2px;}
+.pin-body{flex:1;min-width:0;}
+.pin-text{font-size:13.5px;line-height:1.55;color:var(--text);white-space:pre-wrap;word-break:break-word;}
+.search-modal{width:560px;max-width:96vw;height:min(640px,86vh);max-height:86vh;display:flex;flex-direction:column;overflow:hidden;padding:18px 22px;}
+.srch-head{display:flex;align-items:center;gap:10px;background:var(--bg2,#F4F5F7);border-radius:12px;padding:0 12px;flex-shrink:0;}
+.srch-head svg{flex-shrink:0;color:var(--text3);}
+.srch-inp{flex:1;min-width:0;border:none;background:transparent;outline:none;font-size:15px;color:var(--text);padding:12px 0;font-family:inherit;}
+.srch-inp::-webkit-search-cancel-button,.srch-inp::-webkit-search-decoration{-webkit-appearance:none;display:none;}
+.srch-close{background:none;border:none;font-size:20px;line-height:1;cursor:pointer;color:var(--text3);padding:4px;}
+.srch-body{flex:1;overflow-y:auto;margin-top:12px;}
+.srch-hint{font-size:12px;color:var(--text3);margin:2px 2px 10px;line-height:1.55;}
+.srch-chips{display:flex;flex-wrap:wrap;gap:7px;}
+.srch-chip{background:var(--accent-light);color:var(--accent);border:none;border-radius:999px;padding:6px 12px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;}
+.srch-chip span{opacity:.6;margin-left:4px;font-weight:500;}
+.srch-row{padding:11px 2px;border-bottom:1px solid var(--border);cursor:pointer;}
+.srch-meta{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--text3);}
+.srch-type{background:var(--accent-light);color:var(--accent);border-radius:6px;padding:1px 7px;font-weight:700;font-size:10.5px;}
+.srch-snip{font-size:13.5px;line-height:1.55;color:var(--text);margin-top:4px;word-break:break-word;}
+.srch-snip mark{background:#D8F035;color:#13211D;border-radius:3px;padding:0 1px;}
+.srch-empty{font-size:13px;color:var(--text3);text-align:center;padding:36px 0;}
+.srch-btn{width:32px;height:32px;border-radius:9px;border:1px solid var(--border);background:var(--card);color:var(--text2);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.srch-btn:hover{color:var(--accent);border-color:var(--accent);}
+
 
 .pc-todo-toggle{display:flex;background:var(--surface2);border-radius:9px;padding:2px;gap:2px;}
 .pc-todo-toggle-btn{padding:5px 12px;border:none;background:transparent;border-radius:7px;font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;}
@@ -1499,6 +1532,17 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   .mg-memo-sheet-row{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-bottom:1px solid var(--border);}
   .mg-memo-sheet-row:last-child{border-bottom:none;}
 
+  /* 모바일: 홈 메모 핀 / 검색 / 체중 카드 */
+  #mm-list .memo-pin{opacity:.55;padding:6px 6px;}
+  #mm-list .memo-pin.on{opacity:1;}
+  .search-modal{width:100%;max-width:100%;height:100dvh;max-height:100dvh;border-radius:0;padding:14px 16px;padding-top:calc(14px + env(safe-area-inset-top,0px));}
+  .srch-inp{font-size:16px;}
+  .mg-wt-lbl{display:flex;align-items:center;justify-content:space-between;}
+  .mg-wt-lbl svg{opacity:.6;}
+  .mg-card-links{display:flex;align-items:center;gap:14px;}
+  .mg-pin-ico{flex-shrink:0;color:var(--m2-indigo);margin-top:2px;}
+  body.dark .mg-pin-ico{color:var(--m2-peri);}
+
   /* ── 설정 섹션 라벨 ── */
   .mob-set-section-lbl{
     font-size:13px;font-weight:600;letter-spacing:0.2px;
@@ -2188,6 +2232,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
       </div>
     </div>
     <div style="display:flex;align-items:center;gap:8px;">
+      <button class="srch-btn" onclick="openSearch()" title="검색 (Ctrl+K)" aria-label="검색"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg></button>
       <button class="sync-btn" id="sync-btn" onclick="handleSyncClick()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
         <span id="sync-label">LOGIN</span>
@@ -2344,6 +2389,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
           <div class="do-card" id="card-memo">
             <div class="do-card-head">
               <div class="do-card-left"><span class="do-eyebrow">MEMO</span><span class="badge badge-gray" id="memo-badge"></span></div>
+              <button class="memo-pins-btn" id="memo-pins-btn" onclick="openPinnedMemos()" style="display:none;"></button>
             </div>
             <div class="card-body">
               <div class="memo-inp-row">
@@ -2781,7 +2827,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   <!-- 메모 섹션 -->
   <div class="mob-section-label" style="margin-top:22px;">
     <span class="mob-section-title">MEMO</span>
-    <span class="badge badge-gray" id="mm-badge"></span>
+    <span style="display:flex;align-items:center;gap:8px;"><button class="memo-pins-btn" id="mm-pins-btn" onclick="openPinnedMemos()" style="display:none;"></button><span class="badge badge-gray" id="mm-badge"></span></span>
   </div>
   <div class="mob-group-card mm-card">
     <div class="memo-inp-row">
@@ -2807,6 +2853,9 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
       <div class="m2-cal-subtitle">색이 진한 날은 기록이 많은 날</div>
     </div>
     <div class="m2-cal-nav">
+      <button class="mob-cal-nav-btn" onclick="openSearch()" aria-label="검색">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>
+      </button>
       <button class="mob-cal-nav-btn" onclick="mobCalMove(-1)">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
       </button>
@@ -3277,6 +3326,27 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   </div>
 </div>
 
+<!-- 통합 검색 -->
+<div class="modal-bg" id="modal-search" onclick="closeModal('modal-search')">
+  <div class="modal search-modal" onclick="event.stopPropagation()">
+    <div class="srch-head">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>
+      <input class="srch-inp" id="srch-inp" type="search" placeholder="일기·메모·할 일·식사 검색  (#태그도 가능)" autocomplete="off" oninput="runSearch()" onkeydown="if(event.key==='Enter'&&!event.isComposing)this.blur()">
+      <button class="srch-close" onclick="closeModal('modal-search')" aria-label="닫기">×</button>
+    </div>
+    <div class="srch-body" id="srch-body"></div>
+  </div>
+</div>
+
+<!-- 고정한 메모 (PC) -->
+<div class="modal-bg" id="modal-memo-pins" onclick="closeModal('modal-memo-pins')">
+  <div class="modal" style="width:520px;" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal('modal-memo-pins')">×</button>
+    <div class="modal-title">고정한 메모</div>
+    <div id="pins-list"></div>
+  </div>
+</div>
+
 <!-- WEIGHT CHART POPUP -->
 <div class="modal-bg" id="modal-weight-chart">
   <div class="modal" style="width:580px;max-width:96vw;" onclick="event.stopPropagation()">
@@ -3503,6 +3573,176 @@ function saveAllData(d){
   }
 }
 function getDayData(s){const a=getAllData();return a[s]||{};}
+// ── 메모 핀 · 태그 · 통합 검색 ──
+const PIN_SVG='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4h6l-1 6 3 3v1.5H7V13l3-3-1-6z"/><path d="M12 14.5V20"/></svg>';
+const PIN_SVG_ON=PIN_SVG.replace('fill="none"','fill="currentColor"');
+function escAttr(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+// 본문의 #태그를 눌러서 검색할 수 있게 표시 (띄어쓰기 없이 붙여 쓴 #단어)
+function memoHtml(text){
+  return escMemo(text).replace(/(^|\s)#([^\s#]+)/g,(m,sp,t)=>`${sp}<span class="memo-tag" data-tag="${escAttr(t)}" onclick="event.stopPropagation();openSearchTag(this)">#${t}</span>`);
+}
+function openSearchTag(el){openSearch('#'+(el.dataset.tag||''));}
+function isMobileView(){return window.matchMedia('(max-width:680px)').matches;}
+// 고정 메모를 먼저, 그다음 최신순
+function memoOrder(memos){
+  const arr=(memos||[]).map((m,i)=>({m,i})).reverse();
+  return arr.filter(x=>x.m.pinned).concat(arr.filter(x=>!x.m.pinned));
+}
+function getAllPinnedMemos(){
+  const all=getAllData(),out=[];
+  Object.keys(all).sort().reverse().forEach(ds=>{
+    const ms=all[ds]&&all[ds].memos;
+    if(!ms)return;
+    for(let i=ms.length-1;i>=0;i--)if(ms[i]&&ms[i].pinned)out.push({ds,i,m:ms[i]});
+  });
+  return out;
+}
+function updatePinButtons(){
+  const n=getAllPinnedMemos().length;
+  ['memo-pins-btn','mm-pins-btn'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    el.style.display=n?'inline-flex':'none';
+    el.innerHTML=PIN_SVG_ON.replace('width="14" height="14"','width="12" height="12"')+'고정 '+n;
+  });
+}
+function togglePinMemo(i){
+  const d=getDayData(curDateStr);
+  if(!d.memos||!d.memos[i])return;
+  d.memos[i].pinned=!d.memos[i].pinned;
+  if(!d.memos[i].pinned)delete d.memos[i].pinned;
+  saveDayData(curDateStr,d);
+  renderMemoList();
+  if(document.getElementById('mob-page-calendar')?.classList.contains('mob-page-active'))mobRenderGather();
+  mobSyncNow();
+}
+function unpinMemo(ds,i){
+  const d=getDayData(ds);
+  if(!d.memos||!d.memos[i])return;
+  delete d.memos[i].pinned;
+  saveDayData(ds,d);
+  renderMemoList();
+  renderPinList();
+  mobSyncNow();
+}
+function fmtDateKo(ds){
+  const d=new Date(ds+'T00:00:00'),dn=['일','월','화','수','목','금','토'];
+  const y=d.getFullYear()!==new Date().getFullYear()?d.getFullYear()+'.':'';
+  return y+(d.getMonth()+1)+'.'+d.getDate()+' ('+dn[d.getDay()]+')';
+}
+function renderPinList(){
+  const pins=getAllPinnedMemos();
+  const mob=isMobileView();
+  const html=pins.length?pins.map(p=>`<div class="${mob?'mg-memo-sheet-row':'pin-row'}" ${mob?`onclick="goToDate('${p.ds}')" style="cursor:pointer;"`:''}>
+      <span class="${mob?'mg-memo-time':'pin-date'}" ${mob?'':`onclick="goToDate('${p.ds}')"`}>${mob?mgEsc(fmtDateKo(p.ds)):fmtDateKo(p.ds)}</span>
+      <div class="pin-body">${mob?'':`<span class="memo-time" style="display:inline-block;margin-bottom:3px;">${escMemo(p.m.time||'')}</span>`}<div class="${mob?'mg-memo-txt':'pin-text'}">${memoHtml(p.m.text)}</div></div>
+      ${mob?'':`<button class="memo-pin on" onclick="unpinMemo('${p.ds}',${p.i})" title="고정 해제">${PIN_SVG_ON}</button>`}
+    </div>`).join(''):'<div class="memo-empty" style="padding:18px 0;">고정한 메모가 없습니다</div>';
+  const el=document.getElementById(mob?'mg-memo-sheet-list':'pins-list');
+  if(el)el.innerHTML=html;
+}
+function openPinnedMemos(){
+  if(isMobileView()){
+    const lbl=document.getElementById('mg-memo-sheet-date');
+    if(lbl)lbl.textContent='고정한 메모';
+    renderPinList();
+    document.getElementById('mob-memo-dim')?.classList.add('open');
+    document.getElementById('mob-sheet-memo')?.classList.add('open');
+  }else{
+    renderPinList();
+    document.getElementById('modal-memo-pins')?.classList.add('open');
+  }
+}
+// 날짜로 이동 (PC: 대시보드 해당 날짜 / 모바일: 기록 탭 해당 날짜)
+function goToDate(ds){
+  closeModal('modal-search');closeModal('modal-memo-pins');
+  try{mobCloseMemoSheet();}catch(e){}
+  if(isMobileView()){
+    const d=new Date(ds+'T00:00:00');
+    mobCalYear=d.getFullYear();mobCalMonth=d.getMonth();mobCalSelDate=ds;
+    mobGoPage('calendar');
+  }else mcClick(ds);
+}
+
+// ── 통합 검색 ──
+function extractTags(text){return (String(text||'').match(/(?:^|\s)#([^\s#]+)/g)||[]).map(t=>t.trim().slice(1).toLowerCase());}
+function buildSearchItems(){
+  const all=getAllData(),items=[];
+  Object.keys(all).forEach(ds=>{
+    const d=all[ds];if(!d||typeof d!=='object')return;
+    if(d.diary||d.diaryTitle)items.push({ds,type:'일기',pri:1,text:[d.diaryTitle,d.diary].filter(Boolean).join(' · '),tags:(d.diaryTags||[]).map(t=>String(t).replace(/^#/,'').toLowerCase()).concat(extractTags(d.diary))});
+    (d.memos||[]).forEach(m=>items.push({ds,type:'메모',pri:0,text:m.text||'',tags:extractTags(m.text),pinned:!!m.pinned,time:m.time}));
+    (d.todos||[]).forEach(t=>items.push({ds,type:'할 일',pri:2,text:t.text||'',tags:extractTags(t.text)}));
+    (d.meals||[]).forEach(m=>items.push({ds,type:'식사',pri:3,text:(m.time?m.time+' ':'')+(m.food||''),tags:[]}));
+    const ex=d.exercises||(d.exercise?[d.exercise]:[]);
+    ex.forEach(e=>items.push({ds,type:'운동',pri:4,text:[e.type,e.note].filter(Boolean).join(' · '),tags:extractTags(e.note)}));
+    (d.study||[]).forEach(e=>items.push({ds,type:'공부',pri:5,text:[e.subject,e.content].filter(Boolean).join(' · '),tags:extractTags(e.content)}));
+  });
+  return items;
+}
+function hlText(text,terms){
+  const t=terms.filter(Boolean).map(x=>x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'));
+  if(!t.length)return escMemo(text);
+  const re=new RegExp('('+t.join('|')+')','gi');
+  return String(text).split(re).map((p,i)=>i%2?'<mark>'+escMemo(p)+'</mark>':escMemo(p)).join('');
+}
+function snippetOf(text,terms){
+  const low=text.toLowerCase();
+  let idx=-1;
+  for(const t of terms){const k=low.indexOf(t.toLowerCase());if(k>=0&&(idx<0||k<idx))idx=k;}
+  const start=Math.max(0,idx<0?0:idx-24);
+  const piece=text.slice(start,start+110);
+  return (start>0?'…':'')+piece+(start+110<text.length?'…':'');
+}
+function openSearch(q){
+  const m=document.getElementById('modal-search');
+  if(!m)return;
+  m.classList.add('open');
+  const inp=document.getElementById('srch-inp');
+  if(inp){inp.value=q||'';runSearch();setTimeout(()=>inp.focus(),60);}
+}
+function setSearchQuery(q){
+  const inp=document.getElementById('srch-inp');
+  if(inp){inp.value=q;runSearch();inp.focus();}
+}
+function runSearch(){
+  const body=document.getElementById('srch-body');
+  const inp=document.getElementById('srch-inp');
+  if(!body||!inp)return;
+  const q=inp.value.trim();
+  const items=buildSearchItems();
+  if(!q){ // 빈 검색어: 사용 중인 태그 목록 + 사용법
+    const cnt={};
+    items.forEach(it=>[...new Set(it.tags)].forEach(t=>{cnt[t]=(cnt[t]||0)+1;}));
+    const tags=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]||a.localeCompare(b)).slice(0,40);
+    body.innerHTML=`<div class="srch-hint">단어를 입력하면 일기·메모·할 일·식사·운동·공부 본문에서 찾습니다.<br>메모나 일기에 <b>#골프장영업</b>처럼 띄어쓰기 없이 쓰면 태그로 모아 볼 수 있어요.</div>`+
+      (tags.length?`<div class="srch-chips">${tags.map(t=>`<button class="srch-chip" data-tag="${escAttr(t)}" onclick="setSearchQuery('#'+this.dataset.tag)">#${escMemo(t)}<span>${cnt[t]}</span></button>`).join('')}</div>`:'<div class="srch-empty">아직 사용한 #태그가 없습니다</div>');
+    return;
+  }
+  let terms,results;
+  if(q[0]==='#'&&q.length>1){ // 태그 검색: 해당 글자로 시작하는 태그
+    const tq=q.slice(1).toLowerCase();
+    terms=['#'+q.slice(1)];
+    results=items.filter(it=>it.tags.some(t=>t.startsWith(tq)));
+  }else{ // 본문 검색: 띄어쓴 단어는 모두 포함
+    terms=q.split(/\s+/).filter(Boolean);
+    const lows=terms.map(t=>t.toLowerCase());
+    results=items.filter(it=>{const l=it.text.toLowerCase();return lows.every(t=>l.includes(t));});
+  }
+  results.sort((a,b)=>a.ds<b.ds?1:a.ds>b.ds?-1:a.pri-b.pri);
+  if(!results.length){body.innerHTML='<div class="srch-empty">검색 결과가 없습니다</div>';return;}
+  const shown=results.slice(0,80);
+  body.innerHTML=`<div class="srch-hint">${results.length}건${results.length>shown.length?' (최근 80건만 표시 — 검색어를 좁혀 보세요)':''}</div>`+
+    shown.map(it=>`<div class="srch-row" onclick="goToDate('${it.ds}')">
+      <div class="srch-meta"><span class="srch-type">${it.type}</span>${it.pinned?'<span style="color:var(--accent);display:flex;">'+PIN_SVG_ON.replace('width="14" height="14"','width="11" height="11"')+'</span>':''}<span>${fmtDateKo(it.ds)}${it.time?' · '+escMemo(it.time):''}</span></div>
+      <div class="srch-snip">${hlText(snippetOf(it.text,terms),terms)}</div>
+    </div>`).join('');
+}
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openSearch();}
+  if(e.key==='Escape'){closeModal('modal-search');closeModal('modal-memo-pins');}
+});
+
 // ── 사진 기능 폐지: 기존에 저장된 사진 데이터(photo, photoMemo, photos) 제거 ──
 function stripPhotoData(records){
   let changed=false;
@@ -3924,10 +4164,11 @@ function escMemo(s){
 }
 function renderMemoList(){
   const memos=getDayData(curDateStr).memos||[];
-  const rows=memos.map((m,i)=>({m,i})).reverse().map(o=>`
-    <div class="memo-row">
+  const rows=memoOrder(memos).map(o=>`
+    <div class="memo-row${o.m.pinned?' pinned':''}">
       <span class="memo-time">${o.m.time||''}</span>
-      <span class="memo-text">${escMemo(o.m.text)}</span>
+      <span class="memo-text">${memoHtml(o.m.text)}</span>
+      <button class="memo-pin${o.m.pinned?' on':''}" onclick="togglePinMemo(${o.i})" title="${o.m.pinned?'고정 해제':'상단 고정'}">${o.m.pinned?PIN_SVG_ON:PIN_SVG}</button>
       <button class="memo-del" onclick="delMemo(${o.i})" title="삭제">×</button>
     </div>`).join('');
   const empty='<div class="memo-empty">그때그때 떠오른 생각을 남겨보세요</div>';
@@ -3939,6 +4180,7 @@ function renderMemoList(){
     if(badge)badge.textContent=memos.length?memos.length+'개':' ';
     el.innerHTML=memos.length?rows:empty;
   });
+  updatePinButtons();
 }
 function addMemo(src){
   const inp=document.getElementById(src==='m'?'mm-inp':'memo-inp');
@@ -6985,7 +7227,7 @@ function mobGatherOpenDiary(){
 // 메모 전체 시트 (보기 전용)
 function mobGatherOpenMemos(){
   const ds=mgDate||todayStr();
-  const memos=(getDayData(ds).memos||[]).map((m,i)=>({m,i})).reverse();
+  const memos=memoOrder(getDayData(ds).memos);
   const dObj=new Date(ds+'T00:00:00');
   const dn=['일','월','화','수','목','금','토'];
   const lbl=document.getElementById('mg-memo-sheet-date');
@@ -6993,7 +7235,7 @@ function mobGatherOpenMemos(){
   const list=document.getElementById('mg-memo-sheet-list');
   if(list){
     list.innerHTML=memos.length
-      ?memos.map(x=>`<div class="mg-memo-sheet-row"><span class="mg-memo-time">${mgEsc(x.m.time||'')}</span><span class="mg-memo-txt">${mgEsc(x.m.text)}</span></div>`).join('')
+      ?memos.map(x=>`<div class="mg-memo-sheet-row"><span class="mg-memo-time">${mgEsc(x.m.time||'')}</span><span class="mg-memo-txt">${memoHtml(x.m.text)}</span>${x.m.pinned?`<span class="mg-pin-ico">${PIN_SVG_ON.replace('width="14" height="14"','width="12" height="12"')}</span>`:''}</div>`).join('')
       :'<div class="mg-empty-txt" style="padding:18px 0;">이 날의 메모가 없습니다</div>';
   }
   document.getElementById('mob-memo-dim')?.classList.add('open');
@@ -7066,7 +7308,7 @@ function mobRenderCalSum(sel){
   const metrics=`<div class="mg-metrics">
     <div class="mg-metric ex"><div class="mg-metric-lbl">운동</div><div class="mg-metric-val">${exMin?exMin+'<span>분</span>':'–'}</div><div class="mg-metric-sub">${ex.length?ex.length+'회 · '+mgEsc(ex[0].type||'운동'):'기록 전'}</div></div>
     <div class="mg-metric study"><div class="mg-metric-lbl">공부</div><div class="mg-metric-val">${stVal}</div><div class="mg-metric-sub">${st.length?mgEsc(st[0].subject||'공부')+(st.length>1?' 외 '+(st.length-1):''):'기록 전'}</div></div>
-    <div class="mg-metric wt"><div class="mg-metric-lbl">체중</div><div class="mg-metric-val">${d.weight?d.weight+'<span>kg</span>':'–'}</div><div class="mg-metric-sub ${wtCls}">${wtSub}</div></div>
+    <div class="mg-metric wt" onclick="openWeightChart()"><div class="mg-metric-lbl mg-wt-lbl">체중<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div><div class="mg-metric-val">${d.weight?d.weight+'<span>kg</span>':'–'}</div><div class="mg-metric-sub ${wtCls}">${wtSub}</div></div>
   </div>`;
 
   // ── 식사 ──
@@ -7079,11 +7321,13 @@ function mobRenderCalSum(sel){
   }).join('');
   const mealSec=`<div><div class="mg-sec-title">식사</div><div class="mg-meals">${mealHtml}</div></div>`;
 
-  // ── 메모 (최신 2개) ──
-  const memos=(d.memos||[]).map((m,i)=>({m,i})).reverse();
+  // ── 메모 (고정 우선, 최대 2개) ──
+  const memos=memoOrder(d.memos);
+  const pinTotal=getAllPinnedMemos().length;
+  const memoRow=x=>`<div class="mg-memo-row"><span class="mg-memo-time">${mgEsc(x.m.time||'')}</span><span class="mg-memo-txt">${memoHtml(x.m.text)}</span>${x.m.pinned?`<span class="mg-pin-ico">${PIN_SVG_ON.replace('width="14" height="14"','width="12" height="12"')}</span>`:''}</div>`;
   const memoSec=`<div class="mg-card">
-    <div class="mg-card-head"><div class="mg-card-title">메모</div>${memos.length?`<div class="mg-card-link" onclick="mobGatherOpenMemos()">전체 ${memos.length}</div>`:''}</div>
-    ${memos.length?memos.slice(0,2).map(x=>`<div class="mg-memo-row"><span class="mg-memo-time">${mgEsc(x.m.time||'')}</span><span class="mg-memo-txt">${mgEsc(x.m.text)}</span></div>`).join(''):'<div class="mg-empty-txt">작성된 메모가 없습니다</div>'}
+    <div class="mg-card-head"><div class="mg-card-title">메모</div><div class="mg-card-links">${pinTotal?`<div class="mg-card-link" onclick="openPinnedMemos()">고정 ${pinTotal}</div>`:''}${memos.length?`<div class="mg-card-link" onclick="mobGatherOpenMemos()">전체 ${memos.length}</div>`:''}</div></div>
+    ${memos.length?memos.slice(0,2).map(memoRow).join(''):'<div class="mg-empty-txt">작성된 메모가 없습니다</div>'}
   </div>`;
 
   // ── 일기 ──
