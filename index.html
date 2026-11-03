@@ -1222,50 +1222,6 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
     font-size:13px;font-weight:650;cursor:pointer;
   }
 
-  /* ── 오늘의 사진 카드 ── */
-  .mob-photo-card{padding:16px;}
-  .mob-photo-frame{
-    aspect-ratio:16/9;border-radius:14px;overflow:hidden;
-    position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent;
-  }
-  .mob-photo-frame img{width:100%;height:100%;object-fit:cover;display:block;}
-  .mob-photo-empty{
-    aspect-ratio:16/9;border-radius:14px;
-    border:1.6px dashed rgba(60,60,67,0.28);
-    background:#F7F7FA;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
-    color:rgba(60,60,67,0.5);cursor:pointer;-webkit-tap-highlight-color:transparent;
-  }
-  .mob-photo-empty span{font-size:12.5px;font-weight:600;}
-  .mob-photo-view-badge{
-    position:absolute;bottom:7px;right:8px;
-    background:rgba(0,0,0,0.45);color:#fff;font-size:10.5px;font-weight:600;
-    padding:4px 9px;border-radius:20px;display:flex;align-items:center;gap:4px;
-  }
-  .mob-photo-del{
-    position:absolute;top:7px;right:7px;width:24px;height:24px;border-radius:50%;
-    background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;
-    color:#fff;-webkit-tap-highlight-color:transparent;
-  }
-  .mob-photo-memo-inp{
-    width:100%;margin-top:10px;padding:10px 13px;border-radius:12px;
-    border:none;background:#F7F7FA;box-sizing:border-box;
-    font-family:'Pretendard Variable',-apple-system,system-ui,sans-serif;
-    font-size:13.5px;color:#1A1A1C;outline:none;
-  }
-  .mob-photo-memo-inp::placeholder{color:rgba(60,60,67,0.34);}
-  .mob-photo-lightbox{
-    position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;
-    display:flex;align-items:center;justify-content:center;padding:20px;
-    -webkit-tap-highlight-color:transparent;
-  }
-  .mob-photo-lightbox img{max-width:100%;max-height:100%;border-radius:8px;object-fit:contain;}
-  .mob-photo-lightbox-close{
-    position:absolute;top:calc(env(safe-area-inset-top,0px) + 16px);right:20px;
-    width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.15);
-    display:flex;align-items:center;justify-content:center;color:#fff;
-  }
-
   /* ── 식사 행 ── */
   .mob-meal-row{
     display:flex;align-items:center;gap:13px;
@@ -1548,6 +1504,13 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   /* 캘린더 → 모아보기 이동 버튼 */
   .mg-cal-jump{flex-shrink:0;background:rgba(255,255,255,0.16);color:#fff;border-radius:12px;padding:8px 13px;font-size:12px;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;}
 
+  /* 모바일 홈 MEMO */
+  .mm-card{padding:14px 16px 10px;}
+  .mm-card .todo-inp{font-size:16px;}
+  .mm-card .memo-list{max-height:240px;}
+  #mm-list .memo-del{opacity:1;padding:6px 8px;font-size:18px;}
+  #mm-list .memo-text{font-size:14px;}
+
   /* ── 설정 섹션 라벨 ── */
   .mob-set-section-lbl{
     font-size:13px;font-weight:600;letter-spacing:0.2px;
@@ -1748,8 +1711,6 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   body.dark .mob-diary-empty{color:var(--text3);}
   body.dark .mob-diary-empty-cta{background:var(--accent-light);color:#B4B2E8;}
 
-  body.dark .mob-photo-empty{background:var(--surface2);border-color:var(--border);color:var(--text3);}
-  body.dark .mob-photo-memo-inp{background:var(--surface2);color:var(--text);}
 
   body.dark .mob-meal-sep{background:rgba(255,255,255,0.08);}
   body.dark .mob-meal-emoji.empty{background:var(--surface2);}
@@ -2829,20 +2790,18 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v12M6 12h12"/></svg>
     </button>
   </div>
-  <!-- 오늘의 사진 -->
+  <!-- 메모 섹션 -->
   <div class="mob-section-label" style="margin-top:22px;">
-    <span class="mob-section-title">오늘의 사진</span>
+    <span class="mob-section-title">MEMO</span>
+    <span class="badge badge-gray" id="mm-badge"></span>
   </div>
-  <div class="mob-group-card mob-photo-card" id="mob-photo-card"></div>
-  <input type="file" id="mob-photo-file-inp" accept="image/*" style="display:none;" onchange="mobPhotoFileSelected(event)">
-  <!-- 일기 섹션 -->
-  <div class="mob-section-label" style="margin-top:22px;">
-    <span class="mob-section-title">오늘의 일기</span>
-    <span class="mob-section-action mob-action-tint" onclick="openDiaryEditor()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 4.5l3 3L9 18l-4 1 1-4 10.5-10.5z"/></svg>
-    </span>
+  <div class="mob-group-card mm-card">
+    <div class="memo-inp-row">
+      <input class="todo-inp" id="mm-inp" type="text" placeholder="떠오른 생각을 적어보세요..." maxlength="200" onkeydown="if(event.key==='Enter'&&!event.isComposing)addMemo('m')">
+      <button class="add-btn" onclick="addMemo('m')" aria-label="메모 추가">+</button>
+    </div>
+    <div class="memo-list" id="mm-list"></div>
   </div>
-  <div class="mob-group-card mob-diary-card" id="mob-diary-preview" onclick="mobDiaryTap()"></div>
 
 </div><!-- /mob-scroll -->
 
@@ -3274,6 +3233,9 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
     <div class="mob-tab" id="mtab2-gather" onclick="mobOpenGather()" aria-label="모아보기">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="2"/></svg>
     </div>
+    <div class="mob-tab" id="mtab2-calendar" onclick="mobGoPage('calendar')" aria-label="캘린더">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="3.2"/><path d="M3.5 9.5h17M8 3v3.5M16 3v3.5"/></svg>
+    </div>
     <div class="mob-tab" id="mtab2-stats" onclick="mobGoPage('stats')" aria-label="통계">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V4"/><path d="M4 20h16"/><rect x="7" y="12" width="2.6" height="5" rx="1" fill="currentColor" stroke="none"/><rect x="11.7" y="8" width="2.6" height="9" rx="1" fill="currentColor" stroke="none"/><rect x="16.4" y="14" width="2.6" height="3" rx="1" fill="currentColor" stroke="none"/></svg>
     </div>
@@ -3567,9 +3529,33 @@ function formatDate(str){
 
 // ── STORAGE ──
 function getAllData(){try{return JSON.parse(localStorage.getItem('do_data')||'{}');}catch(e){return {};}}
-function saveAllData(d){try{localStorage.setItem('do_data',JSON.stringify(d));}catch(e){}}
+let gLocalRev=0; // 기기에서 기록이 저장될 때마다 +1 (Drive 응답이 늦게 도착해 최신 입력을 덮어쓰는 것을 막는 용도)
+function saveAllData(d){
+  gLocalRev++;
+  try{localStorage.setItem('do_data',JSON.stringify(d));return true;}
+  catch(e){
+    console.error('saveAllData',e);
+    try{toast('저장 공간이 부족해 저장하지 못했어요');}catch(_){}
+    return false;
+  }
+}
 function getDayData(s){const a=getAllData();return a[s]||{};}
-function saveDayData(s,d){const a=getAllData();a[s]=d;saveAllData(a);}
+// ── 사진 기능 폐지: 기존에 저장된 사진 데이터(photo, photoMemo, photos) 제거 ──
+function stripPhotoData(records){
+  let changed=false;
+  Object.keys(records||{}).forEach(k=>{
+    const r=records[k];
+    if(r&&typeof r==='object'&&('photo' in r||'photoMemo' in r||'photos' in r)){
+      delete r.photo;delete r.photoMemo;delete r.photos;changed=true;
+    }
+  });
+  return changed;
+}
+function purgeLocalPhotos(){
+  const all=getAllData();
+  if(stripPhotoData(all))saveAllData(all);
+}
+function saveDayData(s,d){const a=getAllData();a[s]=d;return saveAllData(a);}
 function getHabits(){
   let raw;
   try{raw=JSON.parse(localStorage.getItem('do_habits')||'["물 2L 마시기","독서 30분","스트레칭","비타민 복용","일기 쓰기"]');}catch(e){raw=[];}
@@ -3974,22 +3960,25 @@ function escMemo(s){
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 function renderMemoList(){
-  const el=document.getElementById('memo-list');
-  const badge=document.getElementById('memo-badge');
-  if(!el)return;
   const memos=getDayData(curDateStr).memos||[];
-  if(badge)badge.textContent=memos.length?memos.length+'개':' ';
-  if(!memos.length){el.innerHTML='<div class="memo-empty">그때그때 떠오른 생각을 남겨보세요</div>';return;}
-  // 최신 메모가 위로
-  el.innerHTML=memos.map((m,i)=>({m,i})).reverse().map(o=>`
+  const rows=memos.map((m,i)=>({m,i})).reverse().map(o=>`
     <div class="memo-row">
       <span class="memo-time">${o.m.time||''}</span>
       <span class="memo-text">${escMemo(o.m.text)}</span>
       <button class="memo-del" onclick="delMemo(${o.i})" title="삭제">×</button>
     </div>`).join('');
+  const empty='<div class="memo-empty">그때그때 떠오른 생각을 남겨보세요</div>';
+  // PC 카드 + 모바일 홈 카드 둘 다 갱신
+  [['memo-list','memo-badge'],['mm-list','mm-badge']].forEach(([lid,bid])=>{
+    const el=document.getElementById(lid);
+    if(!el)return;
+    const badge=document.getElementById(bid);
+    if(badge)badge.textContent=memos.length?memos.length+'개':' ';
+    el.innerHTML=memos.length?rows:empty;
+  });
 }
-function addMemo(){
-  const inp=document.getElementById('memo-inp');
+function addMemo(src){
+  const inp=document.getElementById(src==='m'?'mm-inp':'memo-inp');
   const v=inp?.value?.trim();
   if(!v)return;
   const d=getDayData(curDateStr);
@@ -3998,6 +3987,7 @@ function addMemo(){
   saveDayData(curDateStr,d);
   inp.value='';
   renderMemoList();
+  if(document.getElementById('mob-page-gather')?.classList.contains('mob-page-active'))mobRenderGather();
   mobSyncNow();
 }
 function delMemo(i){
@@ -4006,6 +3996,7 @@ function delMemo(i){
   d.memos.splice(i,1);
   saveDayData(curDateStr,d);
   renderMemoList();
+  if(document.getElementById('mob-page-gather')?.classList.contains('mob-page-active'))mobRenderGather();
   mobSyncNow();
 }
 
@@ -5246,6 +5237,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   mcYear=now.getFullYear();mcMonth=now.getMonth();
 
   initDark();
+  purgeLocalPhotos(); // 사진 기능 폐지 — 저장된 사진 데이터 정리
   loadProfile();
   applyTrackerNames();
   initWidgetToggles();
@@ -5554,112 +5546,6 @@ function mobRenderDiary(d){
 
 // ── 식사 리스트 렌더 ──
 
-// ── 오늘의 사진 (한 장 + 한 줄 메모) ──
-// 저장 작업 직렬화 큐 — 리사이즈(비동기) 완료 시점이 겹쳐도 저장 순서가 꼬이지 않도록 함
-let mobPhotoQueue=Promise.resolve();
-function mobPhotoEnqueue(task){
-  mobPhotoQueue=mobPhotoQueue.then(task,task);
-  return mobPhotoQueue;
-}
-function mobRenderPhoto(d){
-  const card=document.getElementById('mob-photo-card');
-  if(!card)return;
-  const memoVal=d.photoMemo||'';
-  if(d.photo&&d.photo.src){
-    card.innerHTML=`
-      <div class="mob-photo-frame" onclick="mobPhotoViewOriginal()">
-        <img src="${d.photo.src}">
-        <div class="mob-photo-del" onclick="event.stopPropagation();mobPhotoDeleteCurrent()">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-        </div>
-        <div class="mob-photo-view-badge">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3"/></svg>
-          원본보기
-        </div>
-      </div>
-      <input class="mob-photo-memo-inp" id="mob-photo-memo-inp" type="text" maxlength="60"
-        placeholder="오늘 하루 한 줄로 남겨보세요" value="${memoVal.replace(/"/g,'&quot;')}"
-        onkeydown="if(event.key==='Enter')this.blur()" onblur="mobSavePhotoMemo()">`;
-  }else{
-    card.innerHTML=`
-      <div class="mob-photo-empty" onclick="mobPhotoAddTap()">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8a2 2 0 0 1 2-2h1.2l.9-1.5A1.6 1.6 0 0 1 9.5 3.7h5a1.6 1.6 0 0 1 1.4.8L16.8 6H18a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.4"/></svg>
-        <span>사진 추가</span>
-      </div>`;
-  }
-}
-function mobPhotoAddTap(){
-  document.getElementById('mob-photo-file-inp')?.click();
-}
-function mobSavePhotoMemo(){
-  const inp=document.getElementById('mob-photo-memo-inp');
-  if(!inp)return;
-  const d=getDayData(curDateStr);
-  d.photoMemo=inp.value.trim();
-  saveDayData(curDateStr,d);
-  mobSyncNow();
-}
-function mobPhotoFileSelected(e){
-  const file=e.target.files?.[0];
-  if(!file)return;
-  e.target.value=''; // 같은 파일 재선택도 인식되도록 즉시 초기화
-  mobPhotoResize(file,1600,0.85).then(dataUrl=>{
-    mobPhotoEnqueue(()=>{
-      const d=getDayData(curDateStr);
-      d.photo={src:dataUrl}; // 한 장만 유지 — 새로 올리면 기존 사진 교체
-      saveDayData(curDateStr,d);
-      mobRenderPhoto(d);
-      mobSyncNow();
-      toast('사진이 등록됐어요');
-    });
-  }).catch(()=>{toast('사진 처리 실패');});
-}
-function mobPhotoDeleteCurrent(){
-  mobPhotoEnqueue(()=>{
-    const d=getDayData(curDateStr);
-    if(!d.photo)return;
-    delete d.photo;
-    delete d.photoMemo;
-    saveDayData(curDateStr,d);
-    mobRenderPhoto(d);
-    mobSyncNow();
-    toast('사진이 삭제됐어요');
-  });
-}
-function mobPhotoViewOriginal(){
-  const d=getDayData(curDateStr);
-  if(!d.photo||!d.photo.src)return;
-  const box=document.createElement('div');
-  box.className='mob-photo-lightbox';
-  box.innerHTML=`<img src="${d.photo.src}"><div class="mob-photo-lightbox-close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></div>`;
-  box.onclick=()=>box.remove();
-  document.body.appendChild(box);
-}
-function mobPhotoResize(file,maxDim,quality){
-  return new Promise((resolve,reject)=>{
-    const reader=new FileReader();
-    reader.onload=ev=>{
-      const img=new Image();
-      img.onload=()=>{
-        let w=img.width,h=img.height;
-        if(w>maxDim||h>maxDim){
-          if(w>h){h=Math.round(h*maxDim/w);w=maxDim;}
-          else{w=Math.round(w*maxDim/h);h=maxDim;}
-        }
-        const canvas=document.createElement('canvas');
-        canvas.width=w;canvas.height=h;
-        const ctx=canvas.getContext('2d');
-        ctx.drawImage(img,0,0,w,h);
-        resolve(canvas.toDataURL('image/jpeg',quality));
-      };
-      img.onerror=reject;
-      img.src=ev.target.result;
-    };
-    reader.onerror=reject;
-    reader.readAsDataURL(file);
-  });
-}
-
 function mobRenderMeals(d){
   const el=document.getElementById('mob-meal-list');
   const kcalEl=document.getElementById('mob-meal-kcal');
@@ -5738,8 +5624,7 @@ function mobOpenMeal(slot){
 let mobCurTab='today';
 function mobGoPage(page){
   document.querySelectorAll('.mob-tab').forEach(t=>t.classList.remove('active'));
-  // 캘린더는 탭이 없으므로 모아보기 탭을 활성 표시
-  const tab=document.getElementById('mtab2-'+(page==='calendar'?'gather':page));
+  const tab=document.getElementById('mtab2-'+page);
   if(tab)tab.classList.add('active');
   // 페이지 show/hide
   document.querySelectorAll('.mob-page').forEach(p=>p.classList.remove('mob-page-active'));
@@ -5887,7 +5772,6 @@ function mobRenderCalSum(ds){
     });
   }
   if(dd.weight)recordCount++;
-  if((dd.photos||[]).filter(p=>p).length>0)recordCount++;
 
   let html=`<div class="m2-cal-sum-top">
     <div>
@@ -6513,8 +6397,7 @@ function mobRender(){
   mobUpdateGreeting();
   mobRenderHero(d,habits);
   mobRenderHabits(d,habits);
-  mobRenderPhoto(d);
-  mobRenderDiary(d);
+  renderMemoList();
   mobRenderMeals(d);
   mobRenderTodos(d);
   mobUpdateAvatar();
@@ -7628,6 +7511,7 @@ async function syncFromDrive(silent){
   if(!gAccessToken||!gapiReady)return;
   if(!isTokenValid()){requestDriveToken(true,'pull');return;}
   gapi.client.setToken({access_token:gAccessToken});
+  const revAtStart=gLocalRev;
   try{
     const list=await gapi.client.drive.files.list({
       spaces:'appDataFolder',
@@ -7645,6 +7529,10 @@ async function syncFromDrive(silent){
       throw err;
     }
     const remote=await res.json();
+    // 받아오는 동안 이 기기에서 새로 저장한 기록(사진 등)이 있으면, 이 응답은 옛 데이터이므로
+    // 적용하지 않는다. (적용하면 방금 저장한 내용이 옛 Drive 데이터로 덮어써져 사라짐)
+    if(gLocalRev!==revAtStart){gLastAutoPull=0;return;}
+    const remotePhotosStripped=remote.records?stripPhotoData(remote.records):false;
     if(remote.habits)saveHabits(remote.habits);
     if(remote.records){
       // Drive 데이터 우선, 로컬에만 있는 날짜 유지
@@ -7679,6 +7567,7 @@ async function syncFromDrive(silent){
     mobRenderSettings();
     if(document.getElementById('mob-page-gather')?.classList.contains('mob-page-active'))mobRenderGather();
     gSyncMark(true);
+    if(remotePhotosStripped)syncToDrive(true); // Drive에 남은 사진 데이터도 정리
     if(!silent)toast('Drive에서 불러왔습니다 ✓');
   }catch(e){
     console.error('syncFromDrive',e);
