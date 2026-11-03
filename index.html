@@ -1413,18 +1413,16 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   .m2-mood-cnt{font-size:16px;font-weight:700;color:var(--m2-text);letter-spacing:-0.02em;}
 
   /* ══════════ 5a 모아보기 (보기 위주) ══════════ */
-  .mg-header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:18px 20px 12px;flex-shrink:0;background:var(--m2-bg);}
-  .mg-title{font-size:22px;font-weight:700;letter-spacing:-0.035em;color:var(--m2-text);}
-  .mg-sync{display:flex;align-items:center;gap:6px;margin-top:5px;font-size:11.5px;font-weight:500;color:var(--m2-text2);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  .mg-detail{margin:0 20px 16px;}
+  .mg-detail-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:4px 2px 12px;}
+  .mg-detail-date{font-size:17px;font-weight:700;letter-spacing:-0.03em;color:var(--m2-text);display:flex;align-items:center;gap:7px;}
+  .mg-today-chip{background:var(--m2-lime);color:#13211D;font-size:10.5px;font-weight:700;border-radius:7px;padding:2px 7px;letter-spacing:0;}
+  .mg-body.mg-body-in{padding:0;}
+  .mg-sync{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:500;color:var(--m2-text2);cursor:pointer;-webkit-tap-highlight-color:transparent;}
   .mg-dot{width:7px;height:7px;border-radius:50%;background:#AFB1B9;flex-shrink:0;}
   .mg-sync.ok .mg-dot{background:#7CB342;}
   .mg-sync.fail .mg-dot{background:#C0392B;}
-  .mg-datenav{display:flex;align-items:center;gap:2px;background:var(--m2-sub);border-radius:12px;padding:3px;flex-shrink:0;}
-  .mg-datenav-btn{width:28px;height:28px;border-radius:9px;border:none;background:var(--m2-bg);display:flex;align-items:center;justify-content:center;color:var(--m2-text);cursor:pointer;-webkit-tap-highlight-color:transparent;}
-  .mg-datenav-btn:disabled{opacity:.35;}
-  .mg-datenav-lbl{min-width:70px;text-align:center;padding:0 6px;font-size:12.5px;font-weight:700;color:var(--m2-text);cursor:pointer;-webkit-tap-highlight-color:transparent;white-space:nowrap;}
-  .mg-scroll{padding-bottom:calc(112px + env(safe-area-inset-bottom,0px)) !important;}
-  .mg-body{padding:4px 20px 0;display:flex;flex-direction:column;gap:12px;}
+  .mg-body{display:flex;flex-direction:column;gap:12px;}
 
   /* 습관 달성률 (Indigo) */
   .mg-habit{background:var(--m2-indigo);border-radius:24px;padding:18px 20px;}
@@ -1500,16 +1498,6 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   /* 메모 전체 시트 */
   .mg-memo-sheet-row{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-bottom:1px solid var(--border);}
   .mg-memo-sheet-row:last-child{border-bottom:none;}
-
-  /* 캘린더 → 모아보기 이동 버튼 */
-  .mg-cal-jump{flex-shrink:0;background:rgba(255,255,255,0.16);color:#fff;border-radius:12px;padding:8px 13px;font-size:12px;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;}
-
-  /* 모바일 홈 MEMO */
-  .mm-card{padding:14px 16px 10px;}
-  .mm-card .todo-inp{font-size:16px;}
-  .mm-card .memo-list{max-height:240px;}
-  #mm-list .memo-del{opacity:1;padding:6px 8px;font-size:18px;}
-  #mm-list .memo-text{font-size:14px;}
 
   /* ── 설정 섹션 라벨 ── */
   .mob-set-section-lbl{
@@ -2839,10 +2827,10 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
     <div class="mob-cal-grid" id="mob-cal-grid"></div>
   </div>
 
-  <!-- 선택일 요약 (인디고 카드) -->
-  <div class="m2-cal-sum-card" id="mob-cal-summary"></div>
+  <!-- 선택일 상세 (구 모아보기) -->
+  <div class="mg-detail" id="mob-cal-summary"></div>
 
-  <div style="height:20px;"></div>
+  <div style="height:112px;"></div>
 </div>
 
 </div><!-- /mob-page-calendar -->
@@ -2901,28 +2889,6 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
     <div style="height:20px;"></div>
   </div>
 </div><!-- /mob-page-stats -->
-
-<!-- ── 페이지: 모아보기 (보기 위주) ── -->
-<div id="mob-page-gather" class="mob-page">
-  <div class="mg-header">
-    <div>
-      <div class="mg-title">모아보기</div>
-      <div class="mg-sync" id="mg-sync" onclick="mobGatherSyncTap()"><span class="mg-dot"></span><span id="mg-sync-txt">동기화 안 됨</span></div>
-    </div>
-    <div class="mg-datenav">
-      <button class="mg-datenav-btn" onclick="mobGatherMove(-1)" aria-label="이전 날">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
-      </button>
-      <div class="mg-datenav-lbl" id="mg-date-lbl" onclick="mobGatherOpenCalendar()"></div>
-      <button class="mg-datenav-btn" id="mg-next-btn" onclick="mobGatherMove(1)" aria-label="다음 날">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
-      </button>
-    </div>
-  </div>
-  <div class="mob-scroll mg-scroll">
-    <div class="mg-body" id="mg-body"></div>
-  </div>
-</div><!-- /mob-page-gather -->
 
 <!-- ── 메모 전체 보기 시트 ── -->
 <div class="mob-sheet-dim" id="mob-memo-dim" onclick="mobCloseMemoSheet()"></div>
@@ -3230,10 +3196,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
     <div class="mob-tab active" id="mtab2-today" onclick="mobGoPage('today')" aria-label="오늘">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5L12 4l9 7.5"/><path d="M5.5 10v9.5a1 1 0 0 0 1 1H9.5V15h5v5.5h3a1 1 0 0 0 1-1V10"/></svg>
     </div>
-    <div class="mob-tab" id="mtab2-gather" onclick="mobOpenGather()" aria-label="모아보기">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="2"/></svg>
-    </div>
-    <div class="mob-tab" id="mtab2-calendar" onclick="mobGoPage('calendar')" aria-label="캘린더">
+    <div class="mob-tab" id="mtab2-calendar" onclick="mobGoPage('calendar')" aria-label="기록">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="3.2"/><path d="M3.5 9.5h17M8 3v3.5M16 3v3.5"/></svg>
     </div>
     <div class="mob-tab" id="mtab2-stats" onclick="mobGoPage('stats')" aria-label="통계">
@@ -3987,7 +3950,7 @@ function addMemo(src){
   saveDayData(curDateStr,d);
   inp.value='';
   renderMemoList();
-  if(document.getElementById('mob-page-gather')?.classList.contains('mob-page-active'))mobRenderGather();
+  if(document.getElementById('mob-page-calendar')?.classList.contains('mob-page-active'))mobRenderGather();
   mobSyncNow();
 }
 function delMemo(i){
@@ -3996,7 +3959,7 @@ function delMemo(i){
   d.memos.splice(i,1);
   saveDayData(curDateStr,d);
   renderMemoList();
-  if(document.getElementById('mob-page-gather')?.classList.contains('mob-page-active'))mobRenderGather();
+  if(document.getElementById('mob-page-calendar')?.classList.contains('mob-page-active'))mobRenderGather();
   mobSyncNow();
 }
 
@@ -5635,9 +5598,12 @@ function mobGoPage(page){
   if(page==='calendar'){
     mobCalYear=mobCalYear||new Date().getFullYear();
     mobCalMonth=mobCalMonth!=null?mobCalMonth:new Date().getMonth();
+    if(!mobCalSelDate){ // 이번 달을 보고 있으면 오늘을 기본 선택
+      const n=new Date();
+      if(mobCalYear===n.getFullYear()&&mobCalMonth===n.getMonth())mobCalSelDate=todayStr();
+    }
     mobRenderCalendar();
   }
-  if(page==='gather') mobRenderGather();
   if(page==='stats') mobRenderStats();
   if(page==='settings') mobRenderSettings();
 }
@@ -5719,88 +5685,6 @@ function mobRenderCalendar(){
 function mobCalSelect(ds){
   mobCalSelDate=ds;
   mobRenderCalendar();
-}
-
-function mobRenderCalSum(ds){
-  const sumEl=document.getElementById('mob-cal-summary');
-  if(!sumEl)return;
-  if(!ds){
-    sumEl.innerHTML=`<div class="m2-cal-sum-top">
-      <div><div class="m2-cal-sum-date">날짜를 선택하세요</div><div class="m2-cal-sum-cnt">기록 보기</div></div>
-    </div>
-    <div class="m2-cal-sum-empty">날짜를 탭하면 그날의 기록을 볼 수 있어요</div>`;
-    return;
-  }
-  const dObj=new Date(ds+'T00:00:00');
-  const dn=['일','월','화','수','목','금','토'];
-  const dlbl=(dObj.getMonth()+1)+'월 '+dObj.getDate()+'일 '+dn[dObj.getDay()]+'요일';
-
-  const dd=getDayData(ds);
-  const habits=getHabits();
-  const bars=[]; // 진행률 바 (습관/운동/공부)
-  const rows2=[]; // 탭 가능한 행 (일기)
-  let recordCount=0;
-
-  if(habits.length>0){
-    const doneCnt=habits.filter(h=>dd.habits&&dd.habits[habitName(h)]).length;
-    if(doneCnt>0)recordCount++;
-    bars.push({lbl:'습관',val:doneCnt+'/'+habits.length,pct:Math.round(doneCnt/habits.length*100),color:'var(--m2-lime)'});
-  }
-  const exSessions=dd.exercises||(dd.exercise?[dd.exercise]:[]);
-  if(exSessions.length>0){
-    recordCount++;
-    const totalMin=exSessions.reduce((s,x)=>s+(x.dur||0),0);
-    bars.push({lbl:'운동',val:totalMin+'분',pct:Math.min(100,Math.round(totalMin/60*100)),color:'var(--m2-lime)'});
-  }
-  const studySessions=dd.study||[];
-  if(studySessions.length>0){
-    recordCount++;
-    const totalMin=studySessions.reduce((s,x)=>s+(x.dur||0),0);
-    const h=Math.floor(totalMin/60),m=totalMin%60;
-    const durTxt=h>0?(h+'시간'+(m>0?' '+m+'분':'')):(m+'분');
-    bars.push({lbl:'공부',val:durTxt,pct:Math.min(100,Math.round(totalMin/180*100)),color:'var(--m2-peri)'});
-  }
-  if(dd.diary||dd.diaryTitle){
-    recordCount++;
-    const MOODS_CAL=['','😔','😐','🙂','😊','😄'];
-    const preview=(dd.diaryTitle||dd.diary||'').slice(0,22);
-    const moodEmoji=dd.diaryMood?MOODS_CAL[dd.diaryMood]:'';
-    rows2.push({
-      icon:`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 4.5l3 3L9 18l-4 1 1-4 10.5-10.5z"/></svg>`,
-      txt:'일기: '+preview+(moodEmoji?' '+moodEmoji:''),
-      onclick:`mobOpenSheet('${ds}')`
-    });
-  }
-  if(dd.weight)recordCount++;
-
-  let html=`<div class="m2-cal-sum-top">
-    <div>
-      <div class="m2-cal-sum-date">${dlbl}</div>
-      <div class="m2-cal-sum-cnt">기록 ${recordCount}개</div>
-    </div>
-    <div class="mg-cal-jump" onclick="mobGatherJump('${ds}')">모아보기 ›</div>
-  </div>`;
-  if(bars.length===0&&rows2.length===0){
-    html+=`<div class="m2-cal-sum-empty">이 날의 기록이 없어요</div>`;
-  }else{
-    html+=`<div class="m2-cal-sum-body">`;
-    bars.forEach(b=>{
-      html+=`<div class="m2-cal-bar-row">
-        <span class="m2-cal-bar-lbl">${b.lbl}</span>
-        <div class="m2-cal-bar-track"><div class="m2-cal-bar-fill" style="width:${b.pct}%;background:${b.color};"></div></div>
-        <span class="m2-cal-bar-val">${b.val}</span>
-      </div>`;
-    });
-    rows2.forEach(r=>{
-      html+=`<div class="m2-cal-sum-row2" onclick="${r.onclick}">
-        <div class="m2-cal-sum-row2-icon">${r.icon}</div>
-        <div class="m2-cal-sum-row2-txt">${r.txt}</div>
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
-      </div>`;
-    });
-    html+=`</div>`;
-  }
-  sumEl.innerHTML=html;
 }
 
 // ── 일기 탭 ──
@@ -7051,35 +6935,6 @@ let mgDate=null;          // 모아보기에서 보고 있는 날짜 (YYYY-MM-DD
 let mgHabitOpen=false;    // 습관 목록 펼침 상태
 let gSyncFailed=false;    // 마지막 동기화 실패 여부
 function mgEsc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function mgShiftDate(ds,n){
-  const d=new Date(ds+'T00:00:00');
-  d.setDate(d.getDate()+n);
-  return localDateStr(d);
-}
-// 모아보기 탭 진입: 항상 오늘 기준으로 시작
-function mobOpenGather(){
-  mgDate=todayStr();
-  mobGoPage('gather');
-}
-// 캘린더 요약에서 "모아보기 ›" 탭
-function mobGatherJump(ds){
-  mgDate=ds||todayStr();
-  mobGoPage('gather');
-}
-function mobGatherMove(n){
-  if(!mgDate)mgDate=todayStr();
-  const next=mgShiftDate(mgDate,n);
-  if(next>todayStr())return; // 미래 날짜는 이동 불가
-  mgDate=next;
-  mobRenderGather();
-}
-// 날짜 탭 → 캘린더 (거기서 날짜 선택 후 "모아보기 ›"로 복귀)
-function mobGatherOpenCalendar(){
-  const d=new Date((mgDate||todayStr())+'T00:00:00');
-  mobCalYear=d.getFullYear();
-  mobCalMonth=d.getMonth();
-  mobGoPage('calendar');
-}
 // 동기화 상태 표시
 function gSyncMark(ok){
   gSyncFailed=!ok;
@@ -7148,21 +7003,21 @@ function mobCloseMemoSheet(){
   document.getElementById('mob-memo-dim')?.classList.remove('open');
   document.getElementById('mob-sheet-memo')?.classList.remove('open');
 }
-function mobRenderGather(){
-  const body=document.getElementById('mg-body');
+// 기록 탭: 선택한 날짜의 상세(습관·운동·공부·체중·식사·메모·일기)
+function mobRenderCalSum(sel){
+  const body=document.getElementById('mob-cal-summary');
   if(!body)return;
-  if(!mgDate)mgDate=todayStr();
+  if(!sel){
+    body.innerHTML='<div class="mg-card"><div class="mg-empty-txt" style="padding:6px 0;">날짜를 선택하면 그날의 기록을 볼 수 있어요</div></div>';
+    return;
+  }
+  mgDate=sel;
   const ds=mgDate,today=todayStr();
   const d=getDayData(ds);
   const habits=getHabits();
   const dn=['일','월','화','수','목','금','토'];
   const dObj=new Date(ds+'T00:00:00');
-  const lbl=ds===today?'오늘':(dObj.getMonth()+1)+'월 '+dObj.getDate()+'일 '+dn[dObj.getDay()];
-  const lblEl=document.getElementById('mg-date-lbl');
-  if(lblEl)lblEl.textContent=lbl;
-  const nextBtn=document.getElementById('mg-next-btn');
-  if(nextBtn)nextBtn.disabled=(ds>=today);
-  mobGatherRenderSync();
+  const lbl=(dObj.getMonth()+1)+'월 '+dObj.getDate()+'일 '+dn[dObj.getDay()]+'요일';
 
   // ── 습관 ──
   const isDone=h=>!!(d.habits&&d.habits[habitName(h)]);
@@ -7240,8 +7095,15 @@ function mobRenderGather(){
       :'<div class="mg-empty-txt">작성된 일기가 없습니다</div>'}
   </div>`;
 
-  body.innerHTML=habitHtml+metrics+mealSec+memoSec+diarySec;
+  const head=`<div class="mg-detail-head">
+    <div class="mg-detail-date">${lbl}${ds===today?'<span class="mg-today-chip">오늘</span>':''}</div>
+    <div class="mg-sync" id="mg-sync" onclick="mobGatherSyncTap()"><span class="mg-dot"></span><span id="mg-sync-txt">동기화 안 됨</span></div>
+  </div>`;
+  body.innerHTML=head+'<div class="mg-body mg-body-in">'+habitHtml+metrics+mealSec+memoSec+diarySec+'</div>';
+  mobGatherRenderSync();
 }
+// 습관 체크·메모 변경 후 캘린더 점/상세를 함께 갱신
+function mobRenderGather(){mobRenderCalendar();}
 
 let gLastAutoPull=0;
 let gPendingSilent=false;      // 지금 진행 중인 토큰 재발급이 무음(자동) 재발급인지
@@ -7565,7 +7427,7 @@ async function syncFromDrive(silent){
     mobRenderCalendar();
     mobRenderStats();
     mobRenderSettings();
-    if(document.getElementById('mob-page-gather')?.classList.contains('mob-page-active'))mobRenderGather();
+    if(document.getElementById('mob-page-calendar')?.classList.contains('mob-page-active'))mobRenderGather();
     gSyncMark(true);
     if(remotePhotosStripped)syncToDrive(true); // Drive에 남은 사진 데이터도 정리
     if(!silent)toast('Drive에서 불러왔습니다 ✓');
