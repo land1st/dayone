@@ -3758,7 +3758,34 @@ function purgeLocalPhotos(){
   const all=getAllData();
   if(stripPhotoData(all))saveAllData(all);
 }
-function saveDayData(s,d){const a=getAllData();a[s]=d;return saveAllData(a);}
+// ── 동기화 보조: 아직 Drive에 올리지 못한 변경 추적 + 저장 시 자동 업로드 ──
+let gAuthNeeded=false;      // 토큰 갱신이 필요한데 자동 갱신이 안 된 상태 (사용자가 직접 다시 로그인해야 함)
+let gAuthToasted=false;     // 만료 안내 토스트는 세션당 한 번만
+let gPushInFlight=false,gPushQueued=false,gPushTimer=null,gPushWantToast=false;
+let gApplyingRemote=false;  // Drive 데이터를 적용하는 동안에는 '내가 고친 것'으로 기록하지 않는다
+function dirtyLoad(){try{return JSON.parse(localStorage.getItem('g_dirty')||'{}')||{};}catch(e){return {};}}
+function dirtySave(o){try{localStorage.setItem('g_dirty',JSON.stringify(o));}catch(e){}}
+function markDirty(key){ // key: 날짜(YYYY-MM-DD) 또는 '__misc'(습관 목록·일정)
+  const o=dirtyLoad();o.seq=(o.seq||0)+1;
+  if(key==='__misc')o.misc=o.seq;else{o.days=o.days||{};o.days[key]=o.seq;}
+  dirtySave(o);
+}
+function dirtyClearUpTo(seq){
+  const o=dirtyLoad();
+  Object.keys(o.days||{}).forEach(k=>{if(o.days[k]<=seq)delete o.days[k];});
+  if(o.misc&&o.misc<=seq)delete o.misc;
+  dirtySave(o);
+}
+function hasDirty(){const o=dirtyLoad();return !!(o.misc||Object.keys(o.days||{}).length);}
+// 저장이 일어나면 잠깐 모았다가(연속 입력은 한 번에) Drive로 올린다
+function schedulePush(silent,delay){
+  if(!gAccessToken)return;
+  if(!silent)gPushWantToast=true;
+  clearTimeout(gPushTimer);
+  gPushTimer=setTimeout(()=>{gPushTimer=null;const t=gPushWantToast;gPushWantToast=false;syncToDrive(!t);},delay==null?1200:delay);
+}
+function authExpired(){return !!gAccessToken&&(gAuthNeeded||!isTokenValid());}
+function saveDayData(s,d){const a=getAllData();a[s]=d;const ok=saveAllData(a);if(ok&&!gApplyingRemote){markDirty(s);schedulePush(true);}return ok;}
 function getHabits(){
   let raw;
   try{raw=JSON.parse(localStorage.getItem('do_habits')||'["물 2L 마시기","독서 30분","스트레칭","비타민 복용","일기 쓰기"]');}catch(e){raw=[];}
@@ -3772,10 +3799,10 @@ function getHabits(){
     }
     migrated=true;return{name:String(h),period:'morning'};
   });
-  if(migrated)saveHabits(habits);
+  if(migrated){try{localStorage.setItem('do_habits',JSON.stringify(habits));}catch(e){}} // 자동 변환은 '내가 고친 것'이 아님
   return habits;
 }
-function saveHabits(h){localStorage.setItem('do_habits',JSON.stringify(h));}
+function saveHabits(h){localStorage.setItem('do_habits',JSON.stringify(h));if(!gApplyingRemote){markDirty('__misc');schedulePush(true);}}
 function habitName(h){return typeof h==='string'?h:h.name;}
 
 // ── DARK MODE ──
@@ -6167,7 +6194,7 @@ function mobDoImport(e){
     try{
       const parsed=JSON.parse(ev.target.result);
       if(parsed.habits)saveHabits(parsed.habits);
-      if(parsed.records)saveAllData(parsed.records);
+      if(parsed.records){saveAllData(parsed.records);Object.keys(parsed.records).forEach(markDirty);schedulePush(true);}
       loadDay(curDateStr);
       if(window.innerWidth<=680)mobRender();
       toast('데이터를 불러왔습니다 ✓');
@@ -6840,7 +6867,7 @@ let schedEditingId=null;    // 수정중인 일정 id (null이면 신규 추가)
 let schedCurrentPriority='medium';
 
 function getScheduleEvents(){try{return JSON.parse(localStorage.getItem('do_schedule')||'[]');}catch(e){return [];}}
-function saveScheduleEvents(arr){localStorage.setItem('do_schedule',JSON.stringify(arr));}
+function saveScheduleEvents(arr){localStorage.setItem('do_schedule',JSON.stringify(arr));if(!gApplyingRemote){markDirty('__misc');schedulePush(true);}}
 
 function schedGetMonday(d){
   const day=d.getDay();
@@ -7189,7 +7216,9 @@ function mobGatherRenderSync(){
   if(!el||!tx)return;
   el.classList.remove('ok','fail');
   if(!gAccessToken){tx.textContent='동기화 안 됨';return;}
+  if(authExpired()){el.classList.add('fail');tx.textContent='로그인 만료 · 탭해서 재로그인';return;}
   if(gSyncFailed){el.classList.add('fail');tx.textContent='동기화 실패 · 다시 시도';return;}
+  if(hasDirty()){tx.textContent='동기화 대기 중';return;}
   let t=0;try{t=parseInt(localStorage.getItem('g_last_sync')||'0',10);}catch(e){}
   if(!t){tx.textContent='동기화 대기 중';return;}
   const d=new Date(t);
@@ -7199,6 +7228,7 @@ function mobGatherRenderSync(){
 }
 function mobGatherSyncTap(){
   if(!gAccessToken){toast('설정에서 로그인하면 PC와 동기화돼요');return;}
+  if(authExpired()){mobRelogin();return;}
   syncFromDrive(false);
 }
 // 습관 체크 (모아보기 화면에서도 가능)
@@ -7361,6 +7391,7 @@ function isTokenValid(){
 // 세션이 살아있으면 팝업 없이 새 토큰을 받아옴). action은 재발급 완료 후 이어서
 // 자동으로 재시도할 작업('push' 또는 'pull')을 지정한다.
 function requestDriveToken(silent,action){
+  if(silent&&gAuthNeeded)return; // 자동 갱신이 이미 실패한 상태 — 사용자가 직접 다시 로그인할 때까지 반복 시도하지 않는다
   if(!gTokenClient){
     if(!silent)toast('Google 인증 준비 중입니다. 잠시 후 다시 시도해주세요.');
     return;
@@ -7370,7 +7401,23 @@ function requestDriveToken(silent,action){
   gTokenClient.requestAccessToken({prompt:silent?'':'consent'});
 }
 function mobSyncNow(){
-  if(gAccessToken)syncToDrive();
+  schedulePush(false); // 연속 저장은 한 번에 모아서 올림
+}
+function setAuthNeeded(v){
+  if(gAuthNeeded===v)return;
+  gAuthNeeded=v;
+  try{updateSyncUI(!!gAccessToken);}catch(e){}
+}
+// 사용자가 직접 누르는 재로그인 (팝업 허용됨). 끝나면 Drive에서 받아오고, 내 미동기화 변경은 올려준다.
+function mobRelogin(){
+  if(!gTokenClient){toast('Google 인증 준비 중입니다. 잠시 후 다시 시도해주세요.');return;}
+  gPendingSilent=false;gPendingSyncAction='pull';
+  gTokenClient.requestAccessToken({prompt:''});
+}
+function authExpiredNotice(){
+  if(gAuthToasted)return;
+  gAuthToasted=true;
+  toast('로그인이 만료되어 동기화가 멈춰 있어요. 기록 탭의 동기화 표시를 눌러 다시 로그인해 주세요.');
 }
 
 // gapi.js onload 콜백
@@ -7388,14 +7435,24 @@ function gsiLoaded(){
   gTokenClient=google.accounts.oauth2.initTokenClient({
     client_id:G_CLIENT_ID,
     scope:G_SCOPES+' https://www.googleapis.com/auth/userinfo.profile',
+    error_callback:(err)=>{ // 팝업이 막히거나 닫힌 경우
+      const wasSilent=gPendingSilent;
+      gPendingSilent=false;gPendingSyncAction=null;
+      if(gAccessToken&&!isTokenValid()){setAuthNeeded(true);if(wasSilent)authExpiredNotice();}
+    },
     callback:(resp)=>{
       const wasSilent=gPendingSilent;
       const action=gPendingSyncAction;
       gPendingSilent=false;gPendingSyncAction=null;
       if(resp.error){
         if(!wasSilent)toast('Google 연동 실패: '+resp.error);
+        else if(gAccessToken){setAuthNeeded(true);authExpiredNotice();}
+        else return;
+        if(gAccessToken)setAuthNeeded(true);
         return;
       }
+      setAuthNeeded(false);
+      gAuthToasted=false;
       gAccessToken=resp.access_token;
       gTokenExpiresAt=Date.now()+(((resp.expires_in||3600)-60)*1000); // 60초 여유
       localStorage.setItem('g_token',resp.access_token);
@@ -7426,15 +7483,14 @@ function gsiLoaded(){
     gAccessToken=savedTok;
     gTokenExpiresAt=savedExp;
     updateSyncUI(true);
-  }else if(savedTok&&!savedExp){
-    // 만료 시각 정보 없이 토큰만 저장된 예전 방식(이번 업데이트 이전에 로그인한 세션).
-    // 실제로는 아직 유효할 수 있으므로 무조건 로그아웃 처리하지 않고,
-    // 일단 이 토큰으로 사용해보면서 조용히 새 토큰으로 갱신을 시도한다.
+  }else if(savedTok){
+    // 만료된 토큰(또는 만료 시각 정보가 없는 예전 토큰). 로그아웃하지 않고 로그인 상태를 유지한 채
+    // 조용히 갱신을 시도한다 — checkGoogleReady()의 첫 동기화가 무음 재발급을 요청한다.
+    // 갱신이 안 되면 '로그인 만료'로 표시하고, 그동안 기록한 내용은 이 기기에 남겨 두었다가 올린다.
     gAccessToken=savedTok;
+    gTokenExpiresAt=savedExp||0;
     updateSyncUI(true);
-    requestDriveToken(true); // 무음 재발급 — 성공하면 만료 시각까지 정상적으로 채워짐
   }else{
-    if(savedTok){localStorage.removeItem('g_token');localStorage.removeItem('g_token_exp');}
     updateSyncUI(false);
   }
   checkGoogleReady();
@@ -7463,19 +7519,20 @@ function updateSyncUI(connected){
   const lbl=document.getElementById('sync-label');
   const mobBtn=document.getElementById('mob-sync-btn');
   const setBtn=document.getElementById('mob-set-sync-btn');
+  const expired=connected&&authExpired();
   if(btn&&lbl){
-    if(connected){btn.classList.add('connected');lbl.textContent='LOGOUT';}
+    if(connected){btn.classList.add('connected');lbl.textContent=expired?'재로그인':'LOGOUT';}
     else{btn.classList.remove('connected');lbl.textContent='LOGIN';}
   }
   if(mobBtn){
-    if(connected){mobBtn.classList.add('connected');mobBtn.textContent='LOGOUT';}
+    if(connected){mobBtn.classList.add('connected');mobBtn.textContent=expired?'재로그인':'LOGOUT';}
     else{mobBtn.classList.remove('connected');mobBtn.textContent='LOGIN';}
   }
   if(setBtn){
     if(connected){
-      setBtn.textContent='LOGOUT';
-      setBtn.style.borderColor='var(--green,#34C759)';
-      setBtn.style.color='var(--green,#34C759)';
+      setBtn.textContent=expired?'재로그인':'LOGOUT';
+      setBtn.style.borderColor=expired?'var(--red,#FF3B30)':'var(--green,#34C759)';
+      setBtn.style.color=expired?'var(--red,#FF3B30)':'var(--green,#34C759)';
     }else{
       setBtn.textContent='LOGIN';
       setBtn.style.borderColor='var(--accent)';
@@ -7486,6 +7543,7 @@ function updateSyncUI(connected){
 
 // PC/모바일 공통: 로그인/로그아웃만
 function handleSyncClick(){
+  if(gAccessToken&&authExpired()){mobRelogin();return;} // 만료 상태에서는 로그아웃 대신 재로그인
   if(gAccessToken){
     // 로그아웃
     if(confirm('Google 연동을 해제할까요?\n\nDrive에 현재 데이터를 저장하고 로그아웃합니다.')){
@@ -7535,18 +7593,117 @@ async function fetchGoogleProfile(token){
   }
 }
 
-// Drive에 저장
+// Drive 파일 내려받기 (실패하면 status가 붙은 오류를 던진다)
+async function driveDownload(fileId){
+  const res=await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`,{
+    headers:{'Authorization':'Bearer '+gAccessToken}
+  });
+  if(!res.ok){const err=new Error('Drive download failed: '+res.status);err.status=res.status;throw err;}
+  return res.json();
+}
+// 화면 전체 새로고침 (Drive 데이터가 반영된 뒤)
+function refreshAllViews(){
+  loadProfile();
+  loadDay(curDateStr);
+  renderTodayWidget();
+  renderMiniCal();
+  renderWeightGraph();
+  renderSchedule();
+  mobRender();
+  mobRenderCalendar();
+  mobRenderStats();
+  mobRenderSettings();
+}
+// Drive 데이터를 이 기기에 병합한다.
+//  · 아직 올리지 못한 변경(dirty)은 이 기기 것을 지킨다
+//  · 그 외 날짜는 Drive 우선, Drive에 없는 날짜는 이 기기 것을 유지한다
+//  · Drive 때문에 바뀌는 이 기기의 날짜 기록은 g_overwritten에 백업해 둔다(복구용)
+// 반환: needsPush = 병합 결과가 Drive 내용과 다르다(= Drive가 모르는 내 기록이 있다)
+function applyRemoteData(remote){
+  gApplyingRemote=true;
+  let stripped=false,needsPush=false;
+  try{
+    const dirty=dirtyLoad();
+    const dDays=dirty.days||{};
+    stripped=remote.records?stripPhotoData(remote.records):false;
+    if(remote.habits&&!dirty.misc)saveHabits(remote.habits);
+    if(remote.records){
+      const local=getAllData();
+      const merged=Object.assign({},remote.records);
+      const lost={};
+      Object.keys(local).forEach(k=>{
+        if(!merged[k]||dDays[k])merged[k]=local[k];
+        else if(JSON.stringify(local[k])!==JSON.stringify(merged[k]))lost[k]=local[k];
+      });
+      if(Object.keys(lost).length){
+        try{
+          const bk=JSON.parse(localStorage.getItem('g_overwritten')||'{}');
+          Object.keys(lost).forEach(k=>{bk[k]={t:Date.now(),rec:lost[k]};});
+          const keys=Object.keys(bk).sort((a,b)=>bk[b].t-bk[a].t).slice(0,40);
+          const out={};keys.forEach(k=>out[k]=bk[k]);
+          localStorage.setItem('g_overwritten',JSON.stringify(out));
+        }catch(e){}
+      }
+      needsPush=JSON.stringify(merged)!==JSON.stringify(remote.records);
+      saveAllData(merged);
+    }
+    if(remote.profile){
+      if(remote.profile.name)localStorage.setItem('do_pf_name',remote.profile.name);
+      if(remote.profile.bio)localStorage.setItem('do_pf_bio',remote.profile.bio);
+      if(remote.profile.img)localStorage.setItem('do_pf_img',remote.profile.img);
+    }
+    if(remote.schedule&&!dirty.misc){
+      const localSched=getScheduleEvents();
+      const mergedSched=remote.schedule.slice();
+      const remoteIds=new Set(remote.schedule.map(e=>e.id));
+      localSched.forEach(e=>{if(!remoteIds.has(e.id))mergedSched.push(e);});
+      saveScheduleEvents(mergedSched);
+    }
+    if(remote.dark)localStorage.setItem('do_dark',remote.dark);
+  }finally{gApplyingRemote=false;}
+  return {stripped,needsPush:needsPush||hasDirty()};
+}
+// 오류 처리: 인증 문제는 로그아웃하지 않고 '재로그인 필요'로 표시한다(이 기기의 기록은 그대로 유지)
+function handleDriveError(e,kind,silent){
+  console.error(kind==='push'?'syncToDrive':'syncFromDrive',e);
+  gSyncMark(false);
+  if(e&&(e.status===401||e.status===403)){
+    gTokenExpiresAt=0;
+    try{localStorage.setItem('g_token_exp','0');}catch(_){}
+    setAuthNeeded(true);
+    authExpiredNotice();
+  }else if(!silent){
+    toast(kind==='push'?'일시적으로 저장하지 못했습니다. 잠시 후 다시 시도해주세요.':'일시적으로 불러오지 못했습니다. 잠시 후 다시 시도됩니다.');
+  }
+}
+
+// Drive에 저장 — 올리기 직전에 Drive 최신본을 먼저 병합해서 다른 기기의 변경을 덮어쓰지 않는다
 async function syncToDrive(silent){
   if(!gAccessToken||!gapiReady){if(!silent)toast('Google 연동이 필요합니다');return;}
-  // 토큰이 만료됐으면 실제 요청을 보내보고 실패를 기다리는 대신, 먼저 무음으로
-  // 재발급받고 그게 끝나면 이 저장을 이어서 자동으로 재시도한다.
   if(!isTokenValid()){requestDriveToken(true,'push');return;}
+  if(gPushInFlight){gPushQueued=true;return;}
+  gPushInFlight=true;
   const btn=document.getElementById('sync-btn');
   const mobBtn=document.getElementById('mob-sync-btn');
   if(btn)btn.classList.add('syncing');
   if(mobBtn)mobBtn.classList.add('syncing');
   gapi.client.setToken({access_token:gAccessToken});
   try{
+    const list=await gapi.client.drive.files.list({
+      spaces:'appDataFolder',
+      q:`name='${G_FILE_NAME}'`,
+      fields:'files(id,name)'
+    });
+    const files=list.result.files;
+    if(files&&files.length>0){
+      const fp=()=>(localStorage.getItem('do_data')||'')+(localStorage.getItem('do_habits')||'')+(localStorage.getItem('do_schedule')||'');
+      const before=fp();
+      applyRemoteData(await driveDownload(files[0].id));
+      const ae=document.activeElement;
+      const typing=ae&&(ae.tagName==='TEXTAREA'||ae.tagName==='INPUT');
+      if(fp()!==before&&!typing)refreshAllViews(); // 입력 중에는 화면을 건드리지 않는다
+    }
+    const seqAtStart=dirtyLoad().seq||0; // 이 시점까지의 변경이 이번 업로드에 포함됨
     const data=JSON.stringify({
       habits:getHabits(),
       records:getAllData(),
@@ -7558,12 +7715,6 @@ async function syncToDrive(silent){
       },
       dark:localStorage.getItem('do_dark')||'0'
     });
-    const list=await gapi.client.drive.files.list({
-      spaces:'appDataFolder',
-      q:`name='${G_FILE_NAME}'`,
-      fields:'files(id,name)'
-    });
-    const files=list.result.files;
     let res;
     if(files&&files.length>0){
       res=await fetch(`https://www.googleapis.com/upload/drive/v3/files/${files[0].id}?uploadType=media`,{
@@ -7582,33 +7733,22 @@ async function syncToDrive(silent){
         body:form
       });
     }
-    // fetch()는 401/403 같은 HTTP 오류에도 reject하지 않으므로, 직접 상태를 확인해야 함.
-    // 이걸 확인 안 하면 토큰이 만료돼서 실제로는 저장이 실패해도 "저장됐습니다"로 표시되는
-    // 심각한 문제가 있었음 (모바일에서 입력한 게 PC에 동기화 안 되던 원인).
+    // fetch()는 401/403 같은 HTTP 오류에도 reject하지 않으므로 직접 상태를 확인해야 한다
     if(!res.ok){
       const err=new Error('Drive upload failed: '+res.status);
       err.status=res.status;
       throw err;
     }
+    dirtyClearUpTo(seqAtStart);
     gSyncMark(true);
     if(!silent)toast('Drive에 저장됐습니다 ✓');
   }catch(e){
-    console.error('syncToDrive',e);
-    gSyncMark(false);
-    // 인증 자체가 잘못된 경우(401/403)에만 로그아웃 처리한다. 그 외 일시적 오류로
-    // 로그인이 풀려버리면 "로그인했는데 바로 풀리는" 문제가 생기므로 로그인은 유지한다.
-    if(e.status===401||e.status===403){
-      // 로그인 상태가 실제로 풀리는 건 사용자가 반드시 알아야 하는 중요한 변화이므로,
-      // 무음(silent) 동기화라도 이 경우만큼은 항상 메시지를 띄운다.
-      toast('로그인이 만료되어 저장하지 못했습니다. 다시 로그인해주세요.');
-      gAccessToken=null;localStorage.removeItem('g_token');localStorage.removeItem('g_token_exp');
-      updateSyncUI(false);
-    }else if(!silent){
-      toast('일시적으로 저장하지 못했습니다. 잠시 후 다시 시도해주세요.');
-    }
+    handleDriveError(e,'push',silent);
   }finally{
     if(btn)btn.classList.remove('syncing');
     if(mobBtn)mobBtn.classList.remove('syncing');
+    gPushInFlight=false;
+    if(gPushQueued){gPushQueued=false;syncToDrive(true);}
   }
 }
 
@@ -7617,7 +7757,6 @@ async function syncFromDrive(silent){
   if(!gAccessToken||!gapiReady)return;
   if(!isTokenValid()){requestDriveToken(true,'pull');return;}
   gapi.client.setToken({access_token:gAccessToken});
-  const revAtStart=gLocalRev;
   try{
     const list=await gapi.client.drive.files.list({
       spaces:'appDataFolder',
@@ -7626,70 +7765,16 @@ async function syncFromDrive(silent){
     });
     const files=list.result.files;
     if(!files||!files.length){await syncToDrive();return;}
-    const res=await fetch(`https://www.googleapis.com/drive/v3/files/${files[0].id}?alt=media`,{
-      headers:{'Authorization':'Bearer '+gAccessToken}
-    });
-    if(!res.ok){
-      const err=new Error('Drive download failed: '+res.status);
-      err.status=res.status;
-      throw err;
-    }
-    const remote=await res.json();
-    // 받아오는 동안 이 기기에서 새로 저장한 기록(사진 등)이 있으면, 이 응답은 옛 데이터이므로
-    // 적용하지 않는다. (적용하면 방금 저장한 내용이 옛 Drive 데이터로 덮어써져 사라짐)
-    if(gLocalRev!==revAtStart){gLastAutoPull=0;return;}
-    const remotePhotosStripped=remote.records?stripPhotoData(remote.records):false;
-    if(remote.habits)saveHabits(remote.habits);
-    if(remote.records){
-      // Drive 데이터 우선, 로컬에만 있는 날짜 유지
-      const local=getAllData();
-      const merged=Object.assign({},remote.records);
-      Object.keys(local).forEach(k=>{if(!merged[k])merged[k]=local[k];});
-      saveAllData(merged);
-    }
-    if(remote.profile){
-      if(remote.profile.name)localStorage.setItem('do_pf_name',remote.profile.name);
-      if(remote.profile.bio)localStorage.setItem('do_pf_bio',remote.profile.bio);
-      if(remote.profile.img)localStorage.setItem('do_pf_img',remote.profile.img);
-    }
-    if(remote.schedule){
-      // Drive 데이터 우선, 로컬에만 있는 일정 유지
-      const localSched=getScheduleEvents();
-      const mergedSched=remote.schedule.slice();
-      const remoteIds=new Set(remote.schedule.map(e=>e.id));
-      localSched.forEach(e=>{if(!remoteIds.has(e.id))mergedSched.push(e);});
-      saveScheduleEvents(mergedSched);
-    }
-    if(remote.dark)localStorage.setItem('do_dark',remote.dark);
-    loadProfile();
-    loadDay(curDateStr);
-    renderTodayWidget();
-    renderMiniCal();
-    renderWeightGraph();
-    renderSchedule();
-    mobRender();
-    mobRenderCalendar();
-    mobRenderStats();
-    mobRenderSettings();
-    if(document.getElementById('mob-page-calendar')?.classList.contains('mob-page-active'))mobRenderGather();
+    const remote=await driveDownload(files[0].id);
+    // 받아오는 동안 이 기기에서 저장한 기록은 dirty로 표시돼 있어 applyRemoteData가 지켜준다
+    const r=applyRemoteData(remote);
+    refreshAllViews();
     gSyncMark(true);
-    if(remotePhotosStripped)syncToDrive(true); // Drive에 남은 사진 데이터도 정리
+    // Drive가 모르는 내 기록(올리지 못했던 것 포함)이 있으면 바로 올린다
+    if(r.stripped||r.needsPush)syncToDrive(true);
     if(!silent)toast('Drive에서 불러왔습니다 ✓');
   }catch(e){
-    console.error('syncFromDrive',e);
-    gSyncMark(false);
-    // 인증 자체가 잘못된 경우(401/403)에만 로그아웃 처리한다.
-    // 그 외(네트워크 일시 오류, 요청 제한 등)는 로그인 상태를 유지해야
-    // "로그인했는데 바로 풀리는" 문제가 생기지 않는다.
-    if(e.status===401||e.status===403){
-      gAccessToken=null;localStorage.removeItem('g_token');localStorage.removeItem('g_token_exp');
-      updateSyncUI(false);
-      // 로그인 상태가 실제로 풀리는 건 사용자가 반드시 알아야 하는 중요한 변화이므로,
-      // 무음(silent) 동기화라도 이 경우만큼은 항상 메시지를 띄운다.
-      toast('로그인이 만료되었습니다. 다시 로그인해주세요.');
-    }else if(!silent){
-      toast('일시적으로 불러오지 못했습니다. 잠시 후 다시 시도됩니다.');
-    }
+    handleDriveError(e,'pull',silent);
   }
 }
 
@@ -7711,7 +7796,12 @@ function mobAutoPullIfDue(){
 }
 document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState==='visible')mobAutoPullIfDue();
+  else if(gPushTimer){ // 화면이 가려지기 전에 대기 중이던 업로드를 바로 보낸다
+    clearTimeout(gPushTimer);gPushTimer=null;gPushWantToast=false;
+    syncToDrive(true);
+  }
 });
+setInterval(()=>{if(gAccessToken)updateSyncUI(true);},60000); // 시간 경과로 만료되면 표시 갱신
 window.addEventListener('pageshow',()=>{mobAutoPullIfDue();});
 window.addEventListener('focus',()=>{mobAutoPullIfDue();});
 
