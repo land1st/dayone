@@ -1922,12 +1922,12 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
 @media(max-width:680px){
   #mob-root .n3,#mob-root .n3-dw{
     --n-bg:#F2F2F7;--n-card:#FFFFFF;--n-text:#1C1C1E;--n-t2:#6C6C70;--n-div:#E5E5EA;--n-ring:#AEAEB2;--n-track:#E5E5EA;
-    --n-ind:#4F4CC4;--n-indf:#4F4CC4;--n-indbg:#ECECFA;--n-field:rgba(118,118,128,.12);
+    --n-ind:#4F4CC4;--n-indf:#4F4CC4;--n-hl:#4F4CC4;--n-indbg:#ECECFA;--n-field:rgba(118,118,128,.12);
     background:var(--n-bg);color:var(--n-text);
   }
   body.dark #mob-root .n3,body.dark #mob-root .n3-dw{
     --n-bg:#000000;--n-card:#1C1C1E;--n-text:#FFFFFF;--n-t2:#A1A1A8;--n-div:#38383A;--n-ring:#636366;--n-track:#2C2C2E;
-    --n-ind:#9D9BF5;--n-indf:#6A67E0;--n-indbg:#26264A;--n-field:rgba(118,118,128,.24);
+    --n-ind:#9D9BF5;--n-indf:#6A67E0;--n-hl:#3D3A9E;--n-indbg:#26264A;--n-field:rgba(118,118,128,.24);
   }
   #mob-root .n3 *,#mob-root .n3-dw *{box-sizing:border-box;}
   #mob-root .n3 .mob-scroll{padding:6px 16px calc(124px + env(safe-area-inset-bottom,0px));}
@@ -2095,6 +2095,24 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   #mob-root .mob-tab span{display:none;font-size:15px;font-weight:700;letter-spacing:-.3px;color:#1C1C1E;}
   #mob-root .mob-tab.active{flex:0 0 auto;padding:0 18px;background:#FFFFFF;color:#4F4CC4;}
   #mob-root .mob-tab.active span{display:inline;}
+
+  /* 이번 주 기분 카드: 인디고 배경 강조 */
+  .n3-hl{background:var(--n-hl);}
+  .n3-hl .n3-card-t{color:#FFFFFF;}
+  .n3-hl .n3-card-s{color:rgba(255,255,255,.76);}
+  .n3-hl .n3-wk-d{color:rgba(255,255,255,.82);}
+  .n3-hl .n3-wk-d.cur{color:#FFFFFF;font-weight:700;}
+  .n3-hl .n3-wk-e{background:rgba(255,255,255,.18);}
+  .n3-hl .n3-wk-n{border-color:rgba(255,255,255,.65);}
+  .n3-hl svg{overflow:visible;}
+  .n3-hl svg > circle:first-child{stroke:#FFFFFF;stroke-width:2;}
+  .n3-hl .n3-wk-b.sel{box-shadow:0 0 0 2px var(--n-hl),0 0 0 4px #FFFFFF;}
+  .n3-hl .n3-pick{border-top-color:rgba(255,255,255,.26);}
+  .n3-hl .n3-pick-t{color:rgba(255,255,255,.82);}
+  .n3-hl .n3-pick-b{color:rgba(255,255,255,.86);}
+  .n3-hl .n3-pick-b.sel{color:#FFFFFF;font-weight:700;}
+  .n3-hl .n3-pick-b.sel i{box-shadow:0 0 0 2px var(--n-hl),0 0 0 4px #FFFFFF;}
+  #mob-root .n3 .n3-hl button:focus-visible{outline-color:#FFFFFF;}
 }
 
 </style>
@@ -2905,7 +2923,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
 <div class="mob-scroll" id="mob-scroll">
 
   <!-- 주간 기분 -->
-  <div class="n3-card" id="n3-mood-card">
+  <div class="n3-card n3-hl" id="n3-mood-card">
     <div class="n3-card-h"><span class="n3-card-t">이번 주 기분</span><span class="n3-card-s">탭해서 기록</span></div>
     <div class="n3-week" id="n3-week"></div>
     <div class="n3-pick" id="n3-pick" style="display:none;"></div>
