@@ -1914,6 +1914,189 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
 }
 
 
+
+/* ════════════════════════════════════════════
+   n3 모바일 리뉴얼 (오늘 · 일기) — 모바일(≤680px) 전용
+   #mob-root 안의 요소에만 적용되므로 PC 화면에는 영향 없음
+   ════════════════════════════════════════════ */
+@media(max-width:680px){
+  #mob-root .n3,#mob-root .n3-dw{
+    --n-bg:#F2F2F7;--n-card:#FFFFFF;--n-text:#1C1C1E;--n-t2:#6C6C70;--n-div:#E5E5EA;--n-ring:#AEAEB2;--n-track:#E5E5EA;
+    --n-ind:#4F4CC4;--n-indf:#4F4CC4;--n-indbg:#ECECFA;--n-field:rgba(118,118,128,.12);
+    background:var(--n-bg);color:var(--n-text);
+  }
+  body.dark #mob-root .n3,body.dark #mob-root .n3-dw{
+    --n-bg:#000000;--n-card:#1C1C1E;--n-text:#FFFFFF;--n-t2:#A1A1A8;--n-div:#38383A;--n-ring:#636366;--n-track:#2C2C2E;
+    --n-ind:#9D9BF5;--n-indf:#6A67E0;--n-indbg:#26264A;--n-field:rgba(118,118,128,.24);
+  }
+  #mob-root .n3 *,#mob-root .n3-dw *{box-sizing:border-box;}
+  #mob-root .n3 .mob-scroll{padding:6px 16px calc(124px + env(safe-area-inset-bottom,0px));}
+
+  /* 헤더 */
+  .n3-head{display:flex;align-items:center;gap:12px;padding:10px 20px 6px;flex-shrink:0;}
+  .n3-avatar{width:44px;height:44px;border-radius:50%;background:var(--n-indbg);color:var(--n-ind);font-size:19px;font-weight:700;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer;flex-shrink:0;}
+  .n3-head-d{font-size:13px;font-weight:500;color:var(--n-t2);}
+  .n3-head-g{font-size:19px;font-weight:700;letter-spacing:-.5px;margin-top:1px;}
+
+  /* 카드 공통 */
+  .n3-card{background:var(--n-card);border-radius:18px;padding:16px 16px 6px;margin-top:12px;}
+  .n3-card-h{display:flex;align-items:center;justify-content:space-between;min-height:24px;margin-bottom:10px;}
+  .n3-card-t{font-size:17px;font-weight:700;letter-spacing:-.4px;}
+  .n3-card-s{font-size:13px;font-weight:500;color:var(--n-t2);font-variant-numeric:tabular-nums;}
+  .n3-btn{display:block;width:100%;border:0;font-family:inherit;color:inherit;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  .n3-ico{color:var(--n-t2);display:flex;}
+  #mob-root .n3 button:focus-visible,#mob-root .n3-dw button:focus-visible,#mob-root .n3-dw input:focus-visible,#mob-root .n3-dw textarea:focus-visible{outline:2px solid var(--n-ind);outline-offset:2px;}
+
+  /* 주간 기분 */
+  .n3-week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;}
+  .n3-wk{display:flex;flex-direction:column;align-items:center;gap:6px;padding-bottom:10px;}
+  .n3-wk-b{width:42px;height:42px;border-radius:50%;padding:0;border:0;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  .n3-wk-b.sel{box-shadow:0 0 0 2px var(--n-card),0 0 0 4px var(--n-ind);}
+  .n3-wk-e{width:34px;height:34px;margin:4px 0;border-radius:50%;background:var(--n-track);display:block;}
+  .n3-wk-n{width:34px;height:34px;border-radius:50%;border:1.6px dashed var(--n-ring);display:block;}
+  .n3-wk-d{font-size:13px;font-weight:500;color:var(--n-t2);}
+  .n3-wk-d.cur{color:var(--n-ind);font-weight:700;}
+  .n3-pick{border-top:.5px solid var(--n-div);padding:12px 0 14px;}
+  .n3-pick-t{font-size:13px;font-weight:600;color:var(--n-t2);margin-bottom:10px;}
+  .n3-pick-r{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;}
+  .n3-pick-b{display:flex;flex-direction:column;align-items:center;gap:6px;border:0;background:transparent;font-family:inherit;font-size:12px;font-weight:500;color:var(--n-t2);padding:4px 0;border-radius:12px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  .n3-pick-b i{display:flex;border-radius:50%;font-style:normal;}
+  .n3-pick-b.sel{color:var(--n-ind);font-weight:700;}
+  .n3-pick-b.sel i{box-shadow:0 0 0 2px var(--n-card),0 0 0 4px var(--n-ind);}
+
+  /* 오늘의 현황 */
+  .n3-sum{display:grid;grid-template-columns:1.25fr 1fr 1fr;padding:14px 0;}
+  .n3-sum-c{padding:0 16px;border-left:.5px solid var(--n-div);background:transparent;min-width:0;}
+  .n3-sum-c:first-child{border-left:0;}
+  button.n3-sum-c{border-top:0;border-right:0;border-bottom:0;width:auto;}
+  .n3-sum-l{font-size:12px;font-weight:500;color:var(--n-t2);}
+  .n3-sum-v{font-size:22px;font-weight:700;letter-spacing:-.6px;margin-top:2px;font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .n3-sum-v small{font-size:13px;font-weight:600;color:var(--n-t2);margin-left:2px;letter-spacing:0;}
+  .n3-sum-d{font-size:12px;font-weight:700;color:var(--n-ind);margin-top:2px;}
+  .n3-bar-t{height:4px;border-radius:2px;background:var(--n-track);margin-top:8px;overflow:hidden;}
+  .n3-bar-f{height:100%;width:0;border-radius:2px;background:var(--n-indf);transition:width .25s;}
+
+  /* 공부 · 운동 */
+  .n3-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px;}
+  .n3-two .n3-card{margin-top:0;padding-bottom:16px;}
+  .n3-mini-g{display:flex;align-items:flex-end;gap:4px;height:46px;margin:10px 0 12px;}
+  .n3-mini-g i{flex:1;border-radius:3px;display:block;background:var(--n-indf);}
+  .n3-mini-g i.dim{opacity:.32;}
+  .n3-mini-g i.zero{background:var(--n-track);}
+  .n3-mini-g i.fut{height:4px;background:var(--n-track);opacity:.6;}
+  .n3-big{font-size:32px;font-weight:700;letter-spacing:-1px;line-height:1;font-variant-numeric:tabular-nums;}
+  .n3-big small{font-size:14px;font-weight:500;color:var(--n-t2);letter-spacing:0;margin-left:3px;}
+  .n3-mini-sub{font-size:12px;font-weight:500;color:var(--n-t2);margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+  /* 습관 트래커 (기존 아코디언 구조 유지 · 모양만 변경) */
+  #mob-root .n3 .m2-habit-group{margin:12px 0 0;border-radius:18px;background:var(--n-card);overflow:hidden;}
+  #mob-root .n3 .m2-habit-group.open{background:var(--n-card);}
+  #mob-root .n3 .m2-habit-group-head{padding:0 16px;min-height:52px;gap:8px;}
+  #mob-root .n3 .m2-habit-group-icon{display:none;}
+  #mob-root .n3 .m2-habit-group-name{font-size:17px;font-weight:700;letter-spacing:-.4px;color:var(--n-text);}
+  #mob-root .n3 .m2-habit-group-cnt{font-size:13px;font-weight:500;color:var(--n-t2);}
+  #mob-root .n3 .m2-habit-group-chevron,#mob-root .n3 .m2-habit-group.open .m2-habit-group-chevron{color:var(--n-t2);}
+  #mob-root .n3 .m2-habit-list-inner{margin:0 16px 6px;border-radius:0;background:transparent;}
+  #mob-root .n3 .m2-habit-row{padding:0;min-height:50px;gap:12px;border-top:.5px solid var(--n-div);}
+  #mob-root .n3 .m2-habit-sep{display:none;}
+  #mob-root .n3 .m2-habit-chk{width:26px;height:26px;}
+  #mob-root .n3 .m2-habit-chk.off{border:1.6px solid var(--n-ring);background:transparent;}
+  #mob-root .n3 .m2-habit-chk.on{background:var(--n-indf);border:1.6px solid var(--n-indf);}
+  #mob-root .n3 .m2-habit-name{font-size:16px;font-weight:500;letter-spacing:-.3px;color:var(--n-text);}
+  #mob-root .n3 .m2-habit-name.done{color:var(--n-t2);}
+  #mob-root .n3 .m2-habit-streak{font-size:12px;font-weight:600;color:var(--n-t2);}
+  #mob-root .n3 .m2-habit-empty{color:var(--n-t2);}
+
+  /* 식사 기록 (아코디언 · 기본 접힘) */
+  .n3-acc{padding:0;}
+  .n3-acc-h{display:flex;align-items:center;gap:8px;width:100%;min-height:52px;padding:0 16px;background:transparent;border:0;font-family:inherit;color:var(--n-text);cursor:pointer;text-align:left;-webkit-tap-highlight-color:transparent;}
+  .n3-acc-h .n3-card-t{flex:1;}
+  .n3-chev{color:var(--n-t2);display:flex;transition:transform .2s;}
+  .n3-acc.open .n3-chev{transform:rotate(180deg);}
+  .n3-acc-b{display:none;padding:0 16px 6px;}
+  .n3-acc.open .n3-acc-b{display:block;}
+  #mob-root .n3 .mob-meal-row{padding:11px 0;background:transparent;border-top:.5px solid var(--n-div);}
+  #mob-root .n3 .mob-meal-sep{display:none;}
+  #mob-root .n3 .mob-meal-slot{color:var(--n-t2);}
+  #mob-root .n3 .mob-meal-name.done{color:var(--n-text);}
+  #mob-root .n3 .mob-meal-name.empty{color:var(--n-t2);}
+  #mob-root .n3 .mob-meal-emoji.done{background:var(--n-indbg);}
+  #mob-root .n3 .mob-meal-emoji.empty{background:var(--n-field);}
+
+  /* 오늘 할 일 */
+  #mob-root .n3 .mob-habit-row,#mob-root .n3 .mob-habit-row.done,#mob-root .n3 .mob-habit-row:active{background:transparent;padding:0;min-height:50px;border-top:.5px solid var(--n-div);}
+  #mob-root .n3 .mob-habit-sep{display:none;}
+  #mob-root .n3 .mob-ios-check{width:26px;height:26px;}
+  #mob-root .n3 .mob-ios-check.off{border:1.6px solid var(--n-ring);}
+  #mob-root .n3 .mob-ios-check.on{background:var(--n-indf);border:1.6px solid var(--n-indf);}
+  .n3-in-row{display:flex;align-items:center;gap:10px;min-height:54px;border-top:.5px solid var(--n-div);padding:8px 0;}
+  .n3-in-row input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-family:inherit;font-size:16px;color:var(--n-text);height:36px;letter-spacing:-.3px;}
+  .n3-in-row input::placeholder{color:var(--n-t2);}
+  .n3-add{width:36px;height:36px;border-radius:50%;border:0;background:var(--n-indf);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;}
+
+  /* 메모 */
+  #mob-root .n3 .mm-card .memo-inp-row{display:flex;align-items:center;gap:10px;margin:0 0 8px;}
+  #mob-root .n3 .mm-card .todo-inp{flex:1;min-width:0;height:40px;border:0;outline:0;border-radius:10px;background:var(--n-field);padding:0 12px;font-family:inherit;font-size:16px;color:var(--n-text);}
+  #mob-root .n3 .mm-card .add-btn{width:36px;height:36px;border-radius:50%;border:0;background:var(--n-indf);color:#fff;font-size:22px;line-height:1;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0;}
+  #mob-root .n3 .mm-card .memo-row{padding:11px 0;}
+  #mob-root .n3 .mm-card .memo-row+.memo-row,#mob-root .n3 .mm-card .memo-row{border-top:.5px solid var(--n-div);}
+  #mob-root .n3 .mm-card .memo-text{font-size:15px;color:var(--n-text);}
+  #mob-root .n3 .mm-card .memo-empty{color:var(--n-t2);padding:8px 0 12px;}
+
+  /* 일기 탭 */
+  .n3-dhead{display:flex;align-items:center;justify-content:space-between;padding:12px 20px 4px;flex-shrink:0;}
+  .n3-dhead h1{margin:0;font-size:34px;font-weight:800;letter-spacing:-1px;}
+  .n3-circ{width:44px;height:44px;border-radius:50%;border:0;background:var(--n-indf);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  .n3-search{display:flex;align-items:center;gap:8px;width:100%;height:40px;border-radius:12px;background:var(--n-field);border:0;padding:0 12px;margin-top:6px;font-family:inherit;font-size:16px;color:var(--n-t2);text-align:left;cursor:pointer;}
+  .n3-mon{display:flex;align-items:center;justify-content:space-between;margin-top:14px;}
+  .n3-mon-b{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:0;background:transparent;color:var(--n-text);cursor:pointer;}
+  .n3-mon-b:disabled{color:var(--n-ring);cursor:default;}
+  .n3-mon-t{font-size:17px;font-weight:700;letter-spacing:-.4px;}
+  .n3-mon-s{font-size:13px;color:var(--n-t2);margin-top:1px;}
+  .n3-entry{display:block;width:100%;background:var(--n-card);border:0;border-radius:18px;padding:16px;margin-top:12px;text-align:left;font-family:inherit;color:var(--n-text);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  .n3-e-top{display:flex;align-items:center;gap:8px;}
+  .n3-e-top span{flex:1;font-size:13px;font-weight:500;color:var(--n-t2);}
+  .n3-e-top svg{flex-shrink:0;}
+  .n3-e-t{font-size:18px;font-weight:700;letter-spacing:-.5px;margin-top:8px;}
+  .n3-e-p{font-size:14px;line-height:1.5;color:var(--n-t2);margin-top:4px;letter-spacing:-.2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .n3-e-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
+  .n3-e-tags span{font-size:13px;font-weight:600;color:var(--n-ind);background:var(--n-indbg);border-radius:999px;padding:4px 10px;}
+  .n3-empty{text-align:center;padding:48px 0;color:var(--n-t2);font-size:15px;}
+  .n3-empty button{margin-top:14px;height:40px;padding:0 20px;border:0;border-radius:20px;background:var(--n-indf);color:#fff;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;}
+
+  /* 일기 쓰기 (전체 화면) */
+  .n3-dw{position:fixed;inset:0;z-index:10100;display:none;flex-direction:column;padding-top:env(safe-area-inset-top,20px);}
+  .n3-dw.open{display:flex;}
+  .n3-dw-nav{display:flex;align-items:center;justify-content:space-between;height:52px;padding:0 10px;flex-shrink:0;}
+  .n3-dw-nav button{min-width:60px;height:44px;border:0;background:transparent;font-family:inherit;font-size:17px;letter-spacing:-.3px;cursor:pointer;color:var(--n-t2);}
+  .n3-dw-nav .n3-dw-save{color:var(--n-ind);font-weight:700;}
+  .n3-dw-ttl{font-size:17px;font-weight:700;letter-spacing:-.4px;}
+  .n3-dw-body{flex:1;overflow-y:auto;padding:8px 20px calc(40px + env(safe-area-inset-bottom,0px));}
+  .n3-dw-date{position:relative;display:block;font-size:14px;font-weight:500;color:var(--n-t2);padding:0 2px;}
+  .n3-dw-date input{position:absolute;inset:-6px 0;width:100%;height:calc(100% + 12px);opacity:0;cursor:pointer;}
+  .n3-dw-title{display:block;width:100%;border:0;outline:0;background:transparent;font-family:inherit;font-size:24px;font-weight:800;letter-spacing:-.8px;color:var(--n-text);padding:0;height:40px;margin-top:22px;}
+  .n3-dw-title::placeholder,.n3-dw-text::placeholder{color:var(--n-ring);}
+  .n3-dw-hr{height:.5px;background:var(--n-div);margin:10px 0 12px;}
+  .n3-dw-text{display:block;width:100%;height:300px;border:0;outline:0;background:transparent;font-family:inherit;font-size:17px;line-height:1.65;letter-spacing:-.3px;color:var(--n-text);padding:0;resize:none;}
+  .n3-dw-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+  .n3-chip{display:inline-flex;align-items:center;gap:2px;height:32px;padding:0 4px 0 12px;border-radius:999px;background:var(--n-indbg);color:var(--n-ind);font-size:14px;font-weight:600;}
+  .n3-chip button{width:28px;height:28px;border:0;background:transparent;color:var(--n-ind);font-size:16px;line-height:1;cursor:pointer;padding:0;}
+  .n3-dw-foot{display:flex;align-items:center;gap:12px;margin-top:12px;}
+  .n3-dw-taginp{flex:1;min-width:0;height:36px;border:0;outline:0;border-radius:10px;background:var(--n-field);padding:0 12px;font-family:inherit;font-size:15px;color:var(--n-text);}
+  .n3-dw-foot span{font-size:13px;color:var(--n-t2);font-variant-numeric:tabular-nums;}
+
+  /* 하단 탭바 (알약 모양 · 선택된 탭만 글자 표시) */
+  #mob-root .mob-tabbar-glow{display:none;}
+  #mob-root .mob-tabbar-glass{background:#1C1C1E;box-shadow:0 4px 14px rgba(0,0,0,.16);}
+  /* 닫힌 시트의 그림자가 화면 아래쪽에 번져 보이던 문제 */
+  #mob-root .mob-sheet:not(.open){box-shadow:none;}
+  body.dark #mob-root .mob-tabbar-glass{background:#2C2C2E;}
+  #mob-root .mob-tab{flex-direction:row;gap:6px;color:#D1D1D6;font-family:inherit;}
+  #mob-root .mob-tab span{display:none;font-size:15px;font-weight:700;letter-spacing:-.3px;color:#1C1C1E;}
+  #mob-root .mob-tab.active{flex:0 0 auto;padding:0 18px;background:#FFFFFF;color:#4F4CC4;}
+  #mob-root .mob-tab.active span{display:inline;}
+}
+
 </style>
 </head>
 <body>
@@ -2710,70 +2893,50 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
 <div id="mob-root">
 
 <!-- ── 페이지: 오늘 ── -->
-<div id="mob-page-today" class="mob-page mob-page-active">
+<div id="mob-page-today" class="mob-page mob-page-active n3">
 
 <!-- ── 헤더 ── -->
-<div class="m2-header" id="mob-header">
-  <div class="m2-greet" id="m2-greet">안녕하세요</div>
-  <div class="m2-header-right">
-    <div class="m2-avatar-btn" id="mob-avatar" onclick="mobOpenDrawer()">🙂</div>
-  </div>
+<div class="n3-head" id="mob-header">
+  <div class="n3-avatar" id="mob-avatar" onclick="mobOpenDrawer()" role="button" tabindex="0" aria-label="프로필과 설정 열기">🙂</div>
+  <div><div class="n3-head-d" id="n3-date"></div><div class="n3-head-g" id="m2-greet">안녕하세요</div></div>
 </div>
 
 <!-- ── 스크롤 영역 ── -->
 <div class="mob-scroll" id="mob-scroll">
 
-  <!-- 진행률 카드 -->
-  <div class="m2-progress-card" id="m2-progress-card">
-    <div class="m2-progress-top">
-      <div class="m2-progress-badge">
-        <div class="m2-progress-badge-icon">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l4-4 4 4 6-8 4 4"/></svg>
-        </div>
-        <div class="m2-progress-badge-lbl">오늘의 완료</div>
-      </div>
-      <div class="m2-streak">
-        <div class="m2-streak-lbl">연속</div>
-        <div class="m2-streak-val" id="m2-streak-val">0일</div>
-      </div>
-    </div>
-    <div class="m2-progress-bottom">
-      <div>
-        <div class="m2-progress-pct" id="m2-pct">0<span>%</span></div>
-        <div class="m2-progress-sub" id="m2-progress-sub">기록을 시작하세요</div>
-      </div>
-      <div class="m2-hero-wt" id="m2-hero-wt" onclick="mobTileWtTap()">
-        <div class="m2-hero-wt-lbl">체중</div>
-        <div class="m2-hero-wt-val"><span id="m2-hero-wt-num">--</span><span class="m2-hero-wt-unit">kg</span></div>
-        <div class="m2-hero-wt-diff" id="m2-hero-wt-diff" style="display:none;"></div>
-      </div>
-    </div>
+  <!-- 주간 기분 -->
+  <div class="n3-card" id="n3-mood-card">
+    <div class="n3-card-h"><span class="n3-card-t">이번 주 기분</span><span class="n3-card-s">탭해서 기록</span></div>
+    <div class="n3-week" id="n3-week"></div>
+    <div class="n3-pick" id="n3-pick" style="display:none;"></div>
   </div>
 
-  <!-- 2단 요약 타일 -->
-  <div class="m2-tile-row">
-    <div class="m2-tile m2-tile-dark" id="mob-tile-study" onclick="mobTileStudyTap()">
-      <div class="m2-tile-icon">
-        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10.5 5 8 4.5 4.5 5v12.5C8 17 10.5 17.5 12 19M12 6.5C13.5 5 16 4.5 19.5 5v12.5C16 17 13.5 17.5 12 19M12 6.5V19"/></svg>
-      </div>
-      <div>
-        <div class="m2-tile-val"><span id="mob-tile-study-val">0</span><span>분</span></div>
-        <div class="m2-tile-sub" id="m2-study-sub">기록 없음</div>
-      </div>
-    </div>
-    <div class="m2-tile m2-tile-lime" id="mob-tile-ex" onclick="mobTileExTap()">
-      <div class="m2-tile-icon">
-        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 8v8M4 9.5v5M17.5 8v8M20 9.5v5M6.5 12h11"/></svg>
-      </div>
-      <div>
-        <div class="m2-tile-val"><span id="mob-tile-ex-val">0</span><span>분</span></div>
-        <div class="m2-tile-sub" id="m2-ex-sub">기록 없음</div>
-      </div>
-    </div>
+  <!-- 오늘의 현황 (한 줄) -->
+  <div class="n3-card n3-sum">
+    <div class="n3-sum-c"><div class="n3-sum-l">오늘 완료</div><div class="n3-sum-v"><span id="n3-sum-done">0</span><small id="n3-sum-total">/ 0</small></div><div class="n3-bar-t"><div class="n3-bar-f" id="n3-sum-bar"></div></div></div>
+    <div class="n3-sum-c"><div class="n3-sum-l">연속 기록</div><div class="n3-sum-v" id="m2-streak-val">0일</div></div>
+    <button class="n3-sum-c n3-btn" id="m2-hero-wt" onclick="mobTileWtTap()" aria-label="체중 기록">
+      <div class="n3-sum-l">체중</div><div class="n3-sum-v"><span id="m2-hero-wt-num">--</span><small>kg</small></div><div class="n3-sum-d" id="m2-hero-wt-diff" style="display:none;"></div>
+    </button>
   </div>
 
-  <!-- 습관 트래커 (오전/오후 아코디언) -->
-  <div class="m2-section-title">습관 트래커</div>
+  <!-- 공부 · 운동 -->
+  <div class="n3-two">
+    <button class="n3-card n3-mini n3-btn" id="mob-tile-study" onclick="mobTileStudyTap()" aria-label="공부 기록 보기">
+      <div class="n3-card-h" style="margin-bottom:0;"><span class="n3-card-t">공부</span><span class="n3-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 016.5 3H20v15H6.5A2.5 2.5 0 004 20.5v-15z"/><path d="M4 20.5A2.5 2.5 0 016.5 18H20v3H6.5"/></svg></span></div>
+      <div class="n3-mini-g" id="n3-study-bars" aria-hidden="true"></div>
+      <div class="n3-big"><span id="mob-tile-study-val">0</span><small>분</small></div>
+      <div class="n3-mini-sub" id="m2-study-sub">기록 없음</div>
+    </button>
+    <button class="n3-card n3-mini n3-btn" id="mob-tile-ex" onclick="mobTileExTap()" aria-label="운동 기록 보기">
+      <div class="n3-card-h" style="margin-bottom:0;"><span class="n3-card-t">운동</span><span class="n3-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h2M19 12h2M5 8v8M19 8v8M8 6v12M16 6v12M8 12h8"/></svg></span></div>
+      <div class="n3-mini-g" id="n3-ex-bars" aria-hidden="true"></div>
+      <div class="n3-big"><span id="mob-tile-ex-val">0</span><small>분</small></div>
+      <div class="n3-mini-sub" id="m2-ex-sub">기록 없음</div>
+    </button>
+  </div>
+
+  <!-- 습관 트래커 (오전/오후 아코디언 — 기능 그대로) -->
   <div class="m2-habit-group" id="m2-habit-group-morning">
     <div class="m2-habit-group-head" onclick="mobToggleHabitGroup('morning')">
       <div class="m2-habit-group-icon">
@@ -2801,37 +2964,30 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
     </div>
   </div>
 
-  <!-- 식사 섹션 -->
-  <div class="mob-section-label" style="margin-top:22px;">
-    <span class="mob-section-title">식사 기록</span>
-    <span class="mob-section-action" id="mob-meal-kcal"></span>
-  </div>
-  <div class="mob-group-card" id="mob-meal-list"></div>
 
-  <!-- 오늘 할 일 섹션 -->
-  <div class="mob-section-label" style="margin-top:22px;">
-    <span class="mob-section-title">오늘 할 일</span>
-    <span class="mob-section-action" id="mob-todo-count"></span>
-  </div>
-  <div class="mob-group-card" id="mob-todo-list"></div>
-  <!-- 할 일 입력 -->
-  <div style="display:flex;gap:10px;margin:10px 16px 0;">
-    <input id="mob-todo-inp" type="text" placeholder="할 일 추가..."
-      style="flex:1;padding:13px 14px;border-radius:14px;border:none;background:#fff;font-family:'Pretendard Variable',-apple-system,system-ui,sans-serif;font-size:15px;color:#1A1A1C;outline:none;box-shadow:0 1px 1px rgba(0,0,0,0.03),0 6px 18px rgba(40,40,70,0.05);"
-      onkeydown="if(event.key==='Enter')mobAddTodo()">
-    <button onclick="mobAddTodo()"
-      style="width:46px;height:46px;border-radius:14px;background:#6667AB;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;-webkit-tap-highlight-color:transparent;">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v12M6 12h12"/></svg>
+  <!-- 식사 기록 (기본: 접힘) -->
+  <div class="n3-card n3-acc" id="n3-meal-card">
+    <button class="n3-acc-h" id="n3-meal-btn" onclick="mobToggleMeals()" aria-expanded="false">
+      <span class="n3-card-t">식사 기록</span><span class="n3-card-s" id="mob-meal-kcal"></span><span class="n3-chev"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span>
     </button>
+    <div class="n3-acc-b"><div id="mob-meal-list"></div></div>
   </div>
-  <!-- 메모 섹션 -->
-  <div class="mob-section-label" style="margin-top:22px;">
-    <span class="mob-section-title">MEMO</span>
-    <span style="display:flex;align-items:center;gap:8px;"><button class="memo-pins-btn" id="mm-pins-btn" onclick="openPinnedMemos()" style="display:none;"></button><span class="badge badge-gray" id="mm-badge"></span></span>
+
+  <!-- 오늘 할 일 -->
+  <div class="n3-card">
+    <div class="n3-card-h"><span class="n3-card-t">오늘 할 일</span><span class="n3-card-s" id="mob-todo-count"></span></div>
+    <div id="mob-todo-list"></div>
+    <div class="n3-in-row">
+      <input id="mob-todo-inp" type="text" placeholder="할 일 추가" aria-label="할 일 추가" onkeydown="if(event.key==='Enter')mobAddTodo()">
+      <button class="n3-add" onclick="mobAddTodo()" aria-label="할 일 추가"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+    </div>
   </div>
-  <div class="mob-group-card mm-card">
+
+  <!-- 메모 -->
+  <div class="n3-card mm-card">
+    <div class="n3-card-h"><span class="n3-card-t">메모</span><span style="display:flex;align-items:center;gap:8px;"><button class="memo-pins-btn" id="mm-pins-btn" onclick="openPinnedMemos()" style="display:none;"></button><span class="badge badge-gray" id="mm-badge"></span></div>
     <div class="memo-inp-row">
-      <input class="todo-inp" id="mm-inp" type="text" placeholder="떠오른 생각을 적어보세요..." maxlength="200" onkeydown="if(event.key==='Enter'&&!event.isComposing)addMemo('m')">
+      <input class="todo-inp" id="mm-inp" type="text" placeholder="떠오른 생각을 적어보세요" maxlength="200" aria-label="메모 입력" onkeydown="if(event.key==='Enter')addMemo('m')">
       <button class="add-btn" onclick="addMemo('m')" aria-label="메모 추가">+</button>
     </div>
     <div class="memo-list" id="mm-list"></div>
@@ -2839,8 +2995,27 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
 
 </div><!-- /mob-scroll -->
 
-
 </div><!-- /mob-page-today -->
+
+<!-- ── 페이지: 일기 ── -->
+<div id="mob-page-diary" class="mob-page n3">
+  <div class="n3-dhead">
+    <h1>일기</h1>
+    <button class="n3-circ" onclick="mobDiaryNew()" aria-label="새 일기 쓰기"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+  </div>
+  <div class="mob-scroll">
+    <button class="n3-search" onclick="openSearch()" aria-label="일기와 메모 검색">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+      <span>전체 일기 · 메모 검색</span>
+    </button>
+    <div class="n3-mon">
+      <button class="n3-mon-b" onclick="mobDiaryMonth(-1)" aria-label="이전 달"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <div style="text-align:center;"><div class="n3-mon-t" id="n3-dm-title"></div><div class="n3-mon-s" id="n3-dm-cnt"></div></div>
+      <button class="n3-mon-b" id="n3-dm-next" onclick="mobDiaryMonth(1)" aria-label="다음 달"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+    </div>
+    <div id="n3-diary-list"></div>
+  </div>
+</div>
 
 <!-- ── 페이지: 캘린더 ── -->
 <div id="mob-page-calendar" class="mob-page">
@@ -3242,18 +3417,42 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   <div class="mob-tabbar-glow"></div>
   <div class="mob-tabbar-glass"></div>
   <div class="mob-tabs">
-    <div class="mob-tab active" id="mtab2-today" onclick="mobGoPage('today')" aria-label="오늘">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5L12 4l9 7.5"/><path d="M5.5 10v9.5a1 1 0 0 0 1 1H9.5V15h5v5.5h3a1 1 0 0 0 1-1V10"/></svg>
+    <div class="mob-tab active" id="mtab2-today" onclick="mobGoPage('today')" role="button" tabindex="0" aria-label="오늘">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/></svg><span>오늘</span>
     </div>
-    <div class="mob-tab" id="mtab2-calendar" onclick="mobGoPage('calendar')" aria-label="기록">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="3.2"/><path d="M3.5 9.5h17M8 3v3.5M16 3v3.5"/></svg>
+    <div class="mob-tab" id="mtab2-calendar" onclick="mobGoPage('calendar')" role="button" tabindex="0" aria-label="기록">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span>기록</span>
     </div>
-    <div class="mob-tab" id="mtab2-stats" onclick="mobGoPage('stats')" aria-label="통계">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V4"/><path d="M4 20h16"/><rect x="7" y="12" width="2.6" height="5" rx="1" fill="currentColor" stroke="none"/><rect x="11.7" y="8" width="2.6" height="9" rx="1" fill="currentColor" stroke="none"/><rect x="16.4" y="14" width="2.6" height="3" rx="1" fill="currentColor" stroke="none"/></svg>
+    <div class="mob-tab" id="mtab2-diary" onclick="mobGoPage('diary')" role="button" tabindex="0" aria-label="일기">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3.5h10.5A2.5 2.5 0 0119 6v14.5H8.5A2.5 2.5 0 016 18V3.5z"/><path d="M9.5 8.5h6M9.5 12h6M3.5 7H6M3.5 12H6M3.5 17H6"/></svg><span>일기</span>
     </div>
-    <div class="mob-tab" id="mtab2-settings" onclick="mobGoPage('settings')" aria-label="설정">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5l1.3 2.1 2.4-.5.4 2.4 2.2 1-.9 2.3 1.6 1.8-1.6 1.8.9 2.3-2.2 1-.4 2.4-2.4-.5L12 21.5l-1.3-2.1-2.4.5-.4-2.4-2.2-1 .9-2.3L3 12l1.6-1.8-.9-2.3 2.2-1 .4-2.4 2.4.5z"/></svg>
+    <div class="mob-tab" id="mtab2-stats" onclick="mobGoPage('stats')" role="button" tabindex="0" aria-label="통계">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V11M12 20V4M19 20v-6"/></svg><span>통계</span>
     </div>
+    <div class="mob-tab" id="mtab2-settings" onclick="mobGoPage('settings')" role="button" tabindex="0" aria-label="설정">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg><span>설정</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── 일기 쓰기 (모바일 전체 화면) ── -->
+<div class="n3-dw" id="n3-dw" role="dialog" aria-modal="true" aria-label="일기 쓰기">
+  <div class="n3-dw-nav">
+    <button class="n3-dw-cancel" onclick="mobDiaryWriteClose()">취소</button>
+    <div class="n3-dw-ttl" id="n3-dw-ttl">새 일기</div>
+    <button class="n3-dw-save" onclick="mobDiarySave()">저장</button>
+  </div>
+  <div class="n3-dw-body">
+    <label class="n3-dw-date"><span id="n3-dw-datelbl"></span><input type="date" id="n3-dw-date" aria-label="일기 날짜" onchange="mobDiaryWriteDate(this.value)"></label>
+    <div class="n3-card" style="margin-top:14px;padding-bottom:10px;">
+      <div class="n3-pick-t" style="margin:0 4px 8px;">오늘 기분</div>
+      <div class="n3-pick-r" id="n3-dw-mood"></div>
+    </div>
+    <input class="n3-dw-title" id="n3-dw-title" type="text" placeholder="제목" aria-label="제목" maxlength="80" oninput="n3DWDirty=true;">
+    <div class="n3-dw-hr"></div>
+    <textarea class="n3-dw-text" id="n3-dw-body" placeholder="오늘 있었던 일을 적어보세요" aria-label="일기 내용" oninput="n3DWDirty=true;n3DWCount();"></textarea>
+    <div class="n3-dw-tags" id="n3-dw-tags"></div>
+    <div class="n3-dw-foot"><input class="n3-dw-taginp" id="n3-dw-taginp" type="text" placeholder="# 태그 입력 후 Enter" aria-label="태그 추가" onkeydown="n3DWTagKey(event)" onblur="n3DWAddTag()"><span id="n3-dw-cnt">0자</span></div>
   </div>
 </div>
 
@@ -5620,6 +5819,9 @@ function mobRenderHero(d,habits){
   }
   const streakEl=document.getElementById('m2-streak-val');
   if(streakEl)streakEl.textContent=streak+'일';
+  const n3d=document.getElementById('n3-sum-done');if(n3d)n3d.textContent=done;
+  const n3t=document.getElementById('n3-sum-total');if(n3t)n3t.textContent='/ '+total;
+  const n3b=document.getElementById('n3-sum-bar');if(n3b)n3b.style.width=pct+'%';
 
   // 히어로 카드 오른쪽: 체중
   const heroWtNum=document.getElementById('m2-hero-wt-num');
@@ -5640,10 +5842,9 @@ function mobRenderHero(d,habits){
       if(prevW!=null){
         const diff=(d.weight-prevW).toFixed(1);
         heroWtDiff.style.display='inline-block';
-        heroWtDiff.textContent=(diff>0?'+':'')+diff+' 지난주';
+        heroWtDiff.textContent=(diff>0?'+':'')+diff;
       }else{
-        heroWtDiff.style.display='inline-block';
-        heroWtDiff.textContent='지난주 기록 없음';
+        heroWtDiff.style.display='none';
       }
     }
   }
@@ -5663,6 +5864,7 @@ function mobRenderHero(d,habits){
   if(studyEl)studyEl.textContent=studyMin||0;
   const studySubEl=document.getElementById('m2-study-sub');
   if(studySubEl)studySubEl.textContent=studySessions.length?(studySessions[0].subject||studySessions[0].content||'공부'):'기록 없음';
+  n3RenderMiniBars();
 }
 
 // ── 습관 아코디언 렌더 ──
@@ -5809,7 +6011,7 @@ function mobRenderMeals(d){
     </div>`;
   }).join('');
   el.innerHTML=rows;
-  if(kcalEl)kcalEl.textContent='';
+  if(kcalEl){const n=slots.filter(s=>meals.some(m=>m.time===s.key)).length;kcalEl.textContent=n?('기록 '+n+'/3'):'기록 없음';}
 }
 
 // ── 식사 슬롯 삭제 ──
@@ -5873,6 +6075,7 @@ function mobGoPage(page){
     }
     mobRenderCalendar();
   }
+  if(page==='diary') mobRenderDiaryPage();
   if(page==='stats') mobRenderStats();
   if(page==='settings') mobRenderSettings();
 }
@@ -6544,6 +6747,243 @@ function mobSheetEdit(){
 }
 
 // ── 전체 렌더 ──
+// ════════════════════════════════════════════
+// n3 모바일 리뉴얼: 주간 기분 · 미니 그래프 · 식사 접기 · 일기 탭/쓰기
+// (모바일 전용 — PC 코드와 공유하는 함수는 수정하지 않고 호출만 함)
+// 기분 저장값: 1(아주 나쁨) ~ 5(아주 좋음) — 기존 d.mood / d.diaryMood 와 동일
+// ════════════════════════════════════════════
+const N3_MOOD_LABEL={5:'아주 좋음',4:'좋음',3:'보통',2:'나쁨',1:'아주 나쁨'};
+const N3_MOOD_FILL={5:'#FFC83D',4:'#7DB8FF',3:'#8ED16B',2:'#A1A1A8',1:'#5C5C61'};
+const N3_DAYS=['일','월','화','수','목','금','토'];
+function n3Face(v,s){
+  const ink=v===1?'#FFFFFF':'#1C1C1E';
+  const eyes=`<circle cx="14" cy="17" r="2.3" fill="${ink}"/><circle cx="26" cy="17" r="2.3" fill="${ink}"/>`;
+  const G={
+    5:`<path d="M11 17q3-4.5 6 0M23 17q3-4.5 6 0"/><path d="M11.5 24h17c0 6-3.8 9-8.5 9s-8.5-3-8.5-9z" fill="${ink}"/>`,
+    4:eyes+'<path d="M12.5 25q7.5 7.5 15 0"/>',
+    3:eyes+'<path d="M13.5 28h13"/>',
+    2:`<path d="M9.5 13.5l6.5-2.5M30.5 13.5L24 11"/><circle cx="14" cy="18.5" r="2.3" fill="${ink}"/><circle cx="26" cy="18.5" r="2.3" fill="${ink}"/><path d="M13 30q7-7 14 0"/>`,
+    1:'<path d="M10.5 13.5l6 3-6 3M29.5 13.5l-6 3 6 3"/><path d="M13 31q7-7.5 14 0"/><path d="M10.5 23c-1.6 2.4-2.2 3.6-2.2 4.6a2.2 2.2 0 004.4 0c0-1-.6-2.2-2.2-4.6zM29.5 23c-1.6 2.4-2.2 3.6-2.2 4.6a2.2 2.2 0 004.4 0c0-1-.6-2.2-2.2-4.6z" fill="#E5E5EA" stroke="none"/>'
+  };
+  return `<svg width="${s}" height="${s}" viewBox="0 0 40 40" role="img" aria-label="기분 ${N3_MOOD_LABEL[v]}"><circle cx="20" cy="20" r="20" fill="${N3_MOOD_FILL[v]}"/><g fill="none" stroke="${ink}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${G[v]}</g></svg>`;
+}
+function n3WeekDates(){
+  const b=new Date(curDateStr+'T00:00:00');
+  const s=new Date(b);s.setDate(b.getDate()-b.getDay());
+  return [0,1,2,3,4,5,6].map(i=>{const x=new Date(s);x.setDate(s.getDate()+i);return localDateStr(x);});
+}
+function n3DateLbl(ds){
+  const d=new Date(ds+'T00:00:00');
+  return (d.getMonth()+1)+'월 '+d.getDate()+'일 '+N3_DAYS[d.getDay()]+'요일';
+}
+
+// ── 주간 기분 ──
+let n3PickDs=null;
+function mobRenderWeekMood(){
+  const wrap=document.getElementById('n3-week');
+  const dateEl=document.getElementById('n3-date');
+  if(dateEl)dateEl.textContent=n3DateLbl(curDateStr);
+  if(!wrap)return;
+  const all=getAllData(),today=todayStr();
+  wrap.innerHTML=n3WeekDates().map((ds,i)=>{
+    const dd=all[ds]||{};
+    const v=dd.mood||dd.diaryMood||0;
+    const lab=`<span class="n3-wk-d${ds===curDateStr?' cur':''}">${N3_DAYS[i]}</span>`;
+    if(ds>today)return `<div class="n3-wk"><span class="n3-wk-e"></span>${lab}</div>`;
+    const face=v?n3Face(v,34):'<span class="n3-wk-n"></span>';
+    return `<div class="n3-wk"><button class="n3-wk-b${n3PickDs===ds?' sel':''}" onclick="mobMoodPick('${ds}')" aria-label="${N3_DAYS[i]}요일 기분 ${v?N3_MOOD_LABEL[v]:'기록 없음'}, 눌러서 변경">${face}</button>${lab}</div>`;
+  }).join('');
+  const pk=document.getElementById('n3-pick');
+  if(!pk)return;
+  if(!n3PickDs){pk.style.display='none';pk.innerHTML='';return;}
+  const cur=(all[n3PickDs]||{}).mood||(all[n3PickDs]||{}).diaryMood||0;
+  pk.style.display='block';
+  pk.innerHTML=`<div class="n3-pick-t">${n3DateLbl(n3PickDs)} 기분</div><div class="n3-pick-r">`+
+    [5,4,3,2,1].map(v=>`<button class="n3-pick-b${cur===v?' sel':''}" onclick="mobMoodSet('${n3PickDs}',${v})" aria-label="${N3_MOOD_LABEL[v]}"><i>${n3Face(v,40)}</i><span>${N3_MOOD_LABEL[v]}</span></button>`).join('')+'</div>';
+}
+function mobMoodPick(ds){n3PickDs=(n3PickDs===ds)?null:ds;mobRenderWeekMood();}
+function mobMoodSet(ds,v){
+  const d=getDayData(ds);
+  d.mood=(d.mood===v)?0:v; // 같은 기분을 다시 누르면 해제 (PC 사이드바 기분과 같은 동작)
+  saveDayData(ds,d);
+  n3PickDs=null;
+  mobRenderWeekMood();
+  try{if(ds===curDateStr)renderSidebarMood(d.mood||0);}catch(e){}
+  try{mobRenderMoodTiles();}catch(e){}
+  mobSyncNow();
+}
+
+// ── 공부 · 운동 미니 그래프 (이번 주, 일~토) ──
+function n3RenderMiniBars(){
+  const all=getAllData(),today=todayStr(),dates=n3WeekDates();
+  const minutes=(dd,k)=>{
+    if(k==='study')return (dd.study||[]).reduce((s,x)=>s+(x.dur||0),0);
+    const ex=dd.exercises||(dd.exercise?[dd.exercise]:[]);
+    return ex.reduce((s,x)=>s+(x.dur||0),0);
+  };
+  [['study','n3-study-bars'],['ex','n3-ex-bars']].forEach(([k,id])=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    const vals=dates.map(ds=>ds>today?null:minutes(all[ds]||{},k));
+    const mx=Math.max(1,...vals.map(v=>v||0));
+    el.innerHTML=vals.map((v,i)=>{
+      if(v==null)return '<i class="fut"></i>';
+      const h=v?Math.max(8,Math.round(v/mx*46)):4;
+      const cls=dates[i]===curDateStr?'cur':(v?'dim':'zero');
+      return `<i class="${cls}" style="height:${h}px"></i>`;
+    }).join('');
+  });
+}
+
+// ── 식사 기록 접기 (기본: 접힘) ──
+let n3MealOpen=false;
+function mobToggleMeals(){n3MealOpen=!n3MealOpen;n3ApplyMeals();}
+function n3ApplyMeals(){
+  document.getElementById('n3-meal-card')?.classList.toggle('open',n3MealOpen);
+  document.getElementById('n3-meal-btn')?.setAttribute('aria-expanded',n3MealOpen?'true':'false');
+}
+
+// ── 일기 탭: 한 달치 목록 + 미리보기 ──
+let n3DY=new Date().getFullYear(),n3DM=new Date().getMonth();
+function mobRenderDiaryPage(){
+  const now=new Date();
+  const isCur=(n3DY*12+n3DM)>=(now.getFullYear()*12+now.getMonth());
+  const tEl=document.getElementById('n3-dm-title');
+  if(tEl)tEl.textContent=n3DY+'년 '+(n3DM+1)+'월';
+  const nx=document.getElementById('n3-dm-next');
+  if(nx)nx.disabled=isCur;
+  const prefix=n3DY+'-'+pad(n3DM+1)+'-';
+  const all=getAllData();
+  const keys=Object.keys(all).filter(k=>k.startsWith(prefix)&&all[k]&&typeof all[k]==='object'&&(all[k].diary||all[k].diaryTitle)).sort().reverse();
+  const cEl=document.getElementById('n3-dm-cnt');
+  if(cEl)cEl.textContent=keys.length+'편';
+  const list=document.getElementById('n3-diary-list');
+  if(!list)return;
+  if(!keys.length){
+    list.innerHTML=`<div class="n3-empty">${isCur?'이번 달에 쓴 일기가 없어요':'이 달에 쓴 일기가 없어요'}${isCur?'<br><button onclick="mobDiaryNew()">일기 쓰기</button>':''}</div>`;
+    return;
+  }
+  list.innerHTML=keys.map(ds=>{
+    const e=all[ds];
+    const v=e.diaryMood||e.mood||0;
+    const dt=new Date(ds+'T00:00:00');
+    const tags=(e.diaryTags||[]).map(t=>String(t).replace(/^#/,'')).filter(Boolean);
+    return `<button class="n3-entry" onclick="mobDiaryOpen('${ds}')" aria-label="${escMemo(n3DateLbl(ds))} 일기 열기">
+      <div class="n3-e-top"><span>${dt.getMonth()+1}월 ${dt.getDate()}일 ${N3_DAYS[dt.getDay()]}</span>${v?n3Face(v,22):''}</div>
+      <div class="n3-e-t">${escMemo(e.diaryTitle||'제목 없음')}</div>
+      ${e.diary?`<div class="n3-e-p">${escMemo(e.diary)}</div>`:''}
+      ${tags.length?`<div class="n3-e-tags">${tags.map(t=>`<span>#${escMemo(t)}</span>`).join('')}</div>`:''}
+    </button>`;
+  }).join('');
+}
+function mobDiaryMonth(dir){
+  const now=new Date();
+  const cur=now.getFullYear()*12+now.getMonth();
+  let mo=n3DY*12+n3DM+dir;
+  if(mo>cur)return;
+  n3DY=Math.floor(mo/12);n3DM=mo%12;
+  mobRenderDiaryPage();
+}
+
+// ── 일기 쓰기 (모바일 전체 화면) ──
+let n3DW={date:'',mood:0,tags:[]};
+let n3DWDirty=false;
+function n3DWDateLbl(){
+  const l=document.getElementById('n3-dw-datelbl');
+  if(l)l.textContent=n3DateLbl(n3DW.date)+' ▾';
+  const i=document.getElementById('n3-dw-date');
+  if(i){i.value=n3DW.date;i.max=todayStr();}
+}
+function n3DWRenderMood(){
+  const el=document.getElementById('n3-dw-mood');
+  if(!el)return;
+  el.innerHTML=[5,4,3,2,1].map(v=>`<button class="n3-pick-b${n3DW.mood===v?' sel':''}" onclick="mobDWMood(${v})" aria-pressed="${n3DW.mood===v}" aria-label="${N3_MOOD_LABEL[v]}"><i>${n3Face(v,44)}</i><span>${N3_MOOD_LABEL[v]}</span></button>`).join('');
+}
+function mobDWMood(v){n3DW.mood=(n3DW.mood===v)?0:v;n3DWDirty=true;n3DWRenderMood();}
+function n3DWRenderTags(){
+  const el=document.getElementById('n3-dw-tags');
+  if(!el)return;
+  el.innerHTML=n3DW.tags.map((t,i)=>`<span class="n3-chip">#${escMemo(t)}<button onclick="n3DWDelTag(${i})" aria-label="${escMemo(t)} 태그 삭제">×</button></span>`).join('');
+}
+function n3DWAddTag(){
+  const inp=document.getElementById('n3-dw-taginp');
+  if(!inp)return;
+  const v=(inp.value||'').replace(/[\s#,]+/g,'');
+  if(v&&!n3DW.tags.includes(v)&&n3DW.tags.length<10){n3DW.tags.push(v);n3DWDirty=true;}
+  inp.value='';
+  n3DWRenderTags();
+}
+function n3DWDelTag(i){n3DW.tags.splice(i,1);n3DWDirty=true;n3DWRenderTags();}
+function n3DWTagKey(e){
+  if(e.isComposing)return;
+  if(e.key==='Enter'||e.key===','||e.key===' '){e.preventDefault();n3DWAddTag();}
+}
+function n3DWCount(){
+  const c=document.getElementById('n3-dw-cnt');
+  const b=document.getElementById('n3-dw-body');
+  if(c&&b)c.textContent=b.value.length+'자';
+}
+function n3DWLoad(ds){
+  const d=getDayData(ds);
+  n3DW.date=ds;
+  n3DW.mood=d.diaryMood||0;
+  n3DW.tags=(d.diaryTags||[]).map(t=>String(t).replace(/^#/,'')).filter(Boolean);
+  document.getElementById('n3-dw-title').value=d.diaryTitle||'';
+  document.getElementById('n3-dw-body').value=d.diary||'';
+  const ttl=document.getElementById('n3-dw-ttl');
+  if(ttl)ttl.textContent=(d.diary||d.diaryTitle)?'일기 수정':'새 일기';
+  n3DWDateLbl();n3DWRenderMood();n3DWRenderTags();n3DWCount();
+}
+function mobDiaryNew(){mobDiaryOpen(todayStr());}
+function mobDiaryOpen(ds){
+  n3DWLoad(ds);
+  n3DWDirty=false;
+  document.getElementById('n3-dw')?.classList.add('open');
+  const t=document.getElementById('n3-dw-title');
+  if(t&&!t.value)setTimeout(()=>t.focus(),120);
+}
+function mobDiaryWriteDate(v){
+  if(!v||v===n3DW.date)return;
+  if(v>todayStr()){toast('오늘 이후 날짜는 선택할 수 없어요');n3DWDateLbl();return;}
+  const d=getDayData(v);
+  if(d.diary||d.diaryTitle){
+    const typed=(document.getElementById('n3-dw-title').value+document.getElementById('n3-dw-body').value).trim();
+    if(typed&&!confirm('이 날짜에 이미 쓴 일기가 있어요. 쓰던 내용 대신 그 일기를 불러올까요?')){n3DWDateLbl();return;}
+    n3DWLoad(v);
+    return;
+  }
+  n3DW.date=v;
+  n3DWDateLbl();
+  n3DWDirty=true;
+}
+function mobDiaryWriteClose(){
+  if(n3DWDirty&&!confirm('작성 중인 내용이 저장되지 않아요. 닫을까요?'))return;
+  document.getElementById('n3-dw')?.classList.remove('open');
+  n3DWDirty=false;
+}
+function mobDiarySave(){
+  n3DWAddTag();
+  const t=document.getElementById('n3-dw-title').value.trim();
+  const b=document.getElementById('n3-dw-body').value;
+  if(!t&&!b.trim()){toast('제목이나 내용을 입력하세요');return;}
+  const ds=n3DW.date||todayStr();
+  const d=getDayData(ds);
+  d.diaryTitle=t;
+  d.diary=b;
+  d.diaryTags=[...n3DW.tags];
+  d.diaryMood=n3DW.mood||0;
+  if(!saveDayData(ds,d))return;
+  document.getElementById('n3-dw')?.classList.remove('open');
+  n3DWDirty=false;
+  const dt=new Date(ds+'T00:00:00');
+  n3DY=dt.getFullYear();n3DM=dt.getMonth();
+  mobRenderDiaryPage();
+  mobRender();
+  try{if(ds===curDateStr)renderDiaryPreview(d);}catch(e){}
+  toast('일기 저장 ✓');
+  mobSyncNow();
+}
+
 function mobRender(){
   const d=getDayData(curDateStr);
   const habits=getHabits();
@@ -6552,6 +6992,8 @@ function mobRender(){
   mobRenderHabits(d,habits);
   renderMemoList();
   mobRenderMeals(d);
+  mobRenderWeekMood();
+  n3ApplyMeals();
   mobRenderTodos(d);
   mobUpdateAvatar();
 }
