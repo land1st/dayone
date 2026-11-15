@@ -2115,6 +2115,85 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   #mob-root .n3 .n3-hl button:focus-visible{outline-color:#FFFFFF;}
 }
 
+
+/* ════════ 기록 탭 리뉴얼 (n3) — 모바일 전용 ════════ */
+@media(max-width:680px){
+  #mob-root #mob-page-calendar{--n-l1:#E3E2F8;--n-l2:#B9B7EF;--n-l3:#7F7CE0;}
+  body.dark #mob-root #mob-page-calendar{--n-l1:#2A2A52;--n-l2:#3F3D8F;--n-l3:#6A67E0;}
+  .n3-circ-f{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:0;background:var(--n-field);color:var(--n-text);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  #mob-root .n3-cal{background:var(--n-card);border-radius:18px;padding:14px 10px 12px;margin:4px 0 0;}
+  #mob-root .n3 .mob-cal-dow-row{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));}
+  #mob-root .n3 .mob-cal-dow-cell{text-align:center;font-size:12px;font-weight:600;padding:2px 0 8px;color:var(--n-t2) !important;}
+  #mob-root .n3 .mob-cal-dow-cell:first-child{color:#FF453A !important;}
+  #mob-root .n3 .mob-cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));}
+  #mob-root .n3 .mob-cal-cell{display:flex;align-items:center;justify-content:center;height:46px;cursor:pointer;}
+  #mob-root .n3 .mob-cal-day{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:500;color:var(--n-text);background:transparent;font-variant-numeric:tabular-nums;outline:0;box-shadow:none;}
+  #mob-root .n3 .mob-cal-day.lv1{background:var(--n-l1);color:var(--n-text);}
+  #mob-root .n3 .mob-cal-day.lv2{background:var(--n-l2);color:var(--n-text);font-weight:500;}
+  #mob-root .n3 .mob-cal-day.lv3{background:var(--n-l3);color:#fff;font-weight:700;}
+  #mob-root .n3 .mob-cal-day.is-today{box-shadow:inset 0 0 0 2px var(--n-ind);color:var(--n-ind);font-weight:800;}
+  #mob-root .n3 .mob-cal-day.is-today.lv3{color:#fff;}
+  #mob-root .n3 .mob-cal-day.selected{background:var(--n-indf);color:#fff;font-weight:800;box-shadow:0 0 0 2px var(--n-card),0 0 0 4px var(--n-indf);}
+  .n3-legend{display:flex;align-items:center;justify-content:flex-end;gap:5px;padding:8px 8px 0;font-size:12px;color:var(--n-t2);}
+  .n3-legend i{width:12px;height:12px;border-radius:50%;display:block;}
+
+  /* 선택일 상세 */
+  #mob-root .n3 .mg-detail{margin:0;}
+  #mob-root .n3 .mg-detail-head{padding:22px 4px 0;}
+  #mob-root .n3 .mg-detail-date{font-size:20px;font-weight:700;letter-spacing:-.5px;gap:8px;color:var(--n-text);}
+  #mob-root .n3 .mg-today-chip{background:var(--n-indbg);color:var(--n-ind);font-size:12px;border-radius:999px;padding:3px 9px;}
+  #mob-root .n3 .mg-sync{font-size:13px;color:var(--n-t2);}
+  #mob-root .n3 .mg-sync.ok .mg-dot{background:#34C759;}
+  #mob-root .n3 .mg-body{gap:12px;margin-top:12px;}
+  #mob-root .n3 .mg-card,#mob-root .n3 .mg-habit{background:var(--n-card);border-radius:18px;padding:16px;}
+  #mob-root .n3 .mg-card-head{margin-bottom:6px;min-height:24px;}
+  #mob-root .n3 .mg-card-title{font-size:17px;font-weight:700;letter-spacing:-.4px;color:var(--n-text);}
+  #mob-root .n3 .mg-card-link{font-size:14px;font-weight:600;color:var(--n-ind);}
+  #mob-root .n3 .mg-empty-txt{font-size:15px;color:var(--n-t2);}
+  /* 습관 */
+  #mob-root .n3 .mg-habit-lbl{font-size:17px;font-weight:700;letter-spacing:-.4px;color:var(--n-text);}
+  #mob-root .n3 .mg-habit-num{font-size:32px;color:var(--n-text);letter-spacing:-1px;}
+  #mob-root .n3 .mg-habit-num span{font-size:18px;color:var(--n-t2);}
+  #mob-root .n3 .mg-ring-track{stroke:var(--n-track);}
+  #mob-root .n3 .mg-ring-fill{stroke:var(--n-indf);}
+  #mob-root .n3 .mg-ring-pct{color:var(--n-text);}
+  #mob-root .n3 .mg-bar-lbl{color:var(--n-t2);font-size:13px;font-weight:500;}
+  #mob-root .n3 .mg-bar-track{background:var(--n-track);height:4px;border-radius:2px;}
+  #mob-root .n3 .mg-bar-fill{background:var(--n-indf) !important;border-radius:2px;}
+  #mob-root .n3 .mg-bar-val{color:var(--n-text);font-size:13px;font-weight:600;}
+  #mob-root .n3 .mg-habit-toggle{border-top:.5px solid var(--n-div);color:var(--n-ind);font-size:14px;font-weight:600;}
+  #mob-root .n3 .mg-habit-toggle span,#mob-root .n3 .mg-habit-toggle svg{color:var(--n-ind);}
+  #mob-root .n3 .mg-habit-grp{color:var(--n-t2);}
+  #mob-root .n3 .mg-habit-chk{border-color:var(--n-ring);}
+  #mob-root .n3 .mg-habit-chk.on{background:var(--n-indf);border-color:var(--n-indf);}
+  #mob-root .n3 .mg-habit-chk.on svg{stroke:#fff;}
+  #mob-root .n3 .mg-habit-name{color:var(--n-text);font-size:16px;font-weight:500;}
+  #mob-root .n3 .mg-habit-name.done{color:var(--n-t2);}
+  #mob-root .n3 .mg-habit-empty{color:var(--n-t2);}
+  /* 지표 3칸 */
+  #mob-root .n3 .mg-metrics{gap:12px;}
+  #mob-root .n3 .mg-metric,#mob-root .n3 .mg-metric.ex,#mob-root .n3 .mg-metric.study,#mob-root .n3 .mg-metric.wt{background:var(--n-card);color:var(--n-text);border-radius:18px;padding:14px;}
+  #mob-root .n3 .mg-metric-lbl{font-size:13px;font-weight:600;color:var(--n-t2);opacity:1;}
+  #mob-root .n3 .mg-metric-val{font-size:24px;letter-spacing:-.8px;}
+  #mob-root .n3 .mg-metric-val span{font-size:13px;color:var(--n-t2);opacity:1;}
+  #mob-root .n3 .mg-metric-sub{font-size:12px;color:var(--n-t2);opacity:1;}
+  #mob-root .n3 .mg-metric.wt .mg-metric-sub.up{color:var(--n-ind);}
+  /* 식사 */
+  #mob-root .n3 .mg-meals-card .mg-meals{display:block;margin:0;}
+  #mob-root .n3 .mg-meals-card .mg-meal,#mob-root .n3 .mg-meals-card .mg-meal.empty{display:flex;gap:12px;align-items:baseline;min-height:46px;padding:12px 0;border:0;border-top:.5px solid var(--n-div);border-radius:0;background:transparent;}
+  #mob-root .n3 .mg-meals-card .mg-meal-lbl{width:36px;flex-shrink:0;font-size:14px;font-weight:600;color:var(--n-ind);}
+  #mob-root .n3 .mg-meals-card .mg-meal-txt{margin:0;font-size:16px;letter-spacing:-.3px;color:var(--n-text);-webkit-line-clamp:2;}
+  #mob-root .n3 .mg-meals-card .mg-meal.empty .mg-meal-lbl,#mob-root .n3 .mg-meals-card .mg-meal.empty .mg-meal-txt{color:var(--n-ring);}
+  #mob-root .n3 .mg-meals-card .mg-meal.empty .mg-meal-txt{font-style:normal;}
+  /* 메모 · 일기 */
+  #mob-root .n3 .mg-memo-row{gap:12px;padding:12px 0;border-top:.5px solid var(--n-div);}
+  #mob-root .n3 .mg-memo-row+.mg-memo-row{border-top:.5px solid var(--n-div);}
+  #mob-root .n3 .mg-memo-time{background:transparent;color:var(--n-ind);font-size:14px;padding:0;width:44px;border-radius:0;}
+  #mob-root .n3 .mg-memo-txt{font-size:16px;letter-spacing:-.3px;color:var(--n-text);}
+  #mob-root .n3 .mg-diary-title{font-size:17px;font-weight:700;letter-spacing:-.4px;color:var(--n-text);margin-bottom:4px;}
+  #mob-root .n3 .mg-diary-body{font-size:15px;line-height:1.55;color:var(--n-t2);}
+}
+
 </style>
 </head>
 <body>
@@ -3026,37 +3105,24 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
 </div>
 
 <!-- ── 페이지: 캘린더 ── -->
-<div id="mob-page-calendar" class="mob-page">
-
-<!-- 헤더 -->
-<div class="m2-cal-header">
-  <div class="m2-cal-header-row">
-    <div>
-      <div class="m2-cal-title" id="mob-cal-title"></div>
-      <div class="m2-cal-subtitle">색이 진한 날은 기록이 많은 날</div>
-    </div>
-    <div class="m2-cal-nav">
-      <button class="mob-cal-nav-btn" onclick="openSearch()" aria-label="검색">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>
-      </button>
-      <button class="mob-cal-nav-btn" onclick="mobCalMove(-1)">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
-      </button>
-      <button class="mob-cal-nav-btn" onclick="mobCalMove(1)">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
-      </button>
-    </div>
-  </div>
+<div id="mob-page-calendar" class="mob-page n3">
+<div class="n3-dhead">
+  <h1>기록</h1>
+  <button class="n3-circ-f" onclick="openSearch()" aria-label="전체 기록 검색"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button>
 </div>
 
 <!-- 스크롤 -->
 <div class="mob-scroll">
   <!-- 캘린더 그리드 카드 -->
-  <div class="m2-cal-card">
-    <!-- 요일 헤더 -->
+  <div class="n3-mon" style="margin-top:8px;">
+    <button class="n3-mon-b" onclick="mobCalMove(-1)" aria-label="이전 달"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+    <div class="n3-mon-t" id="mob-cal-title"></div>
+    <button class="n3-mon-b" onclick="mobCalMove(1)" aria-label="다음 달"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+  </div>
+  <div class="n3-cal">
     <div class="mob-cal-dow-row" id="mob-cal-dow"></div>
-    <!-- 날짜 그리드 -->
     <div class="mob-cal-grid" id="mob-cal-grid"></div>
+    <div class="n3-legend">적음 <i style="background:var(--n-l1)"></i><i style="background:var(--n-l2)"></i><i style="background:var(--n-l3)"></i> 많음</div>
   </div>
 
   <!-- 선택일 상세 (구 모아보기) -->
@@ -6149,10 +6215,10 @@ function mobRenderCalendar(){
       const isSel=(ds===mobCalSelDate);
       let cls='mob-cal-day';
       if(isToday) cls+=' is-today';
-      else if(lv===3) cls+=' lv3';
+      if(lv===3) cls+=' lv3';
       else if(lv===2) cls+=' lv2';
       else if(lv===1) cls+=' lv1';
-      if(isSel&&!isToday) cls+=' selected';
+      if(isSel) cls+=' selected';
       h+=`<div class="mob-cal-cell" onclick="mobCalSelect('${ds}')">
         <div class="${cls}">${d}${isToday?'<div class="mob-cal-today-dot"></div>':''}</div>
       </div>`;
@@ -7799,7 +7865,8 @@ function mobRenderCalSum(sel){
       ?`<div class="mg-meal"><div class="mg-meal-lbl">${k}</div><div class="mg-meal-txt">${r.map(x=>mgEsc(x.food)).join(', ')}</div></div>`
       :`<div class="mg-meal empty"><div class="mg-meal-lbl">${k}</div><div class="mg-meal-txt">기록 전</div></div>`;
   }).join('');
-  const mealSec=`<div><div class="mg-sec-title">식사</div><div class="mg-meals">${mealHtml}</div></div>`;
+  const mealCnt=['아침','점심','저녁'].filter(k=>meals.some(m=>m.time===k)).length;
+  const mealSec=`<div class="mg-card mg-meals-card"><div class="mg-card-head"><div class="mg-card-title">식사</div><div class="mg-card-link" style="color:var(--n-t2);font-weight:500;cursor:default;">${mealCnt}/3</div></div><div class="mg-meals">${mealHtml}</div></div>`;
 
   // ── 메모 (고정 우선, 최대 2개) ──
   const memos=memoOrder(d.memos);
