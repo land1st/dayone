@@ -2057,6 +2057,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   .n3-e-top{display:flex;align-items:center;gap:8px;}
   .n3-e-top span{flex:1;font-size:13px;font-weight:500;color:var(--n-t2);}
   .n3-e-top svg{flex-shrink:0;}
+  .n3-emo{display:flex;align-items:center;justify-content:center;line-height:1;flex-shrink:0;font-style:normal;font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif;}
   .n3-e-t{font-size:18px;font-weight:700;letter-spacing:-.5px;margin-top:8px;}
   .n3-e-p{font-size:14px;line-height:1.5;color:var(--n-t2);margin-top:4px;letter-spacing:-.2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
   .n3-e-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
@@ -5615,6 +5616,7 @@ function saveProfile(f){
   if(!inp||!disp)return;
   const v=inp.value.trim();
   localStorage.setItem('do_pf_'+f,v);
+  pfTouch();
   disp.textContent=v||(f==='name'?'이름을 입력하세요':'한 줄 소개를 입력하세요');
   disp.style.display='';inp.style.display='none';
 }
@@ -5625,18 +5627,15 @@ function cancelProfile(f){
 }
 function handleProfileImg(e){
   const file=e.target.files?.[0];if(!file)return;
-  const reader=new FileReader();
-  reader.onload=ev=>{
-    const src=ev.target.result;
-    localStorage.setItem('do_pf_img',src);
+  pfReadImage(file,src=>{
+    if(!pfSaveImg(src))return;
     const pi=document.getElementById('pf-img');const ph=document.getElementById('pf-placeholder');
     if(pi){pi.src=src;pi.style.display='block';}
     if(ph)ph.style.display='none';
     const mav=document.getElementById('mob-profile-av');
     if(mav)mav.innerHTML=`<img src="${src}" alt="">`;
     toast('프로필 사진 저장');
-  };
-  reader.readAsDataURL(file);
+  });
 }
 
 // ── MODAL ──
@@ -6344,17 +6343,41 @@ function mobCloseProfile(){
   document.getElementById('mob-sheet-profile')?.classList.remove('open');
 }
 
+// ── 프로필 저장 보조: 사진 축소(용량 절약) · 저장 시각 기록 · Drive 반영 ──
+function pfTouch(){
+  try{localStorage.setItem('do_pf_ts',String(Date.now()));}catch(e){}
+  if(typeof schedulePush==='function')schedulePush(true);
+}
+function pfSaveImg(src){
+  try{localStorage.setItem('do_pf_img',src);}
+  catch(e){toast('사진을 저장하지 못했습니다. 저장 공간이 부족합니다.');return false;}
+  pfTouch();
+  return true;
+}
+function pfReadImage(file,cb){
+  const fail=()=>toast('사진을 불러오지 못했습니다. 다른 사진으로 시도해주세요.');
+  const url=URL.createObjectURL(file);
+  const im=new Image();
+  im.onload=()=>{
+    try{
+      const S=320,w=im.naturalWidth,h=im.naturalHeight,m=Math.min(w,h);
+      const cv=document.createElement('canvas');cv.width=S;cv.height=S;
+      cv.getContext('2d').drawImage(im,(w-m)/2,(h-m)/2,m,m,0,0,S,S);
+      URL.revokeObjectURL(url);
+      cb(cv.toDataURL('image/jpeg',0.86));
+    }catch(e){URL.revokeObjectURL(url);fail();}
+  };
+  im.onerror=()=>{URL.revokeObjectURL(url);fail();};
+  im.src=url;
+}
 // ── 프로필 사진 변경 ──
 function mobProfileImgChange(e){
   const file=e.target.files?.[0];if(!file)return;
-  const reader=new FileReader();
-  reader.onload=ev=>{
-    const src=ev.target.result;
-    localStorage.setItem('do_pf_img',src);
+  pfReadImage(file,src=>{
+    if(!pfSaveImg(src))return;
     const name=localStorage.getItem('do_pf_name')||'';
     mobProfileSheetAvUpdate(src,name);
-  };
-  reader.readAsDataURL(file);
+  });
 }
 
 // ── 프로필 저장 ──
@@ -6363,6 +6386,7 @@ function mobSaveProfile(){
   const bio=document.getElementById('mob-pf-bio-inp')?.value?.trim()||'';
   localStorage.setItem('do_pf_name',name);
   localStorage.setItem('do_pf_bio',bio);
+  pfTouch();
   loadProfile();        // PC 사이드바도 동기화
   mobRenderSettings();  // 설정 카드 갱신
   mobUpdateAvatar();    // 오늘 탭 아바타 갱신
@@ -6855,19 +6879,10 @@ function mobSheetEdit(){
 // 기분 저장값: 1(아주 나쁨) ~ 5(아주 좋음) — 기존 d.mood / d.diaryMood 와 동일
 // ════════════════════════════════════════════
 const N3_MOOD_LABEL={5:'아주 좋음',4:'좋음',3:'보통',2:'나쁨',1:'아주 나쁨'};
-const N3_MOOD_FILL={5:'#FFC83D',4:'#7DB8FF',3:'#8ED16B',2:'#A1A1A8',1:'#5C5C61'};
 const N3_DAYS=['일','월','화','수','목','금','토'];
+const N3_MOOD_EMOJI={5:'😄',4:'🙂',3:'😐',2:'🙁',1:'😭'};
 function n3Face(v,s){
-  const ink=v===1?'#FFFFFF':'#1C1C1E';
-  const eyes=`<circle cx="14" cy="17" r="2.3" fill="${ink}"/><circle cx="26" cy="17" r="2.3" fill="${ink}"/>`;
-  const G={
-    5:`<path d="M11 17q3-4.5 6 0M23 17q3-4.5 6 0"/><path d="M11.5 24h17c0 6-3.8 9-8.5 9s-8.5-3-8.5-9z" fill="${ink}"/>`,
-    4:eyes+'<path d="M12.5 25q7.5 7.5 15 0"/>',
-    3:eyes+'<path d="M13.5 28h13"/>',
-    2:`<path d="M9.5 13.5l6.5-2.5M30.5 13.5L24 11"/><circle cx="14" cy="18.5" r="2.3" fill="${ink}"/><circle cx="26" cy="18.5" r="2.3" fill="${ink}"/><path d="M13 30q7-7 14 0"/>`,
-    1:'<path d="M10.5 13.5l6 3-6 3M29.5 13.5l-6 3 6 3"/><path d="M13 31q7-7.5 14 0"/><path d="M10.5 23c-1.6 2.4-2.2 3.6-2.2 4.6a2.2 2.2 0 004.4 0c0-1-.6-2.2-2.2-4.6zM29.5 23c-1.6 2.4-2.2 3.6-2.2 4.6a2.2 2.2 0 004.4 0c0-1-.6-2.2-2.2-4.6z" fill="#E5E5EA" stroke="none"/>'
-  };
-  return `<svg width="${s}" height="${s}" viewBox="0 0 40 40" role="img" aria-label="기분 ${N3_MOOD_LABEL[v]}"><circle cx="20" cy="20" r="20" fill="${N3_MOOD_FILL[v]}"/><g fill="none" stroke="${ink}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${G[v]}</g></svg>`;
+  return `<span class="n3-emo" role="img" aria-label="기분 ${N3_MOOD_LABEL[v]}" style="width:${s}px;height:${s}px;font-size:${Math.round(s*0.86)}px">${N3_MOOD_EMOJI[v]}</span>`;
 }
 function n3WeekDates(){
   const b=new Date(curDateStr+'T00:00:00');
@@ -8257,9 +8272,15 @@ function applyRemoteData(remote){
       saveAllData(merged);
     }
     if(remote.profile){
-      if(remote.profile.name)localStorage.setItem('do_pf_name',remote.profile.name);
-      if(remote.profile.bio)localStorage.setItem('do_pf_bio',remote.profile.bio);
-      if(remote.profile.img)localStorage.setItem('do_pf_img',remote.profile.img);
+      // 이 기기에서 더 최근에 고친 프로필은 Drive의 옛 값으로 덮어쓰지 않는다
+      const lts=parseInt(localStorage.getItem('do_pf_ts')||'0',10)||0,rts=parseInt(remote.profile.ts||'0',10)||0;
+      const take=rts>lts||(rts===0&&lts===0);
+      ['name','bio','img'].forEach(f=>{
+        if(remote.profile[f]&&(take||!localStorage.getItem('do_pf_'+f))){
+          try{localStorage.setItem('do_pf_'+f,remote.profile[f]);}catch(e){}
+        }
+      });
+      if(take&&rts)try{localStorage.setItem('do_pf_ts',String(rts));}catch(e){}
     }
     if(remote.schedule&&!dirty.misc){
       const localSched=getScheduleEvents();
@@ -8321,7 +8342,8 @@ async function syncToDrive(silent){
       profile:{
         name:localStorage.getItem('do_pf_name')||'',
         bio:localStorage.getItem('do_pf_bio')||'',
-        img:localStorage.getItem('do_pf_img')||''
+        img:localStorage.getItem('do_pf_img')||'',
+        ts:parseInt(localStorage.getItem('do_pf_ts')||'0',10)||0
       },
       dark:localStorage.getItem('do_dark')||'0',
       theme:n3GetTheme()
