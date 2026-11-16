@@ -1922,12 +1922,12 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
 @media(max-width:680px){
   #mob-root .n3,#mob-root .n3-dw{
     --n-bg:#F2F2F7;--n-card:#FFFFFF;--n-text:#1C1C1E;--n-t2:#6C6C70;--n-div:#E5E5EA;--n-ring:#AEAEB2;--n-track:#E5E5EA;
-    --n-ind:#4F4CC4;--n-indf:#4F4CC4;--n-hl:#4F4CC4;--n-indbg:#ECECFA;--n-field:rgba(118,118,128,.12);
+    --n-ind:var(--th-ind,#4F4CC4);--n-indf:var(--th-ind,#4F4CC4);--n-hl:var(--th-ind,#4F4CC4);--n-indbg:var(--th-indbg,#ECECFA);--n-on:#FFFFFF;--n-field:rgba(118,118,128,.12);
     background:var(--n-bg);color:var(--n-text);
   }
   body.dark #mob-root .n3,body.dark #mob-root .n3-dw{
     --n-bg:#000000;--n-card:#1C1C1E;--n-text:#FFFFFF;--n-t2:#A1A1A8;--n-div:#38383A;--n-ring:#636366;--n-track:#2C2C2E;
-    --n-ind:#9D9BF5;--n-indf:#6A67E0;--n-hl:#3D3A9E;--n-indbg:#26264A;--n-field:rgba(118,118,128,.24);
+    --n-ind:var(--thd-ind,#9D9BF5);--n-indf:var(--thd-indf,#6A67E0);--n-hl:var(--thd-hl,#3D3A9E);--n-indbg:var(--thd-indbg,#26264A);--n-on:var(--thd-on,#FFFFFF);--n-field:rgba(118,118,128,.24);
   }
   #mob-root .n3 *,#mob-root .n3-dw *{box-sizing:border-box;}
   #mob-root .n3 .mob-scroll{padding:6px 16px calc(124px + env(safe-area-inset-bottom,0px));}
@@ -2032,12 +2032,12 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   .n3-in-row{display:flex;align-items:center;gap:10px;min-height:54px;border-top:.5px solid var(--n-div);padding:8px 0;}
   .n3-in-row input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-family:inherit;font-size:16px;color:var(--n-text);height:36px;letter-spacing:-.3px;}
   .n3-in-row input::placeholder{color:var(--n-t2);}
-  .n3-add{width:36px;height:36px;border-radius:50%;border:0;background:var(--n-indf);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;}
+  .n3-add{width:36px;height:36px;border-radius:50%;border:0;background:var(--n-indf);color:var(--n-on);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;}
 
   /* 메모 */
   #mob-root .n3 .mm-card .memo-inp-row{display:flex;align-items:center;gap:10px;margin:0 0 8px;}
   #mob-root .n3 .mm-card .todo-inp{flex:1;min-width:0;height:40px;border:0;outline:0;border-radius:10px;background:var(--n-field);padding:0 12px;font-family:inherit;font-size:16px;color:var(--n-text);}
-  #mob-root .n3 .mm-card .add-btn{width:36px;height:36px;border-radius:50%;border:0;background:var(--n-indf);color:#fff;font-size:22px;line-height:1;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0;}
+  #mob-root .n3 .mm-card .add-btn{width:36px;height:36px;border-radius:50%;border:0;background:var(--n-indf);color:var(--n-on);font-size:22px;line-height:1;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0;}
   #mob-root .n3 .mm-card .memo-row{padding:11px 0;}
   #mob-root .n3 .mm-card .memo-row+.memo-row,#mob-root .n3 .mm-card .memo-row{border-top:.5px solid var(--n-div);}
   #mob-root .n3 .mm-card .memo-text{font-size:15px;color:var(--n-text);}
@@ -2046,7 +2046,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   /* 일기 탭 */
   .n3-dhead{display:flex;align-items:center;justify-content:space-between;padding:12px 20px 4px;flex-shrink:0;}
   .n3-dhead h1{margin:0;font-size:34px;font-weight:800;letter-spacing:-1px;}
-  .n3-circ{width:44px;height:44px;border-radius:50%;border:0;background:var(--n-indf);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  .n3-circ{width:44px;height:44px;border-radius:50%;border:0;background:var(--n-indf);color:var(--n-on);display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent;}
   .n3-search{display:flex;align-items:center;gap:8px;width:100%;height:40px;border-radius:12px;background:var(--n-field);border:0;padding:0 12px;margin-top:6px;font-family:inherit;font-size:16px;color:var(--n-t2);text-align:left;cursor:pointer;}
   .n3-mon{display:flex;align-items:center;justify-content:space-between;margin-top:14px;}
   .n3-mon-b{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:0;background:transparent;color:var(--n-text);cursor:pointer;}
@@ -2062,7 +2062,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   .n3-e-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
   .n3-e-tags span{font-size:13px;font-weight:600;color:var(--n-ind);background:var(--n-indbg);border-radius:999px;padding:4px 10px;}
   .n3-empty{text-align:center;padding:48px 0;color:var(--n-t2);font-size:15px;}
-  .n3-empty button{margin-top:14px;height:40px;padding:0 20px;border:0;border-radius:20px;background:var(--n-indf);color:#fff;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;}
+  .n3-empty button{margin-top:14px;height:40px;padding:0 20px;border:0;border-radius:20px;background:var(--n-indf);color:var(--n-on);font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;}
 
   /* 일기 쓰기 (전체 화면) */
   .n3-dw{position:fixed;inset:0;z-index:10100;display:none;flex-direction:column;padding-top:env(safe-area-inset-top,20px);}
@@ -2093,7 +2093,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   body.dark #mob-root .mob-tabbar-glass{background:#2C2C2E;}
   #mob-root .mob-tab{flex-direction:row;gap:6px;color:#D1D1D6;font-family:inherit;}
   #mob-root .mob-tab span{display:none;font-size:15px;font-weight:700;letter-spacing:-.3px;color:#1C1C1E;}
-  #mob-root .mob-tab.active{flex:0 0 auto;padding:0 18px;background:#FFFFFF;color:#4F4CC4;}
+  #mob-root .mob-tab.active{flex:0 0 auto;padding:0 18px;background:#FFFFFF;color:var(--th-ind,#4F4CC4);}
   #mob-root .mob-tab.active span{display:inline;}
 
   /* 이번 주 기분 카드: 인디고 배경 강조 */
@@ -2118,8 +2118,8 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
 
 /* ════════ 기록 탭 리뉴얼 (n3) — 모바일 전용 ════════ */
 @media(max-width:680px){
-  #mob-root #mob-page-calendar{--n-l1:#E3E2F8;--n-l2:#B9B7EF;--n-l3:#7F7CE0;}
-  body.dark #mob-root #mob-page-calendar{--n-l1:#2A2A52;--n-l2:#3F3D8F;--n-l3:#6A67E0;}
+  #mob-root #mob-page-calendar{--n-l1:var(--th-l1,#E3E2F8);--n-l2:var(--th-l2,#B9B7EF);--n-l3:var(--th-l3,#7F7CE0);}
+  body.dark #mob-root #mob-page-calendar{--n-l1:var(--thd-l1,#2A2A52);--n-l2:var(--thd-l2,#3F3D8F);--n-l3:var(--thd-l3,#6A67E0);}
   .n3-circ-f{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:0;background:var(--n-field);color:var(--n-text);cursor:pointer;-webkit-tap-highlight-color:transparent;}
   #mob-root .n3-cal{background:var(--n-card);border-radius:18px;padding:14px 10px 12px;margin:4px 0 0;}
   #mob-root .n3 .mob-cal-dow-row{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));}
@@ -2133,7 +2133,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   #mob-root .n3 .mob-cal-day.lv3{background:var(--n-l3);color:#fff;font-weight:700;}
   #mob-root .n3 .mob-cal-day.is-today{box-shadow:inset 0 0 0 2px var(--n-ind);color:var(--n-ind);font-weight:800;}
   #mob-root .n3 .mob-cal-day.is-today.lv3{color:#fff;}
-  #mob-root .n3 .mob-cal-day.selected{background:var(--n-indf);color:#fff;font-weight:800;box-shadow:0 0 0 2px var(--n-card),0 0 0 4px var(--n-indf);}
+  #mob-root .n3 .mob-cal-day.selected{background:var(--n-indf);color:var(--n-on);font-weight:800;box-shadow:0 0 0 2px var(--n-card),0 0 0 4px var(--n-indf);}
   .n3-legend{display:flex;align-items:center;justify-content:flex-end;gap:5px;padding:8px 8px 0;font-size:12px;color:var(--n-t2);}
   .n3-legend i{width:12px;height:12px;border-radius:50%;display:block;}
 
@@ -2166,7 +2166,7 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   #mob-root .n3 .mg-habit-grp{color:var(--n-t2);}
   #mob-root .n3 .mg-habit-chk{border-color:var(--n-ring);}
   #mob-root .n3 .mg-habit-chk.on{background:var(--n-indf);border-color:var(--n-indf);}
-  #mob-root .n3 .mg-habit-chk.on svg{stroke:#fff;}
+  #mob-root .n3 .mg-habit-chk.on svg{stroke:var(--n-on);}
   #mob-root .n3 .mg-habit-name{color:var(--n-text);font-size:16px;font-weight:500;}
   #mob-root .n3 .mg-habit-name.done{color:var(--n-t2);}
   #mob-root .n3 .mg-habit-empty{color:var(--n-t2);}
@@ -2192,6 +2192,24 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
   #mob-root .n3 .mg-memo-txt{font-size:16px;letter-spacing:-.3px;color:var(--n-text);}
   #mob-root .n3 .mg-diary-title{font-size:17px;font-weight:700;letter-spacing:-.4px;color:var(--n-text);margin-bottom:4px;}
   #mob-root .n3 .mg-diary-body{font-size:15px;line-height:1.55;color:var(--n-t2);}
+}
+
+
+/* ════════ 테마 컬러 — 모바일 전용 ════════ */
+@media(max-width:680px){
+  #mob-root{--m2-indigo:var(--th-ind,#504DA8);--m2-indigo-deep:var(--th-deep,#3E3B8C);--m2-peri:var(--th-peri,#B4BAF5);--m2-peri-light:var(--th-tint,#E7E9F9);}
+  body.dark #mob-root{--m2-indigo:var(--thd-m2,#504DA8);--m2-indigo-deep:var(--thd-deep,#3E3B8C);--m2-peri:var(--thd-ind,#B4BAF5);--m2-peri-light:var(--th-tint,#E7E9F9);}
+  #mob-root[data-theme]{--accent:var(--th-ind);}
+  body.dark #mob-root[data-theme]{--accent:var(--thd-ind);}
+  #mob-root .mob-tab.active svg{stroke:var(--th-ind,var(--accent));}
+  .n3-th-strip{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;padding:4px 10px 14px;}
+  .n3-th-b{display:flex;flex-direction:column;align-items:center;gap:6px;border:0;background:transparent;padding:4px 0;font-family:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  .n3-th-dot{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 .5px rgba(128,128,128,.35);}
+  .n3-th-dot svg{opacity:0;}
+  .n3-th-b.on .n3-th-dot{outline:2px solid var(--text2,#6C6C70);outline-offset:2px;}
+  .n3-th-b.on .n3-th-dot svg{opacity:1;}
+  .n3-th-n{font-size:11px;font-weight:500;color:var(--text2,#6C6C70);white-space:nowrap;}
+  .n3-th-b.on .n3-th-n{color:var(--text,#1C1C1E);font-weight:700;}
 }
 
 </style>
@@ -3251,6 +3269,16 @@ body.dark .monthly-badge.dn{background:#3a1a1a;color:#e05a4e;}
         <span class="mob-set-row-detail" id="mob-set-dark-lbl">라이트</span>
         <div class="toggle-track" style="margin-left:8px;"><div class="toggle-thumb"></div></div>
       </div>
+      <div class="mob-set-sep"></div>
+      <!-- 테마 컬러 -->
+      <div class="mob-set-row" style="cursor:default;">
+        <div class="mob-set-icon" style="background:var(--m2-peri-light);">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--m2-indigo)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 100 18c1.2 0 2-.8 2-1.8 0-.5-.2-.9-.5-1.3-.3-.4-.5-.8-.5-1.3 0-1 .8-1.8 1.8-1.8H17a4 4 0 004-4c0-4.4-4-8-9-8z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7" r="1"/><circle cx="15" cy="7" r="1"/></svg>
+        </div>
+        <span class="mob-set-row-title">테마 컬러</span>
+        <span class="mob-set-row-detail" id="n3-theme-lbl">인디고</span>
+      </div>
+      <div class="n3-th-strip" id="n3-theme-strip"></div>
       <div class="mob-set-sep"></div>
       <!-- 습관 관리 -->
       <div class="mob-set-row" onclick="mobSetOpenHabits()">
@@ -7058,6 +7086,70 @@ function mobDiarySave(){
   mobSyncNow();
 }
 
+
+// ══════════ 테마 컬러 (모바일) ══════════
+const N3_THEMES=[
+  {k:'indigo',n:'인디고',L:'#4F4CC4',D:'#9D9BF5',DF:'#6A67E0'},
+  {k:'blue',n:'블루',L:'#0A6FE8',D:'#4DA3FF',DF:'#1F78EE'},
+  {k:'teal',n:'틸',L:'#12869A',D:'#4FCBE0',DF:'#1C93A8'},
+  {k:'olive',n:'올리브',L:'#6B7A1F',D:'#B5C453',DF:'#7F8F25'},
+  {k:'orange',n:'오렌지',L:'#E07800',D:'#FFA533',DF:'#D97100'},
+  {k:'pink',n:'핑크',L:'#E0245E',D:'#FFA2B8',DF:'#E0356B'},
+  {k:'black',n:'블랙',L:'#1C1C1E',D:'#F2F2F7',DF:'#F2F2F7',on:'#1C1C1E',dk:{hl:'#3A3A3C',l1:'#2C2C2E',l2:'#48484A',l3:'#7C7C80',m2:'#48484A',bg:'#2C2C2E'}}
+];
+function n3Mix(a,b,t){
+  const p=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+  const x=p(a),y=p(b);
+  return '#'+x.map((v,i)=>Math.round(v+(y[i]-v)*t).toString(16).padStart(2,'0')).join('');
+}
+function n3GetTheme(){
+  try{const o=JSON.parse(localStorage.getItem('do_theme')||'null');if(o&&o.k&&N3_THEMES.some(t=>t.k===o.k))return o;}catch(e){}
+  return {k:'indigo',t:0};
+}
+function n3ApplyTheme(){
+  const root=document.getElementById('mob-root');
+  if(!root)return;
+  const cur=n3GetTheme();
+  const th=N3_THEMES.find(t=>t.k===cur.k)||N3_THEMES[0];
+  const vars=['--th-ind','--th-indbg','--th-l1','--th-l2','--th-l3','--th-deep','--th-peri','--th-tint','--thd-ind','--thd-indf','--thd-hl','--thd-indbg','--thd-l1','--thd-l2','--thd-l3','--thd-on','--thd-m2','--thd-deep'];
+  if(th.k==='indigo'){
+    vars.forEach(v=>root.style.removeProperty(v));
+    root.removeAttribute('data-theme');
+  }else{
+    root.setAttribute('data-theme',th.k);
+    const W='#FFFFFF',C='#1C1C1E',dk=th.dk||{};
+    const set=(k,v)=>root.style.setProperty(k,v);
+    set('--th-ind',th.L);
+    set('--th-indbg',n3Mix(th.L,W,.91));
+    set('--th-l1',n3Mix(th.L,W,.84));set('--th-l2',n3Mix(th.L,W,.6));set('--th-l3',n3Mix(th.L,W,.27));
+    set('--th-deep',n3Mix(th.L,'#000000',.22));
+    set('--th-peri',n3Mix(th.L,W,.6));set('--th-tint',n3Mix(th.L,W,.9));
+    set('--thd-ind',th.D);set('--thd-indf',th.DF);
+    set('--thd-hl',dk.hl||n3Mix(C,th.DF,.5));
+    set('--thd-indbg',n3Mix(C,th.DF,.14));
+    set('--thd-l1',dk.l1||n3Mix(C,th.DF,.2));set('--thd-l2',dk.l2||n3Mix(C,th.DF,.45));set('--thd-l3',dk.l3||th.DF);
+    set('--thd-on',th.on||'#FFFFFF');
+    set('--thd-m2',dk.m2||th.DF);set('--thd-deep',n3Mix(dk.m2||th.DF,'#000000',.25));
+  }
+  const strip=document.getElementById('n3-theme-strip');
+  if(strip){
+    if(!strip.dataset.built){
+      strip.innerHTML=N3_THEMES.map(t=>`<button class="n3-th-b" data-k="${t.k}" onclick="n3SetTheme('${t.k}')" aria-label="${t.n} 테마"><span class="n3-th-dot" style="background:${t.L}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="n3-th-n">${t.n}</span></button>`).join('');
+      strip.dataset.built='1';
+    }
+    strip.querySelectorAll('.n3-th-b').forEach(b=>{const on=b.dataset.k===th.k;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on?'true':'false');});
+  }
+  const lbl=document.getElementById('n3-theme-lbl');
+  if(lbl)lbl.textContent=th.n;
+}
+function n3SetTheme(k){
+  try{localStorage.setItem('do_theme',JSON.stringify({k:k,t:Date.now()}));}catch(e){}
+  n3ApplyTheme();
+  if(typeof schedulePush==='function')schedulePush(true);
+}
+try{n3ApplyTheme();}catch(e){}
+document.addEventListener('DOMContentLoaded',()=>{try{n3ApplyTheme();}catch(e){}});
+
 function mobRender(){
   const d=getDayData(curDateStr);
   const habits=getHabits();
@@ -8177,6 +8269,7 @@ function applyRemoteData(remote){
       saveScheduleEvents(mergedSched);
     }
     if(remote.dark)localStorage.setItem('do_dark',remote.dark);
+    if(remote.theme&&remote.theme.k&&(remote.theme.t||0)>(n3GetTheme().t||0)){localStorage.setItem('do_theme',JSON.stringify(remote.theme));n3ApplyTheme();}
   }finally{gApplyingRemote=false;}
   return {stripped,needsPush:needsPush||hasDirty()};
 }
@@ -8230,7 +8323,8 @@ async function syncToDrive(silent){
         bio:localStorage.getItem('do_pf_bio')||'',
         img:localStorage.getItem('do_pf_img')||''
       },
-      dark:localStorage.getItem('do_dark')||'0'
+      dark:localStorage.getItem('do_dark')||'0',
+      theme:n3GetTheme()
     });
     let res;
     if(files&&files.length>0){
